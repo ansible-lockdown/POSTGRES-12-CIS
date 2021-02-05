@@ -1,2 +1,10 @@
 ---
-# tasks file for .
+- name: import preliminary tasks
+  import_tasks: prelim.yml
+
+- name: RedHat Fixes
+  import_tasks: cis_pgs12_redhat_fixes.yml
+  when: ansible_distribution_file_variety == 'RedHat'
+  tags:
+      - RedHat
+      - CentOS
