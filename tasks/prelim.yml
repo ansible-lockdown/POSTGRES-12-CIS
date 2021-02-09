@@ -35,4 +35,26 @@
 
 #       - name: "PRELIM | Install adn Start PostgreSQL | Initialize PostgreSQL 12"
 #         command: /usr/pgsql-12/bin/postgresql-12-setup initdb
-        
+- name: "PRELIM | 2.1 | Get postgresql user home folder"
+  shell: "grep {{ pgs12cis_pgs12_usr }} /etc/passwd | cut -f6 -d:"
+  changed_when: false
+  failed_when: false
+  register: pgs12cis_pgs12_usr_home_dir
+  when:
+      - pgs12cis_rule_2_1
+
+- name: "PRELIM | Finding the PostgreSQL Configured Data Directory (PGDATA)"
+  block:
+      - name: "PRELIM | Finding the PostgreSQL Configured Data Directory (PGDATA) | Get path"
+        shell: set -o pipefail ; psql -c 'show data_directory' | tail -n+3 | head -n 1 | cut -c2-
+        check_mode: no
+        changed_when: no
+        register: pgs12cis_pgdata_cmd
+        become: yes
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+
+      - name: "PRELIM | Finding the PostgreSQL Configured Data Directory (PGDATA) | Make var easier to use"
+        set_fact:
+            pgs12cis_data_folder: "{{ pgs12cis_pgdata_cmd.stdout }}"
+  when:
+      - pgs12cis_rule_3_1_2

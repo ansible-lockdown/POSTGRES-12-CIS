@@ -18,75 +18,107 @@ pgs12cis_rule_1_5: true
 
 # Section 2
 # Directory and File Permissions
-pgs12cis_2_1: true
-pgs12cis_2_2: true
+pgs12cis_rule_2_1: true
+pgs12cis_rule_2_2: true
 
 # Section 3
 # Logging Monitoring and Auditing
-pgs12cis_3_1_1: true
-pgs12cis_3_1_2: true
-pgs12cis_3_1_3: true
-pgs12cis_3_1_4: true
-pgs12cis_3_1_5: true
-pgs12cis_3_1_6: true
-pgs12cis_3_1_7: true
-pgs12cis_3_1_8: true
-pgs12cis_3_1_9: true
-pgs12cis_3_1_10: true
-pgs12cis_3_1_11: true
-pgs12cis_3_1_12: true
-pgs12cis_3_1_13: true
-pgs12cis_3_1_14: true
-pgs12cis_3_1_15: true
-pgs12cis_3_1_16: true
-pgs12cis_3_1_17: true
-pgs12cis_3_1_18: true
-pgs12cis_3_1_19: true
-pgs12cis_3_1_20: true
-pgs12cis_3_1_21: true
-pgs12cis_3_1_22: true
-pgs12cis_3_1_23: true
-pgs12cis_3_1_24: true
-pgs12cis_3_2: true
+# pgs12cis_3_1_1: true
+pgs12cis_rule_3_1_2: true
+pgs12cis_rule_3_1_3: true
+pgs12cis_rule_3_1_4: true
+pgs12cis_rule_3_1_5: true
+pgs12cis_rule_3_1_6: true
+pgs12cis_rule_3_1_7: true
+pgs12cis_rule_3_1_8: true
+pgs12cis_rule_3_1_9: true
+pgs12cis_rule_3_1_10: true
+pgs12cis_rule_3_1_11: true
+pgs12cis_rule_3_1_12: true
+pgs12cis_rule_3_1_13: true
+pgs12cis_rule_3_1_14: true
+pgs12cis_rule_3_1_15: true
+pgs12cis_rule_3_1_16: true
+pgs12cis_rule_3_1_17: true
+pgs12cis_rule_3_1_18: true
+pgs12cis_rule_3_1_19: true
+pgs12cis_rule_3_1_20: true
+pgs12cis_rule_3_1_21: true
+pgs12cis_rule_3_1_22: true
+pgs12cis_rule_3_1_23: true
+pgs12cis_rule_3_1_24: true
+pgs12cis_rule_3_2: true
 
 # Section 4
 # User Access and Authorization
-pgs12cis_4_1: true
-pgs12cis_4_2: true
-pgs12cis_4_3: true
-pgs12cis_4_4: true
-pgs12cis_4_5: true
-pgs12cis_4_6: true
-pgs12cis_4_7: true
-pgs12cis_4_8: true
+pgs12cis_rule_4_1: true
+pgs12cis_rule_4_2: true
+pgs12cis_rule_4_3: true
+pgs12cis_rule_4_4: true
+pgs12cis_rule_4_5: true
+pgs12cis_rule_4_6: true
+pgs12cis_rule_4_7: true
+pgs12cis_rule_4_8: true
 
 # Section 5
 # Connection and Login
-pgs12cis_5_1: true
-pgs12cis_5_2: true
+pgs12cis_rule_5_1: true
+pgs12cis_rule_5_2: true
 
 # Section 6
 # PostgreSQL Settings
-pgs12cis_6_1: true
-pgs12cis_6_2: true
-pgs12cis_6_3: true
-pgs12cis_6_4: true
-pgs12cis_6_5: true
-pgs12cis_6_6: true
-pgs12cis_6_7: true
-pgs12cis_6_8: true
-pgs12cis_6_9: true
+pgs12cis_rule_6_1: true
+pgs12cis_rule_6_2: true
+pgs12cis_rule_6_3: true
+pgs12cis_rule_6_4: true
+pgs12cis_rule_6_5: true
+pgs12cis_rule_6_6: true
+pgs12cis_rule_6_7: true
+pgs12cis_rule_6_8: true
+pgs12cis_rule_6_9: true
 
 # Section 7
 # Replication
-pgs12cis_7_1: true
-pgs12cis_7_2: true
-pgs12cis_7_3: true
-pgs12cis_7_4: true
+pgs12cis_rule_7_1: true
+pgs12cis_rule_7_2: true
+pgs12cis_rule_7_3: true
+pgs12cis_rule_7_4: true
 
 # Section 8
 # Special Configuration Considerations
-pgs12cis_8_1: true
-pgs12cis_8_2: true
-pgs12cis_8_3: true
-pgs12cis_8_4: true
+pgs12cis_rule_8_1: true
+pgs12cis_rule_8_2: true
+pgs12cis_rule_8_3: true
+pgs12cis_rule_8_4: true
+
+# Role vars
+# Global
+# pgs12cis_pgs12_usr is the configured postgre user
+pgs12cis_pgs12_usr: postgres
+
+# pgs12cis_postgresql_service is the name of the PostgreSQL service.
+# The name postgresql-12 is a general default but this allows for customization of service name if needed
+pgs12cis_postgresql_service: postgresql-12
+
+# Section 2
+# 2.1
+# pgs12cis_umask_value is the value for the PostgreSQL users umask settings
+# The value must be 077 or more restrictive
+pgs12cis_umask_value: "077"
+
+# 3.1.2
+# pgs12cis_log_destination is the log destion configured for PostgreSQL
+# PostgreSQL supports several methods for logging server messages, including stderr, csvlog and syslog
+# One of these destinations should be et for server log output
+pgs12cis_log_destination: syslog
+
+# 3.1.4
+# pgs12cis_log_directory is the directory logs are written to
+# The default value is log, which is relative to the clusters data directory.
+# To use absolute paths start the value with a /, /var/log/pg_log for example
+pgs12cis_log_directory: log
+
+# 3.1.5
+# pgs12cis_log_filename is the file name pattern for log files
+# The vlue is treated as a strftime pattern
+pgs12cis_log_filename: postgresql-%a.log

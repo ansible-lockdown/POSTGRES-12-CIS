@@ -1,4 +1,6 @@
 ---
+# Section 1
+# Installation and Patches
 - name: "NOTSCORED | 1.1 | AUDIT | Ensure packages are obtained from authorized repositories"
   block:
       - name: "NOTSCORED | 1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Get repo list RHEL8"
@@ -38,6 +40,7 @@
           - ansible_distribution_major_version == "7"
   when:
       - pgs12cis_rule_1_1
+      - pgs12cis_section1
   tags:
       - level1-postgresql
       - notscored
@@ -85,8 +88,9 @@
           - ansible_distribution_major_version == "7"
   when:
       - pgs12cis_rule_1_2
+      - pgs12cis_section1
   tags:
-      - level-postgresqlonlinux
+      - level1-postgresqlonlinux
       - notscored
       - audit
       - rule_1.2
@@ -132,20 +136,22 @@
           - ansible_distribution_major_version == "7"
   when:
       - pgs12cis_rule_1_3
+      - pgs12cis_section1
   tags:
-      - level-postgresqlonlinux
+      - level1-postgresqlonlinux
       - notscored
       - audit
       - rule_1.3
 
 - name: "SCORED | 1.4 | PATCH | Ensure systemd Service Files Are Enabled"
   service:
-      name: postgresql-12
+      name: "{{ pgs12cis_postgresql_service }}"
       enabled: true
   when:
       - pgs12cis_rule_1_4
+      - pgs12cis_section1
   tags:
-      - level-postgresqlonlinux
+      - level1-postgresqlonlinux
       - scored
       - patch
       - rule_1.4
@@ -157,8 +163,120 @@
   register: pgs12cis_1_5_db_initialize
   when:
       - pgs12cis_rule_1_5
+      - pgs12cis_section1
   tags:
-      - level-postgresqlonlinux
+      - level1-postgresqlonlinux
       - scored
       - patch
       - rule_1.5
+
+# Section 2
+# Directory and File Permissions
+- name: "SCORED | 2.1 | PATCH | Ensure the file permissions mask is correct"
+  block:
+      - name: "SCORED | 2.1 | AUDIT | Ensure the file permissions mask is correct | Get user environment file (.bashrc, .bash_profile, or .profile}"
+        # shell: ls -a /var/lib/pgsql/ | grep -e '.bashrc\|.bash_profile\|.profile'
+        shell: ls -a "{{ pgs12cis_pgs12_usr_home_dir.stdout }}" | grep -e '.bashrc\|.bash_profile\|.profile'
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_2_1_env_file
+
+      - name: "SCORED | 2.1 | PATCH | Ensure the file permissions mask is correct | Set umask"
+        lineinfile:
+            path: "{{ pgs12cis_pgs12_usr_home_dir.stdout }}/{{ pgs12cis_2_1_env_file.stdout }}"
+            regexp: '^umask|^UMASK'
+            line: "umask 0{{ pgs12cis_umask_value }}"
+  when:
+      - pgs12cis_rule_2_1
+      - pgs12cis_section2
+  tags:
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_2.1
+
+- name: "SCORED | 2.2 | PATCH | Ensure the PostgreSQL pg_wheel group membership is correct"
+  block:
+      - name: "SCORED | 2.2 | PATCH | Ensure the PostgreSQL pg_wheel group membership is correct | Create pg_wheel group"
+        group:
+            name: pg_wheel
+            state: present
+
+      - name: "SCORED | 2.2 | PATCH | Ensure the PostgreSQL pg_wheel group membership is correct"
+        user:
+            name: "{{ pgs12cis_pgs12_usr }}"
+            groups: pg_wheel
+  when:
+      - pgs12cis_rule_2_2
+      - pgs12cis_section2
+  tags:
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_2.2
+
+# Section 3
+# # Logging Monitoring and Auditing
+- name: "SCORED | 3.1.2 | PATCH |  Ensure the log destinations are set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^log_destination ='
+      line: "log_destination = '{{ pgs12cis_log_destination }}'"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_2
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.1.2
+
+- name: "SCORED | 3.1.3 | PATCH | Ensure the logging collector is enabled"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^logging_collector ='
+      line: "logging_collector = on"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_3
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.3
+
+- name: "SCORED | 3.1.4 | PATCH | Ensure the log file destination directory is set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^log_directory ='
+      line: "log_directory = '{{ pgs12cis_log_directory }}'"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_4
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.1.4
+
+- name: "SCORED | 3.1.5 | PA | Ensure the filename pattern for log files is set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^log_filename ='
+      line: "log_filename = '{{ pgs12cis_log_filename }}'"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_5
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.1.4
