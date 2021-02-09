@@ -1,34 +1,38 @@
 ---
-- name: "PRELIM | Install and Start PostgreSQL"
-  block:
-      - name: "PRELIM | Install and Start PostgreSQL | Add PostgreSQL Repo RHEL/CentOS 8"
-        dnf:
-          name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-          state: present
-        when:
-            - ansible_distribution_file_variety == 'RedHat'
-            - ansible_major_verision == 8
+# - name: "PRELIM | Install and Start PostgreSQL"
+#   block:
+#       - name: "PRELIM | Install and Start PostgreSQL | Add PostgreSQL Repo RHEL/CentOS 8"
+#         dnf:
+#           name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+#           state: present
+#         when:
+#             - ansible_distribution_file_variety == 'RedHat'
+#             - ansible_major_verision == 8
 
-      - name: "PRELIM | Install and Start PostgreSQL | Add PostgreSQL Repo RHEL/CentOS 7"
-        yum:
-            name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-            state: present
-        when:
-            - ansible_distribution_file_variety == 'RedHat'
-            - ansible_major_verision == 7
+#       - name: "PRELIM | Install and Start PostgreSQL | Add PostgreSQL Repo RHEL/CentOS 7"
+#         yum:
+#             name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+#             state: present
+#         when:
+#             - ansible_distribution_file_variety == 'RedHat'
+#             - ansible_major_verision == 7
 
-      - name: "PRELIM | Install adn Start PostgreSQL | Disable built in PostgreSQL"
-        shell: dnf -y module disable postgresql
-        register: prelim_disable_pgs_old_rh8
-        changed_when: "'Disabling modules' in prelim_disable_pgs_old_rh8.stdout"
-        when:
-            - ansible_distribution_file_variety == 'RedHat'
-            - ansible_major_verision == 8
+#       - name: "PRELIM | Install adn Start PostgreSQL | Disable built in PostgreSQL"
+#         shell: dnf -y module disable postgresql
+#         register: prelim_disable_pgs_old_rh8
+#         changed_when: "'Disabling modules' in prelim_disable_pgs_old_rh8.stdout"
+#         when:
+#             - ansible_distribution_file_variety == 'RedHat'
+#             - ansible_major_verision == 8
 
-      - name: "PRELIM | Install adn Start PostgreSQL | Install PostgreSQL 12"
-        dnf:
-          name: ['postgresql12', 'postgresql12-server']
-          state: present
-        when:
-            - ansible_distribution_file_variety == 'RedHat'
-            - ansible_major_verision == 8
+#       - name: "PRELIM | Install adn Start PostgreSQL | Install PostgreSQL 12"
+#         dnf:
+#           name: ['postgresql12', 'postgresql12-server']
+#           state: present
+#         when:
+#             - ansible_distribution_file_variety == 'RedHat'
+#             - ansible_major_verision == 8
+
+#       - name: "PRELIM | Install adn Start PostgreSQL | Initialize PostgreSQL 12"
+#         command: /usr/pgsql-12/bin/postgresql-12-setup initdb
+        

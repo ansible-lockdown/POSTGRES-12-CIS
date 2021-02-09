@@ -1,6 +1,6 @@
 ---
-- name: import preliminary tasks
-  import_tasks: prelim.yml
+# - name: import preliminary tasks
+#   import_tasks: prelim.yml
 
 - name: RedHat Fixes
   import_tasks: cis_pgs12_redhat_fixes.yml

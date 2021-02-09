@@ -10,11 +10,11 @@ pgs12cis_section8: true
 
 # Section 1
 # Installation and Patches
-pgs12cis_1_1: true
-pgs12cis_1_2: true
-pgs12cis_1_3: true
-pgs12cis_1_4: true
-pgs12cis_1_5: true
+pgs12cis_rule_1_1: true
+pgs12cis_rule_1_2: true
+pgs12cis_rule_1_3: true
+pgs12cis_rule_1_4: true
+pgs12cis_rule_1_5: true
 
 # Section 2
 # Directory and File Permissions
