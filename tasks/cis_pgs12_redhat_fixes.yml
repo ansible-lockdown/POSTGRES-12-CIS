@@ -8,36 +8,28 @@
         changed_when: false
         failed_when: false
         register: pgs12cis_1_1_enabled_repos_rh8
-        when:
-          - ansible_distribution_file_variety == "RedHat"
-          - ansible_distribution_major_version == "8"
+        when: ansible_distribution_major_version == "8"
 
       - name: "NOTSCORED | 1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Get repo list RHEL7"
         shell: yum repolist all | grep enabled
         changed_when: false
         failed_when: false
         register: pgs12cis_1_1_enabled_repos_rh7
-        when:
-          - ansible_distribution_file_variety == "RedHat"
-          - ansible_distribution_major_version == "7"
+        when: ansible_distribution_major_version == "7"
 
       - name: "NOTSCORED | 1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Show repo list RHEL8"
         debug:
             msg:
                 - "Alert! Below are the enabled repo's. Please review to confirm these are authorized repositories"
                 - "{{ pgs12cis_1_1_enabled_repos_rh8.stdout_lines }}"
-        when:
-          - ansible_distribution_file_variety == "RedHat"
-          - ansible_distribution_major_version == "8"
+        when: ansible_distribution_major_version == "8"
 
       - name: "NOTSCORED | 1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Show repo list RHEL8"
         debug:
             msg:
                 - "Alert! Below are the enabled repo's. Please review to confirm these are authorized repositories"
                 - "{{ pgs12cis_1_1_enabled_repos_rh7.stdout_lines }}"
-        when:
-          - ansible_distribution_file_variety == "RedHat"
-          - ansible_distribution_major_version == "7"
+        when: ansible_distribution_major_version == "7"
   when:
       - pgs12cis_rule_1_1
       - pgs12cis_section1
@@ -54,18 +46,14 @@
         changed_when: false
         failed_when: false
         register: pgs12cis_1_2_installed_pckg_rpm_rh8
-        when:
-          - ansible_distribution_file_variety == "RedHat"
-          - ansible_distribution_major_version == "8"
+        when: ansible_distribution_major_version == "8"
 
       - name: "NOTSCORED | 1.2 | AUDIT | Ensure Installation of Binary Packages | Get installed packages and repo RHEL7"
         shell: yum info $(rpm -qa|grep postgres) | egrep '^Name|^Version|^From'
         changed_when: false
         failed_when: false
         register: pgs12cis_1_2_installed_pckg_rpm_rh7
-        when:
-          - ansible_distribution_file_variety == "RedHat"
-          - ansible_distribution_major_version == "7"
+        when: ansible_distribution_major_version == "7"
 
       - name: "NOTSCORED | 1.2 | AUDIT | Ensure Installation of Binary Packages | Show installed packages and repo RHEL8"
         debug:
@@ -73,9 +61,7 @@
                 - "Alert! Below are the installed postgres packages and where they came from"
                 - "Please review and if the expected binary packages are not installed or did not come from an appropriate repo, this is a fail"
                 - "{{ pgs12cis_1_2_installed_pckg_rpm_rh8.stdout_lines }}"
-        when:
-          - ansible_distribution_file_variety == "RedHat"
-          - ansible_distribution_major_version == "8"
+        when: ansible_distribution_major_version == "8"
 
       - name: "NOTSCORED | 1.2 | AUDIT | Ensure Installation of Binary Packages | Show installed packages and repo RHEL7"
         debug:
@@ -83,9 +69,7 @@
                 - "Alert! Below are the installed postgres packages and where they came from"
                 - "Please review and if the expected binary packages are not installed or did not come from an appropriate repo, this is a fail"
                 - "{{ pgs12cis_1_2_installed_pckg_rpm_rh7.stdout_lines }}"
-        when:
-          - ansible_distribution_file_variety == "RedHat"
-          - ansible_distribution_major_version == "7"
+        when: ansible_distribution_major_version == "7"
   when:
       - pgs12cis_rule_1_2
       - pgs12cis_section1
@@ -102,18 +86,14 @@
         changed_when: false
         failed_when: false
         register: pgs12cis_1_3_installed_pckg_rpm_rh8
-        when:
-          - ansible_distribution_file_variety == "RedHat"
-          - ansible_distribution_major_version == "8"
+        when: ansible_distribution_major_version == "8"
 
       - name: "NOTSCORED | 1.3 | AUDIT | Ensure Installation of Community Packages | Get installed packages and repo RHEL7"
         shell: yum info $(rpm -qa|grep postgres) | egrep '^Name|^Version|^From'
         changed_when: false
         failed_when: false
         register: pgs12cis_1_3_installed_pckg_rpm_rh7
-        when:
-          - ansible_distribution_file_variety == "RedHat"
-          - ansible_distribution_major_version == "7"
+        when: ansible_distribution_major_version == "7"
 
       - name: "NOTSCORED | 1.3 | AUDIT | Ensure Installation of Community Packages | Show installed packages and repo RHEL8"
         debug:
@@ -121,9 +101,7 @@
                 - "Alert! Below are the installed postgres packages and where they came from"
                 - "Please review and if the expected community packages are not installed or did not come from the PGDG repo, this is a fail"
                 - "{{ pgs12cis_1_3_installed_pckg_rpm_rh8.stdout_lines }}"
-        when:
-          - ansible_distribution_file_variety == "RedHat"
-          - ansible_distribution_major_version == "8"
+        when: ansible_distribution_major_version == "8"
 
       - name: "NOTSCORED | 1.3 | AUDIT | Ensure Installation of Community Packages | Show installed packages and repo RHEL7"
         debug:
@@ -131,9 +109,7 @@
                 - "Alert! Below are the installed postgres packages and where they came from"
                 - "Please review and if the expected community packages are not installed or did not come from an PGDG repo, this is a fail"
                 - "{{ pgs12cis_1_3_installed_pckg_rpm_rh7.stdout_lines }}"
-        when:
-          - ansible_distribution_file_variety == "RedHat"
-          - ansible_distribution_major_version == "7"
+        when: ansible_distribution_major_version == "7"
   when:
       - pgs12cis_rule_1_3
       - pgs12cis_section1
@@ -220,7 +196,7 @@
 - name: "SCORED | 3.1.2 | PATCH |  Ensure the log destinations are set correctly"
   lineinfile:
       path: "{{ pgs12cis_data_folder }}/postgresql.conf"
-      regexp: '^log_destination ='
+      regexp: '^log_destination =|^#log_destination ='
       line: "log_destination = '{{ pgs12cis_log_destination }}'"
   notify: restart postgresql
   when:
@@ -236,7 +212,7 @@
 - name: "SCORED | 3.1.3 | PATCH | Ensure the logging collector is enabled"
   lineinfile:
       path: "{{ pgs12cis_data_folder }}/postgresql.conf"
-      regexp: '^logging_collector ='
+      regexp: '^logging_collector =|^#logging_collector ='
       line: "logging_collector = on"
   notify: restart postgresql
   when:
@@ -252,7 +228,7 @@
 - name: "SCORED | 3.1.4 | PATCH | Ensure the log file destination directory is set correctly"
   lineinfile:
       path: "{{ pgs12cis_data_folder }}/postgresql.conf"
-      regexp: '^log_directory ='
+      regexp: '^log_directory =|^#log_directory ='
       line: "log_directory = '{{ pgs12cis_log_directory }}'"
   notify: restart postgresql
   when:
@@ -265,10 +241,10 @@
       - patch
       - rule_3.1.4
 
-- name: "SCORED | 3.1.5 | PA | Ensure the filename pattern for log files is set correctly"
+- name: "SCORED | 3.1.5 | PATCH | Ensure the filename pattern for log files is set correctly"
   lineinfile:
       path: "{{ pgs12cis_data_folder }}/postgresql.conf"
-      regexp: '^log_filename ='
+      regexp: '^log_filename =|^#log_filename ='
       line: "log_filename = '{{ pgs12cis_log_filename }}'"
   notify: restart postgresql
   when:
@@ -280,3 +256,342 @@
       - scored
       - patch
       - rule_3.1.4
+
+- name: "SCORED | 3.1.6 | PATCH | Ensure the log file permissions are set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^log_truncate_on_rotation =|^#log_truncate_on_rotation ='
+      line: "log_truncate_on_rotation = on"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_6
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.1.6
+
+- name: "SCORED | 3.1.7 | PATCH | Ensure 'log_truncate_on_rotation' is enabled"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^log_file_mode =|^#log_file_mode ='
+      line: "log_file_mode = 0{{ pgs12cis_log_file_mode }}"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_7
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.1.7
+
+- name: "SCORED | 3.1.8 | PATCH | Ensure the maximum log file lifetime is set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^log_rotation_age =|^#log_rotation_age ='
+      line: "log_rotation_age = {{ pgs12cis_log_file_age }}"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_8
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.1.8
+
+- name: "SCORED | 3.1.9 | PATCH | Ensure the maximum log file size is set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^log_rotation_size =|^#log_rotation_size ='
+      line: "log_rotation_size = {{ pgs12cis_log_rotation_size }}"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_9
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.1.9
+
+- name: "SCORED | 3.1.10 | PATCH | Ensure the correct syslog facility is selected"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^syslog_facility =|^#syslog_facility ='
+      line: "syslog_facility = '{{ pgs12cis_syslog_facility }}'"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_10
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.1.10
+
+- name: "SCORED | 3.1.11 | PATCH | Ensure the program name for PostgreSQL syslog messages is correct"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^syslog_ident =|^#syslog_ident ='
+      line: "syslog_ident = '{{ pgs12cis_syslog_ident }}'"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_11
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.1.11
+
+- name: "NOTSCORED | 3.1.12 | PATCH | Ensure the correct messages are written to the server log"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^log_min_messages =|^#log_min_messages ='
+      line: "log_min_messages = {{ pgs12cis_log_min_messages }}"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_12
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - patch
+      - rule_3.1.12
+
+- name: "NOTSCORED | 3.1.13 | PATCH | Ensure the correct SQL statements generating errors are recorded"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^log_min_error_statement =|^#log_min_error_statement ='
+      line: "log_min_error_statement = {{ pgs12cis_log_min_error_statement }}"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_13
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - patch
+      - rule_3.1.13
+
+- name: "SCORED | 3.1.14 | PATCH | Ensure 'debug_print_parse' is disabled"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^debug_print_parse =|^#debug_print_parse ='
+      line: "debug_print_parse = off"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_14
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.1.14
+
+- name: "SCORED | 3.1.15 | PATCH | Ensure 'debug_print_rewritten' is disabled"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^debug_print_rewritten =|^#debug_print_rewritten ='
+      line: "debug_print_rewritten = off"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_15
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.1.15
+
+- name: "SCORED | 3.1.16 | PATCH | Ensure 'debug_print_plan' is disabled"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^debug_print_plan =|^#debug_print_plan ='
+      line: "debug_print_plan = off"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_16
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.1.16
+
+- name: "SCORED | 3.1.17 | PATCH | Ensure 'debug_pretty_print' is enabled"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^debug_pretty_print =|^#debug_pretty_print ='
+      line: "debug_pretty_print = on"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_17
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.1.17
+
+- name: "SCORED | 3.1.18 | PATCH | Ensure 'log_connections' is enabled"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^log_connections =|^#log_connections ='
+      line: "log_connections = on"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_18
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.1.18
+
+- name: "SCORED | 3.1.19 | PATCH | Ensure 'log_disconnections' is enabled"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^log_disconnections =|^#log_disconnections ='
+      line: "log_disconnections = on"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_19
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.1.19
+
+- name: "SCORED | 3.1.20 | PATCH | Ensure 'log_error_verbosity' is set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^log_error_verbosity =|^#log_error_verbosity ='
+      line: "log_error_verbosity = {{ pgs12cis_log_error_verbosity }}"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_20
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.1.20
+
+- name: "SCORED | 3.1.21 | PATCH | Ensure 'log_hostname' is set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^log_hostname =|^#log_hostname ='
+      line: "log_hostname = {{ pgs12cis_log_hostname }}"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_21
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.1.21
+
+- name: "NOTSCORED | 3.1.22 | PATCH | Ensure 'log_line_prefix' is set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^log_line_prefix =|^#log_line_prefix ='
+      line: "log_line_prefix = '{{ pgs12cis_log_line_prefix }}'"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_22
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - patch
+      - rule_3.1.22
+
+- name: "SCORED | 3.1.23 | PATCH | Ensure 'log_statement' is set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^log_statement =|^#log_statement ='
+      line: "log_statement = '{{ pgs12cis_log_statement }}'"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_23
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.1.23
+
+- name: "SCORED | 3.1.24 | PATCH | Ensure 'log_timezone' is set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: '^log_timezone =|^#log_timezone ='
+      line: "log_timezone = '{{ pgs12cis_log_timezone }}'"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_24
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.1.24
+
+- name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled"
+  block:
+      - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled"
+        dnf:
+            name: pgaudit14_12
+            state: present
+        when: ansible_distribution_major_version == "8"
+
+      - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled"
+        yum:
+            name: pgaudit14_12
+            state: present
+        when: ansible_distribution_major_version == "7"
+
+      - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled"
+        lineinfile:
+            path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+            regexp: "{{ item.regexp }}"
+            line: "{{ item.line }}"
+            insertafter: "{{ item.insertafter }}"
+        notify: restart postgresql
+        with_items:
+            - { regexp: '^shared_preload_libraries =|^#shared_preload_libraries =', line: "shared_preload_libraries = '{{ pgs12cis_shared_preload_libraries }}'", insertafter: EOF }
+            - { regexp: '^# for this example we are logging the ddl and write operations', line: '# for this example we are logging the ddl and write operations', insertafter: EOF }
+            - { regexp: '^pgaudit.log=', line: "pgaudit.log='{{ pgs12cis_pgaudit_log_types  }}'", insertafter: '# for this example we are logging the ddl and write operations'}
+  when:
+      - pgs12cis_rule_3_2
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_3.2
