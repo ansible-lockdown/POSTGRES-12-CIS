@@ -196,3 +196,9 @@ pgs12cis_shared_preload_libraries: pgaudit
 # The options are READ, WRITE, FUNCTION, ROLE, DDL, and MISC. You can also have multiple types listed and seperated by a comma with no spaces
 # Example pgs12cis_pgaudit_log_types: ddl,write
 pgs12cis_pgaudit_log_types: ddl,write
+
+# 4.2
+# pgs12cis_allowed_superusers is the list of authorized super users. These are users that should have SUPERUSER, CREATEROLE, CREATEDB, REPLICATION, and/or BYPASSRLS roles
+# Please add additional users in list form starting with a dash, as the first user currently is
+pgs12cis_allowed_superusers:
+    - "{{ pgs12cis_pgs12_usr }}"

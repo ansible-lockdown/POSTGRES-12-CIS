@@ -563,19 +563,19 @@
 
 - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled"
   block:
-      - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled"
+      - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Install pgAudit RHEL8"
         dnf:
             name: pgaudit14_12
             state: present
         when: ansible_distribution_major_version == "8"
 
-      - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled"
+      - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Install pgAudit RHEL7"
         yum:
             name: pgaudit14_12
             state: present
         when: ansible_distribution_major_version == "7"
 
-      - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled"
+      - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Set pgAudit settings in postgresql.conf"
         lineinfile:
             path: "{{ pgs12cis_data_folder }}/postgresql.conf"
             regexp: "{{ item.regexp }}"
@@ -595,3 +595,145 @@
       - scored
       - patch
       - rule_3.2
+
+- name: "SCORED | 4.1 | PATCH | Ensure sudo is configured correctly"
+  block:
+      - name: "SCORED | 4.1 | PATCH | Ensure sudo is configured correctly | Configure pg_wheel to sudoers"
+        lineinfile:
+            path: /etc/sudoers.d/postgres
+            regexp: '^%pg_wheel ALL='
+            line: '%pg_wheel ALL= /bin/su - {{ pgs12cis_pgs12_usr }}'
+            create: yes
+
+      - name: "SCORED | 4.1 | PATCH | Ensure sudo is configured correctly | Set file permissions"
+        file:
+            path: /etc/sudoers.d/postgres
+            mode: 0600
+  when:
+      - pgs12cis_rule_4_1
+      - pgs12cis_section4
+  tags:
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_4.1
+
+- name: "SCORED | 4.2 | PATCH | Ensure excessive administrative privileges are revoked"
+  block:
+      - name: "SCORED | 4.2 | AUDIT | Ensure excessive administrative privileges are revoked | Get list of PostgreSQL users"
+        shell: psql -t -c "\du" | awk '{print $1}' | sed -r '/^\s*$/d'
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_4_2_all_postgresql_users
+
+      - set_fact:
+          pgs12cis_disallowed_superusers: "{{ pgs12cis_4_2_all_postgresql_users.stdout_lines | difference(pgs12cis_allowed_superusers) }}"
+
+      - name: "SCORED | 4.2 | PATCH | Ensure excessive administrative privileges are revoked | Remove excessive privileges from users"
+        command: psql -c 'alter user {{ item }} with NOSUPERUSER NOCREATEROLE NOCREATEDB NOREPLICATION NOBYPASSRLS ;'
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        with_items:
+            - "{{ pgs12cis_disallowed_superusers }}"
+  when:
+      - pgs12cis_rule_4_2
+      - pgs12cis_section4
+  tags:
+      - level1-postgresql
+      - scored
+      - patch
+      - rule_4.2
+
+- name: "SCORED | 4.3 | AUDIT | Ensure excessive function privileges are revoked"
+  block:
+      - name: "SCORED | 4.3 | AUDIT | Ensure excessive function privileges are revoked"
+        command: psql -c "SELECT nspname, proname, proargtypes, prosecdef, rolname, proconfig FROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid JOIN pg_authid a ON a.oid = p.proowner WHERE prosecdef OR NOT proconfig IS NULL;"
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_4_3_security_definer
+
+      - name: "SCORED | 4.3 | AUDIT | Ensure excessive function privileges are revoked"
+        debug:
+            msg:
+                - "Caution! Please review the list below and confirm all results should have Security Definer status"
+                - "When possible revoke Security Definer, Security Invoker is another option that is valid to use"
+                - "{{ pgs12cis_4_3_security_definer.stdout_lines }}"
+  when:
+      - pgs12cis_rule_4_3
+      - pgs12cis_section4
+  tags:
+      - level1-postgresqlonlinux
+      - scored
+      - audit
+      - rule_4.3
+
+- name: "SCORED | 4.4 | PATCH | Ensure excessive DML privileges are revoked"
+  command: /bin/true
+  changed_when: false
+  failed_when: false
+  when:
+      - pgs12cis_rule_4_4
+      - pgs12cis_section4
+  tags:
+      - level1-postgresql
+      - scored
+      - audit
+      - rule_4.4
+      - notimplemented
+
+- name: "NOTSCORED | 4.5 | PATCH | Use pg_permission extension to audit object permissions"
+  command: /bin/true
+  changed_when: false
+  failed_when: false
+  when:
+      - pgs12cis_rule_4_5
+      - pgs12cis_section4
+  tags:
+      - level1-postgresql
+      - scored
+      - audit
+      - rule_4.5
+      - notimplemented
+
+- name: "NOTSCORED | 4.6 | PATCH | Ensure Row Level Security (RLS) is configured correctly"
+  command: /bin/true
+  changed_when: false
+  failed_when: false
+  when:
+      - pgs12cis_rule_4_6
+      - pgs12cis_section4
+  tags:
+      - level1-postgresql
+      - scored
+      - audit
+      - rule_4.6
+      - notimplemented
+
+- name: "NOTSCORED | 4.7 | PATCH | Ensure the set_user extension is installed"
+  command: /bin/true
+  changed_when: false
+  failed_when: false
+  when:
+      - pgs12cis_rule_4_7
+      - pgs12cis_section4
+  tags:
+      - level1-postgresql
+      - scored
+      - audit
+      - rule_4.7
+      - notimplemented
+
+- name: "NOTSCORED | 4.8 | PATCH | Make use of default roles"
+  command: /bin/true
+  changed_when: false
+  failed_when: false
+  when:
+      - pgs12cis_rule_4_8
+      - pgs12cis_section4
+  tags:
+      - level1-postgresql
+      - scored
+      - audit
+      - rule_4.8
+      - notimplemented
