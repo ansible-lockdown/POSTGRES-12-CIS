@@ -58,3 +58,62 @@
             pgs12cis_data_folder: "{{ pgs12cis_pgdata_cmd.stdout }}"
   when:
       - pgs12cis_rule_3_1_2
+
+- name: "PRELIM | 6.7 | Check if /boot or /boot/efi reside on separate partitions"
+  shell: df --output=target /boot | tail -n 1
+  changed_when: no
+  check_mode: no
+  register: pgs12cis_prelim_boot_part
+  when:
+      - pgs12cis_rule_6_7
+      - pgs12cis_section6
+
+- name: "PRELIM | 6.7 | Check whether machine is UEFI-based"
+  stat:
+      path: /sys/firmware/efi
+  register: pgs12cis_prelim_sys_firmware_efi
+  when:
+      - pgs12cis_rule_6_7
+      - pgs12cis_section6
+
+- name: "PRELIM | 6.8 | Generate Self-Signed Cert"
+  block:
+      - name: "PRELIM | 6.8 | Generate Self-Signed Cert | Check for existing cert"
+        find:
+            paths: "{{ pgs12cis_data_folder }}"
+            patterns: '*.crt,*.key'
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_certs_status
+
+      - name: "PRELIM | 6.8 | Generate Self-Signed Cert | Create self-signed certificates"
+        command: 'openssl req -new -x509 -days 365 -nodes -text -out {{pgs12cis_data_folder }}/server.crt -keyout {{ pgs12cis_data_folder }}/server.key -subj "/CN={{ ansible_nodename }}"'
+        when: pgs12cis_certs_status.matched == 0
+
+      - name: "PRELIM | 6.8 | Generate Self-Signed Cert | Set permissions on key file"
+        file:
+            path: "{{ pgs12cis_data_folder }}/server.key"
+            mode: og-rwx
+            owner: "{{ pgs12cis_pgs12_usr }}"
+            group: "{{ pgs12cis_pgs12_usr }}"
+        when: pgs12cis_certs_status.matched == 0
+  when:
+      - pgs12cis_rule_6_8
+      - pgs12cis_section6
+      - pgs12cis_create_selfsigned_cert
+
+- name: "PRELIM | 6.9 | Install PostgreSQL contrib package"
+  block:
+      - name: "PRELIM | 6.9 | Install PostgreSQL contrib package | RHEL 8"
+        dnf:
+            name: postgresql12-contrib
+            state: present
+        when: ansible_distribution_major_version == "8"
+
+      - name: "PRELIM | 6.9 | Install PostgreSQL contrib package | RHEL 7"
+        yum:
+            name: postgresql12-contrib
+            state: present
+        when: ansible_distribution_major_version == "7"
+  when:
+      - pgs12cis_rule_6_9
+      - pgs12cis_section6
