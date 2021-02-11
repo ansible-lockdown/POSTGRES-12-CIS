@@ -202,3 +202,8 @@ pgs12cis_pgaudit_log_types: ddl,write
 # Please add additional users in list form starting with a dash, as the first user currently is
 pgs12cis_allowed_superusers:
     - "{{ pgs12cis_pgs12_usr }}"
+
+# 5.2
+# pgs12cis_encrypt_method is the encryption method used for allowing ssl communicaiton with the pgs12cis_pgs12_usr configured user
+# md5, scram-sha-256, gss, sspi, pam, ldap, radius, and cert are allowed. Trust, password, and ident methods are NOT allowed
+pgs12cis_encrypt_method: scram-sha-256
