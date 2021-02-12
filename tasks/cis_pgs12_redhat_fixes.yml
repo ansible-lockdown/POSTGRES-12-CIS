@@ -955,13 +955,13 @@
 
 - name: "SCORED | 6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used"
   block:
-      - name: "SCORED | 6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Check for FIPS capability"
+      - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Check for FIPS capability"
         command: openssl version
         changed_when: false
         failed_when: false
         register: pgs12cis_6_7_fips_capability
 
-      - name: "SCORED | 6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Check FIPS status"
+      - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Check FIPS status"
         command: fips-mode-setup --check
         changed_when: false
         failed_when: false
@@ -974,7 +974,7 @@
             - "'FIPS' in pgs12cis_6_7_fips_capability.stdout"
             - "'disabled' in pgs12cis_6_7_fips_check.stdout"
 
-      - name: "SCORED | 6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Alert that system is not FIPS capable"
+      - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Alert that system is not FIPS capable"
         debug:
             msg:
                 - "Alert! The system does not support FIPS 140-2"
@@ -1141,3 +1141,91 @@
       - notscored
       - patch
       - rule_6.9
+
+# Section 7
+# Replication
+- name: "NOTSCORED | 7.1 | | PATCH | Ensure a replication-only user is created and used for streaming replication"
+  block:
+      - name: "NOTSCORED | 7.1 | | AUDIT | Ensure a replication-only user is created and used for streaming replication | Create replication user"
+        shell: psql -t -c "select rolname from pg_roles where rolreplication is true;" | sed -r '/^\s*$/d' | awk '{$1=$1};1'
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_7_1_replication_users
+
+      - name: "NOTSCORED | 7.1 | | PATCH | Ensure a replication-only user is created and used for streaming replication | Create replication user"
+        command: psql -c "create user {{ pgs12cis_replication_user }} REPLICATION encrypted password '{{ pgs12cis_replication_user_pw }}';"
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        when: "pgs12cis_replication_user not in pgs12cis_7_1_replication_users.stdout"
+
+      - name: "NOTSCORED | 7.1 | | PATCH | Ensure a replication-only user is created and used for streaming replication | Create replication user pg_hba.conf entry"
+        lineinfile:
+            path: "{{ pgs12cis_data_folder }}/pg_hba.conf"
+            regexp: "{{ item.regexp }}"
+            line: "{{ item.line }}"
+            insertafter: "{{ item.insertafter }}"
+        with_items:
+            - { regexp: '^this is just a place holder value', line: '# The rule below was inserted via CIS automation', insertafter: '^# TYPE  DATABASE        USER'}
+            - { regexp: '^hostssl replication     {{ pgs12cis_replication_user }}', line: "hostssl replication {{ pgs12cis_replication_user }} 0.0.0.0/0 {{ pgs12cis_replication_user_enc_method }}", insertafter: '^# The rule below was inserted via CIS automation' }
+        notify: restart postgresql
+        when: "pgs12cis_replication_user not in pgs12cis_7_1_replication_users.stdout"
+  when:
+      - pgs12cis_rule_7_1
+      - pgs12cis_section7
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - patch
+      - rule_7.1
+
+- name: "NOTSCORED | 7.2 | AUDIT | Ensure base backups are configured and functional"
+  debug:
+      msg:
+          - "Alert! To conform to CIS standards make sure to use base backups"
+  when:
+      - pgs12cis_rule_7_2
+      - pgs12cis_section7
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - audit
+      - rule_7.2
+
+- name: "SCORED | 7.3 | PATCH | Ensure WAL archiving is configured and functional"
+  lineinfile:
+      path: "{{ pgs12cis_data_folder }}/postgresql.conf"
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+  notify: restart postgresql
+  with_items:
+      - { regexp: '^archive_mode =|^#archive_mode =', line: 'archive_mode = on' }
+      - { regexp: '^archive_command =|^#archive_command =', line: "archive_command = '{{ pgs12cis_archive_command }}'" }
+  when:
+      - pgs12cis_rule_7_3
+      - pgs12cis_section7
+  tags:
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rule_7.3
+
+- name: "NOTSCORED | 7.4 | AUDIT | Ensure streaming replication parameters are configured correctly"
+  debug:
+      msg:
+          - "Alert! Please ensure streaming replication parameters are configured"
+  when:
+      - pgs12cis_rule_7_4
+      - pgs12cis_section7
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - audit
+      - rule_7.4
+
+# Section 8
+# Special Configuration Considerations
+# - name: ""

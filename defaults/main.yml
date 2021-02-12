@@ -232,3 +232,26 @@ pgs12cis_ssl_cert_file: server.crt
 pgs12cis_ssl_key_file: server.key
 # pgs12cis_password_encryption the encryption method used. Default config value 
 pgs12cis_password_encryption: scram-sha-256
+
+# Section 7
+# 7.1
+# pgs12cis_replication_user a user to be given replication rights to
+# Disable this task if you arleady have your users configured as desired
+pgs12cis_replication_user: replication_user
+# pgs12cis_replication_user_pw is the pw for the created replication user
+# DO NOT USE PLAIN TEXT PASSWORDS
+# It is recommented to use a vaulted pw here, the default pw here is just for testing/example purposes
+pgs12cis_replication_user_pw: test1
+# pgs12cis_replication_user_enc_method is the encryption method for the replication user in the pg_hba.conf file
+pgs12cis_replication_user_enc_method: md5
+
+# 7.2
+# pgs12cis_primary_db_server is the primary DB server that a standby server will use
+# pgs12cis_primary_db_server can be either the IP or hostname of the priamry db server
+pgs12cis_primary_db_server: test
+# pgs12cis_is_standby_server is the toggle to set the host as standby server. The control 7.2 is to only be run on a standby server
+pgs12cis_is_standby_server: true
+
+# 7.3
+# pgs12cis_archive_command is the value for the archive_command feature in postgresql.conf
+pgs12cis_archive_command: rsync -e ssh -a %p postgres@remotehost:/var/lib/pgsql/WAL/%f
