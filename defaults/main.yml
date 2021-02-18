@@ -28,7 +28,6 @@ pgs12cis_rule_2_2: true
 
 # Section 3
 # Logging Monitoring and Auditing
-# pgs12cis_3_1_1: true
 pgs12cis_rule_3_1_2: true
 pgs12cis_rule_3_1_3: true
 pgs12cis_rule_3_1_4: true
@@ -100,14 +99,14 @@ pgs12cis_rule_8_4: true
 # pgs12cis_pgs12_usr is the configured postgre user
 pgs12cis_pgs12_usr: postgres
 
-#pgs12cis_pgs12_usr_home_dir is the home directory of the pgs12cis_pgs12_usr user directory
+# pgs12cis_pgs12_usr_home_dir is the home directory of the pgs12cis_pgs12_usr user directory
 pgs12cis_pgs12_usr_home_dir: "{{ pgs12cis_pgs12_usr_home_dir_get.stdout }}"
 
 # pgs12cis_config_file_get is the location of the postgresql.config file
 # This is gathered from a prelim task 
 pgs12cis_config_file: "{{ pgs12cis_config_file_get.stdout }}"
-# pgs12cis_hba_config_file is the location o the pg_hba.conf file
-# This is gathered froma  prelim task
+# pgs12cis_hba_config_file is the location of the pg_hba.conf file
+# This is gathered from a prelim task
 pgs12cis_hba_config_file: "{{ pgs12cis_hba_config_file_get.stdout }}"
 
 # Vars for enabling FIPS 140-2, control(s) 6.7
@@ -126,14 +125,16 @@ pgs12cis_postgresql_service: postgresql
 # pgs12cis_db_data_dir_ub is the data directory for the database cluster. This is for Ubuntu only
 # If you have this role installing PostgreSQL this will be used for the initdb actions in that configuration
 pgs12cis_db_data_dir_ub: /usr/local/pgsql/data
+
 # Section 2
 # 2.1
 # pgs12cis_umask_value is the value for the PostgreSQL users umask settings
 # The value must be 077 or more restrictive
 pgs12cis_umask_value: "077"
 
+# Section 3
 # 3.1.2
-# pgs12cis_log_destination is the log destion configured for PostgreSQL
+# pgs12cis_log_destination is the log destination configured for PostgreSQL
 # PostgreSQL supports several methods for logging server messages, including stderr, csvlog and syslog
 # One of these destinations should be et for server log output
 pgs12cis_log_destination: syslog
@@ -146,12 +147,12 @@ pgs12cis_log_directory: log
 
 # 3.1.5
 # pgs12cis_log_filename is the file name pattern for log files
-# The vlue is treated as a strftime pattern
+# The value is treated as a strftime pattern
 pgs12cis_log_filename: postgresql-%a.log
 
 # 3.1.6
 # pgs12cis_log_file_mode is the permissions set to the log files when created
-# The permissions should be set to allow only the necessary accees to authorized personel.
+# The permissions should be set to allow only the necessary access to authorized personnel.
 # In most cases 600 is the best setting, but 640 is another common one as well
 pgs12cis_log_file_mode: 600
 
@@ -162,7 +163,7 @@ pgs12cis_log_file_age: 1d
 
 # 3.1.9
 # pgs12cis_log_rotation_size is the max size of an individual log file. Once this size is reached the automatic log file rotation will occur
-# To conform to CIS stadnards this value needs to be larger than zero
+# To conform to CIS standards this value needs to be larger than zero
 pgs12cis_log_rotation_size: 1GB
 
 # 3.1.10
@@ -177,7 +178,7 @@ pgs12cis_syslog_ident: postgres
 # 3.1.12
 # pgs12cis_log_min_messages specifies the warning levels that are written to the server log.
 # Options are DEBUG5, DEBUG4, DEBUG3, DEBUG2, DEBUG1, INFO, NOTICE, WARNING, ERROR, LOG, FATAL, PANIC
-# The list above are in order from most chatty (DEBUG5) to practically mute (PANIC). The level WARNING is considered best practice unless indicated otherwise.
+# The list above is in order from most chatty (DEBUG5) to practically mute (PANIC). The level WARNING is considered best practice unless indicated otherwise.
 pgs12cis_log_min_messages: WARNING
 
 # 3.1.13
@@ -187,7 +188,7 @@ pgs12cis_log_min_messages: WARNING
 pgs12cis_log_min_error_statement: ERROR
 
 # 3.1.20
-# pgs12cis_log_error_verbosity sets teh verbosity (amount of detail) of logged messages
+# pgs12cis_log_error_verbosity sets the verbosity (amount of detail) of logged messages
 # Options are TERSE, DEFAULT, and VERBOSE.
 pgs12cis_log_error_verbosity: DEFAULT
 
@@ -205,42 +206,44 @@ pgs12cis_log_line_prefix: '%m [%p]: [%l-1] db=%d,user=%u,app=%a,client=%h '
 # 3.1.23
 # pgs12cis_log_statement specifies the types of SQL statements that are logged
 # The values are none, ddl, mod, and all. Value none logs no SQL statements and all logs all SQL statements
-# To conform to CIS stadnards this must NOT be set to none
+# To conform to CIS standards this must NOT be set to none
 pgs12cis_log_statement: ddl
 
 # 3.1.24
-# pgs12cis_log_timezone is the timezone to use in timestamps within log mssages
+# pgs12cis_log_timezone is the timezone to use in timestamps within log messages
 # This value needs to be set to GMT, UTC, or the timezone defined by your organization's logging policy
 pgs12cis_log_timezone: GMT
 
 # 3.2
-# pgs12cis_shared_preload_libraries is the shared pre-load libraries
-# The value for this variable must list pgaudit, but can have more items and will be comma seperated list with no space between items
+# pgs12cis_shared_preload_libraries are the shared pre-load libraries
+# The value for this variable must list pgaudit, but can have more items and will be comma separated list with no space between items
 # Example for multiple items pgs12cis_shared_preload_libraries: pgaudit,somethingelse
 pgs12cis_shared_preload_libraries: pgaudit
 # pgs12cis_pgaudit_log_types are the pgaudit log types that will be logged
-# The options are READ, WRITE, FUNCTION, ROLE, DDL, and MISC. You can also have multiple types listed and seperated by a comma with no spaces
+# The options are READ, WRITE, FUNCTION, ROLE, DDL, and MISC. You can also have multiple types listed and separated by a comma with no spaces
 # Example pgs12cis_pgaudit_log_types: ddl,write
 pgs12cis_pgaudit_log_types: ddl,write
 
+# Section 4
 # 4.2
 # pgs12cis_allowed_superusers is the list of authorized super users. These are users that should have SUPERUSER, CREATEROLE, CREATEDB, REPLICATION, and/or BYPASSRLS roles
 # Please add additional users in list form starting with a dash, as the first user currently is
 pgs12cis_allowed_superusers:
     - "{{ pgs12cis_pgs12_usr }}"
 
+# Section 5
 # 5.2
-# pgs12cis_encrypt_method is the encryption method used for allowing ssl communicaiton with the pgs12cis_pgs12_usr configured user
+# pgs12cis_encrypt_method is the encryption method used for allowing ssl communication with the pgs12cis_pgs12_usr configured user
 # md5, scram-sha-256, gss, sspi, pam, ldap, radius, and cert are allowed. Trust, password, and ident methods are NOT allowed
 pgs12cis_encrypt_method: scram-sha-256
 
 # Section 6
 # 6.8
-# pgs12cis_create_selfsigned_cert turns on a prelim task to generate a self signed certificate
+# pgs12cis_create_selfsigned_cert turns on a prelim task to generate a self-signed certificate
 # The prelim task uses these parameters (which matches defaults 'openssl req -new -x509 -days 365 -nodes -text -out {{pgs12cis_data_folder }}/server.crt -keyout {{ pgs12cis_data_folder }}/server.key -subj "/CN={{ ansible_nodename }}"'
 # If you have your own certificates (self-signed is not best) set this value to false and use the variables below to specify those certificates
 pgs12cis_create_selfsigned_cert: true
-# pgs12cis_ssl_ciphers are the ciphyers to use with ssl. Default config value HIGH:MEDIUM:+3DES:!aNULL
+# pgs12cis_ssl_ciphers are the ciphers to use with ssl. Default config value HIGH:MEDIUM:+3DES:!aNULL
 pgs12cis_ssl_ciphers: HIGH:MEDIUM:+3DES:!aNULL
 # pgs12cis_ssl_cert_file is the certificate file to use with ssl. Default config value (file used) server.crt
 pgs12cis_ssl_cert_file: server.crt
@@ -251,19 +254,19 @@ pgs12cis_password_encryption: scram-sha-256
 
 # Section 7
 # 7.1
-# pgs12cis_replication_user a user to be given replication rights to
-# Disable this task if you arleady have your users configured as desired
+# pgs12cis_replication_user a user to be given replication rights
+# Disable this task if you already have your users configured as desired
 pgs12cis_replication_user: replication_user
 # pgs12cis_replication_user_pw is the pw for the created replication user
 # DO NOT USE PLAIN TEXT PASSWORDS
-# It is recommented to use a vaulted pw here, the default pw here is just for testing/example purposes
+# It is recommended to use a vaulted pw here, the default pw here is just for testing/example purposes
 pgs12cis_replication_user_pw: test1
 # pgs12cis_replication_user_enc_method is the encryption method for the replication user in the pg_hba.conf file
 pgs12cis_replication_user_enc_method: md5
 
 # 7.2
 # pgs12cis_primary_db_server is the primary DB server that a standby server will use
-# pgs12cis_primary_db_server can be either the IP or hostname of the priamry db server
+# pgs12cis_primary_db_server can be either the IP or hostname of the primary db server
 pgs12cis_primary_db_server: test
 # pgs12cis_is_standby_server is the toggle to set the host as standby server. The control 7.2 is to only be run on a standby server
 pgs12cis_is_standby_server: true
