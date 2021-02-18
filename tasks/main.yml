@@ -8,3 +8,9 @@
   tags:
       - RedHat
       - CentOS
+
+- name: Ubuntu Fixes
+  import_tasks: cis_pgs12_ubuntu_fixes.yml
+  when: ansible_distribution == 'Ubuntu'
+  tags:
+      - Ubuntu

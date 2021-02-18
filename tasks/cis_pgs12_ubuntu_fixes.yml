@@ -3,33 +3,17 @@
 # Installation and Patches
 - name: "NOTSCORED | 1.1 | AUDIT | Ensure packages are obtained from authorized repositories"
   block:
-      - name: "NOTSCORED | 1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Get repo list RHEL8"
-        shell: dnf repolist all | grep enabled
+      - name: "NOTSCORED | 1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Get repo list Ubuntu"
+        command: apt-cache policy
         changed_when: false
         failed_when: false
-        register: pgs12cis_1_1_enabled_repos_rh8
-        when: ansible_distribution_major_version == "8"
+        register: pgs12cis_1_1_enabled_repos_ub
 
-      - name: "NOTSCORED | 1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Get repo list RHEL7"
-        shell: yum repolist all | grep enabled
-        changed_when: false
-        failed_when: false
-        register: pgs12cis_1_1_enabled_repos_rh7
-        when: ansible_distribution_major_version == "7"
-
-      - name: "NOTSCORED | 1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Show repo list RHEL8"
+      - name: "NOTSCORED | 1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Show repo list Ubuntu"
         debug:
             msg:
-                - "Alert! Below are the enabled repo's. Please review to confirm these are authorized repositories"
-                - "{{ pgs12cis_1_1_enabled_repos_rh8.stdout_lines }}"
-        when: ansible_distribution_major_version == "8"
-
-      - name: "NOTSCORED | 1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Show repo list RHEL8"
-        debug:
-            msg:
-                - "Alert! Below are the enabled repo's. Please review to confirm these are authorized repositories"
-                - "{{ pgs12cis_1_1_enabled_repos_rh7.stdout_lines }}"
-        when: ansible_distribution_major_version == "7"
+                - "Alert! Below are teh enabled repo's. Please review to confirm these are authorized repositories"
+                - "{{ pgs12cis_1_1_enabled_repos_ub.stdout_lines }}"
   when:
       - pgs12cis_rule_1_1
       - pgs12cis_section1
@@ -37,40 +21,23 @@
       - level1-postgresql
       - notscored
       - audit
-      - rhel
+      - ubuntu
       - rule_1.1
 
 - name: "NOTSCORED | 1.2 | AUDIT | Ensure Installation of Binary Packages"
   block:
-      - name: "NOTSCORED | 1.2 | AUDIT | Ensure Installation of Binary Packages | Get installed packages and repo RHEL8"
-        shell: dnf info $(rpm -qa|grep postgres) | egrep '^Name|^Version|^From'
+      - name: "NOTSCORED | 1.2 | AUDIT | Ensure Installation of Binary Packages | Get installed packages and repo Ubuntu"
+        shell: apt list --installed | grep postgres
         changed_when: false
         failed_when: false
-        register: pgs12cis_1_2_installed_pckg_rpm_rh8
-        when: ansible_distribution_major_version == "8"
+        register: pgs12cis_1_2_installed_pckg_ub
 
-      - name: "NOTSCORED | 1.2 | AUDIT | Ensure Installation of Binary Packages | Get installed packages and repo RHEL7"
-        shell: yum info $(rpm -qa|grep postgres) | egrep '^Name|^Version|^From'
-        changed_when: false
-        failed_when: false
-        register: pgs12cis_1_2_installed_pckg_rpm_rh7
-        when: ansible_distribution_major_version == "7"
-
-      - name: "NOTSCORED | 1.2 | AUDIT | Ensure Installation of Binary Packages | Show installed packages and repo RHEL8"
+      - name: "NOTSCORED | 1.2 | AUDIT | Ensure Installation of Binary Packages | Show installed packages"
         debug:
             msg:
-                - "Alert! Below are the installed postgres packages and where they came from"
-                - "Please review and if the expected binary packages are not installed or did not come from an appropriate repo, this is a fail"
-                - "{{ pgs12cis_1_2_installed_pckg_rpm_rh8.stdout_lines }}"
-        when: ansible_distribution_major_version == "8"
-
-      - name: "NOTSCORED | 1.2 | AUDIT | Ensure Installation of Binary Packages | Show installed packages and repo RHEL7"
-        debug:
-            msg:
-                - "Alert! Below are the installed postgres packages and where they came from"
-                - "Please review and if the expected binary packages are not installed or did not come from an appropriate repo, this is a fail"
-                - "{{ pgs12cis_1_2_installed_pckg_rpm_rh7.stdout_lines }}"
-        when: ansible_distribution_major_version == "7"
+                - "Alert! Below are the installed postgres packages"
+                - "Please review and if the expected packages did not come from an appropriate repo, this is a fail"
+                - "{{ pgs12cis_1_2_installed_pckg_ub.stdout_lines }}"
   when:
       - pgs12cis_rule_1_2
       - pgs12cis_section1
@@ -78,40 +45,23 @@
       - level1-postgresqlonlinux
       - notscored
       - audit
-      - rhel
+      - ubuntu
       - rule_1.2
 
 - name: "NOTSCORED | 1.3 | AUDIT | Ensure Installation of Community Packages"
   block:
-      - name: "NOTSCORED | 1.3 | AUDIT | Ensure Installation of Community Packages | Get installed packages and repo RHEL8"
-        shell: dnf info $(rpm -qa|grep postgres) | egrep '^Name|^Version|^From'
+      - name: "NOTSCORED | 1.3 | AUDIT | Ensure Installation of Community Packages | Get installed packages and repo Ubuntu"
+        shell: apt list --installed | grep postgres
         changed_when: false
         failed_when: false
-        register: pgs12cis_1_3_installed_pckg_rpm_rh8
-        when: ansible_distribution_major_version == "8"
+        register: pgs12cis_1_3_installed_pckg_ub
 
-      - name: "NOTSCORED | 1.3 | AUDIT | Ensure Installation of Community Packages | Get installed packages and repo RHEL7"
-        shell: yum info $(rpm -qa|grep postgres) | egrep '^Name|^Version|^From'
-        changed_when: false
-        failed_when: false
-        register: pgs12cis_1_3_installed_pckg_rpm_rh7
-        when: ansible_distribution_major_version == "7"
-
-      - name: "NOTSCORED | 1.3 | AUDIT | Ensure Installation of Community Packages | Show installed packages and repo RHEL8"
+      - name: "NOTSCORED | 1.3 | AUDIT | Ensure Installation of Community Packages | Show installed packages"
         debug:
             msg:
-                - "Alert! Below are the installed postgres packages and where they came from"
+                - "Alert! Below are teh installed postgres packages"
                 - "Please review and if the expected community packages are not installed or did not come from the PGDG repo, this is a fail"
-                - "{{ pgs12cis_1_3_installed_pckg_rpm_rh8.stdout_lines }}"
-        when: ansible_distribution_major_version == "8"
-
-      - name: "NOTSCORED | 1.3 | AUDIT | Ensure Installation of Community Packages | Show installed packages and repo RHEL7"
-        debug:
-            msg:
-                - "Alert! Below are the installed postgres packages and where they came from"
-                - "Please review and if the expected community packages are not installed or did not come from an PGDG repo, this is a fail"
-                - "{{ pgs12cis_1_3_installed_pckg_rpm_rh7.stdout_lines }}"
-        when: ansible_distribution_major_version == "7"
+                - "{{ pgs12cis_1_3_installed_pckg_ub.stdout_lines }}"
   when:
       - pgs12cis_rule_1_3
       - pgs12cis_section1
@@ -119,7 +69,7 @@
       - level1-postgresqlonlinux
       - notscored
       - audit
-      - rhel
+      - ubuntu
       - rule_1.3
 
 - name: "SCORED | 1.4 | PATCH | Ensure systemd Service Files Are Enabled"
@@ -133,13 +83,14 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_1.4
 
 - name: "SCORED | 1.5 | PATCH | Ensure Data Cluster Initialized Successfully"
-  shell: 'PGSETUP_INITDB_OPTIONS="-k" /usr/pgsql-12/bin/postgresql-12-setup initdb'
-  changed_when: '"OK" in pgs12cis_1_5_db_initialize.stdout'
+  command: "/usr/lib/postgresql/12/bin/initdb -D {{ pgs12cis_db_data_dir_ub }}"
+  changed_when: '"Success" in pgs12cis_1_5_db_initialize.stdout'
   failed_when: false
+  become_user: "{{ pgs12cis_pgs12_usr }}"
   register: pgs12cis_1_5_db_initialize
   when:
       - pgs12cis_rule_1_5
@@ -148,7 +99,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_1.5
 
 # Section 2
@@ -156,7 +107,6 @@
 - name: "SCORED | 2.1 | PATCH | Ensure the file permissions mask is correct"
   block:
       - name: "SCORED | 2.1 | AUDIT | Ensure the file permissions mask is correct | Get user environment file (.bashrc, .bash_profile, or .profile}"
-        # shell: ls -a /var/lib/pgsql/ | grep -e '.bashrc\|.bash_profile\|.profile'
         shell: ls -a "{{ pgs12cis_pgs12_usr_home_dir }}" | grep -e '.bashrc\|.bash_profile\|.profile'
         changed_when: false
         failed_when: false
@@ -167,6 +117,14 @@
             path: "{{ pgs12cis_pgs12_usr_home_dir }}/{{ pgs12cis_2_1_env_file.stdout }}"
             regexp: '^umask|^UMASK'
             line: "umask 0{{ pgs12cis_umask_value }}"
+        when: pgs12cis_2_1_env_file.stdout != ""
+
+      - name: "SCORED | 2.1 | PATCH | Ensure the file permissions mask is correct | Set umask if file doesn't exist"
+        lineinfile:
+            path: "{{ pgs12cis_pgs12_usr_home_dir }}/.bashrc"
+            line: "umask 0{{ pgs12cis_umask_value }}"
+            create: yes
+        when: pgs12cis_2_1_env_file.stdout == ""
   when:
       - pgs12cis_rule_2_1
       - pgs12cis_section2
@@ -174,9 +132,10 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_2.1
 
+# this control makes it so you can't get run commands in postgres user 
 - name: "SCORED | 2.2 | PATCH | Ensure the PostgreSQL pg_wheel group membership is correct"
   block:
       - name: "SCORED | 2.2 | PATCH | Ensure the PostgreSQL pg_wheel group membership is correct | Create pg_wheel group"
@@ -188,6 +147,7 @@
         user:
             name: "{{ pgs12cis_pgs12_usr }}"
             groups: pg_wheel
+            append: yes
   when:
       - pgs12cis_rule_2_2
       - pgs12cis_section2
@@ -195,7 +155,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_2.2
 
 # Section 3
@@ -214,7 +174,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.2
 
 - name: "SCORED | 3.1.3 | PATCH | Ensure the logging collector is enabled"
@@ -231,7 +191,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.3
 
 - name: "SCORED | 3.1.4 | PATCH | Ensure the log file destination directory is set correctly"
@@ -248,7 +208,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.4
 
 - name: "SCORED | 3.1.5 | PATCH | Ensure the filename pattern for log files is set correctly"
@@ -265,7 +225,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.4
 
 - name: "SCORED | 3.1.6 | PATCH | Ensure the log file permissions are set correctly"
@@ -282,7 +242,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.6
 
 - name: "SCORED | 3.1.7 | PATCH | Ensure 'log_truncate_on_rotation' is enabled"
@@ -299,7 +259,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.7
 
 - name: "SCORED | 3.1.8 | PATCH | Ensure the maximum log file lifetime is set correctly"
@@ -316,7 +276,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.8
 
 - name: "SCORED | 3.1.9 | PATCH | Ensure the maximum log file size is set correctly"
@@ -333,7 +293,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.9
 
 - name: "SCORED | 3.1.10 | PATCH | Ensure the correct syslog facility is selected"
@@ -350,7 +310,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.10
 
 - name: "SCORED | 3.1.11 | PATCH | Ensure the program name for PostgreSQL syslog messages is correct"
@@ -367,7 +327,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.11
 
 - name: "NOTSCORED | 3.1.12 | PATCH | Ensure the correct messages are written to the server log"
@@ -384,7 +344,7 @@
       - level1-postgresqlonlinux
       - notscored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.12
 
 - name: "NOTSCORED | 3.1.13 | PATCH | Ensure the correct SQL statements generating errors are recorded"
@@ -401,7 +361,7 @@
       - level1-postgresqlonlinux
       - notscored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.13
 
 - name: "SCORED | 3.1.14 | PATCH | Ensure 'debug_print_parse' is disabled"
@@ -418,7 +378,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.14
 
 - name: "SCORED | 3.1.15 | PATCH | Ensure 'debug_print_rewritten' is disabled"
@@ -435,7 +395,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.15
 
 - name: "SCORED | 3.1.16 | PATCH | Ensure 'debug_print_plan' is disabled"
@@ -452,7 +412,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.16
 
 - name: "SCORED | 3.1.17 | PATCH | Ensure 'debug_pretty_print' is enabled"
@@ -469,7 +429,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.17
 
 - name: "SCORED | 3.1.18 | PATCH | Ensure 'log_connections' is enabled"
@@ -486,7 +446,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.18
 
 - name: "SCORED | 3.1.19 | PATCH | Ensure 'log_disconnections' is enabled"
@@ -503,7 +463,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.19
 
 - name: "SCORED | 3.1.20 | PATCH | Ensure 'log_error_verbosity' is set correctly"
@@ -520,7 +480,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.20
 
 - name: "SCORED | 3.1.21 | PATCH | Ensure 'log_hostname' is set correctly"
@@ -537,7 +497,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.21
 
 - name: "NOTSCORED | 3.1.22 | PATCH | Ensure 'log_line_prefix' is set correctly"
@@ -554,7 +514,7 @@
       - level1-postgresqlonlinux
       - notscored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.22
 
 - name: "SCORED | 3.1.23 | PATCH | Ensure 'log_statement' is set correctly"
@@ -571,7 +531,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.23
 
 - name: "SCORED | 3.1.24 | PATCH | Ensure 'log_timezone' is set correctly"
@@ -588,22 +548,15 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.1.24
 
 - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled"
   block:
-      - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Install pgAudit RHEL8"
-        dnf:
-            name: pgaudit14_12
+      - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Install pgAudit Ubuntu"
+        apt:
+            name: postgresql-12-pgaudit
             state: present
-        when: ansible_distribution_major_version == "8"
-
-      - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Install pgAudit RHEL7"
-        yum:
-            name: pgaudit14_12
-            state: present
-        when: ansible_distribution_major_version == "7"
 
       - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Set pgAudit settings in postgresql.conf"
         lineinfile:
@@ -624,7 +577,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_3.2
 
 # Section 4
@@ -649,7 +602,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_4.1
 
 - name: "SCORED | 4.2 | PATCH | Ensure excessive administrative privileges are revoked"
@@ -676,33 +629,8 @@
       - level1-postgresql
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_4.2
-
-- name: "SCORED | 4.3 | AUDIT | Ensure excessive function privileges are revoked"
-  block:
-      - name: "SCORED | 4.3 | AUDIT | Ensure excessive function privileges are revoked"
-        command: psql -c "SELECT nspname, proname, proargtypes, prosecdef, rolname, proconfig FROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid JOIN pg_authid a ON a.oid = p.proowner WHERE prosecdef OR NOT proconfig IS NULL;"
-        changed_when: false
-        failed_when: false
-        become_user: "{{ pgs12cis_pgs12_usr }}"
-        register: pgs12cis_4_3_security_definer
-
-      - name: "SCORED | 4.3 | AUDIT | Ensure excessive function privileges are revoked"
-        debug:
-            msg:
-                - "Caution! Please review the list below and confirm all results should have Security Definer status"
-                - "When possible revoke Security Definer, Security Invoker is another option that is valid to use"
-                - "{{ pgs12cis_4_3_security_definer.stdout_lines }}"
-  when:
-      - pgs12cis_rule_4_3
-      - pgs12cis_section4
-  tags:
-      - level1-postgresqlonlinux
-      - scored
-      - audit
-      - rhel
-      - rule_4.3
 
 - name: "SCORED | 4.4 | AUDIT | Ensure excessive DML privileges are revoked"
   debug:
@@ -716,22 +644,23 @@
       - level1-postgresql
       - scored
       - audit
-      - rhel
-      - rule_4.4
+      - ubuntu
+      - rule_4.4  
 
 - name: "NOTSCORED | 4.5 | AUDIT | Use pg_permission extension to audit object permissions"
   block:
       - name: "NOTSCORED | 4.5 | AUDIT | Use pg_permission extension to audit object permissions | Get pg_permission status"
-        command:  psql -c "select t.schemaname, t.tablename, u.usename, has_table_privilege(u.usename, t.tablename, 'select') as select, has_table_privilege(u.usename, t.tablename, 'insert') as insert, has_table_privilege(u.usename, t.tablename, 'update') as update, has_table_privilege(u.usename, t.tablename, 'delete') as delete from pg_tables t, pg_user u where t.schemaname not in ('information_schema','pg_catalog');" | grep rows | tr -d '()'
+        shell:  psql -c "select t.schemaname, t.tablename, u.usename, has_table_privilege(u.usename, t.tablename, 'select') as select, has_table_privilege(u.usename, t.tablename, 'insert') as insert, has_table_privilege(u.usename, t.tablename, 'update') as update, has_table_privilege(u.usename, t.tablename, 'delete') as delete from pg_tables t, pg_user u where t.schemaname not in ('information_schema','pg_catalog');" | grep rows | tr -d '()'
         changed_when: false
         failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
         register: pgs12cis_4_5_pg_permission_status
 
       - name: "NOTSCORED | 4.5 | AUDIT | Use pg_permission extension to audit object permissions | Alert on not available"
         debug:
             msg:
                 - "Alert! You do not have the pg_permission module installed and this this is a finding"
-                - "Please review and install the pg_permission module"
+                - "Please review and install the pg_permission module then configure as needed"
         when: "'0 rows' in pgs12cis_4_5_pg_permission_status.stdout"
 
       - name: "NOTSCORED | 4.5 | AUDIT | Use pg_permission extension to audit object permissions | Alert on available"
@@ -745,7 +674,7 @@
       - level1-postgresql
       - scored
       - audit
-      - rhel
+      - ubuntu
       - rule_4.5
 
 - name: "NOTSCORED | 4.6 | AUDIT | Ensure Row Level Security (RLS) is configured correctly"
@@ -770,7 +699,7 @@
       - level1-postgresql
       - scored
       - audit
-      - rhel
+      - ubuntu
       - rule_4.6
 
 - name: "NOTSCORED | 4.7 | AUDIT | Ensure the set_user extension is installed"
@@ -800,7 +729,7 @@
       - level1-postgresql
       - scored
       - audit
-      - rhel
+      - ubuntu
       - rule_4.7
 
 - name: "NOTSCORED | 4.8 | AUDIT | Make use of default roles"
@@ -824,7 +753,7 @@
       - level1-postgresql
       - scored
       - audit
-      - rhel
+      - ubuntu
       - rule_4.8
 
 # Section 5
@@ -840,7 +769,7 @@
       - level1-postgresqlonlinux
       - scored
       - audit
-      - rhel
+      - ubuntu
       - rule_5.1
 
 - name: 'SCORED | 5.2 | PATCH | Ensure login via "host" TCP/IP Socket is configured correctly'
@@ -870,7 +799,7 @@
       - level1-postgresqlonlinux
       - scored
       - audit
-      - rhel
+      - ubuntu
       - rule_5.2
 
 # Section 6
@@ -886,7 +815,7 @@
       - level1-postgresqlonlinux
       - notscored
       - audit
-      - rhel
+      - ubuntu
       - rule_6.1
 
 - name: "SCORED | 6.2 | AUDIT | Ensure 'backend' runtime parameters are configured correctly"
@@ -921,43 +850,8 @@
       - level1-postgresqlonlinux
       - scored
       - audit
-      - rhel
+      - ubuntu
       - rule_6.2
-
-- name: "NOTSCORED | 6.3 | AUDIT | Ensure 'Postmaster' Runtime Parameters are Configured"
-  block:
-      - name: "SCORED | 6.3 | AUDIT | Ensure 'Postmaster' Runtime Parameters are Configured | Get Postmaster runtime parameters"
-        command: psql -c "SELECT name, setting FROM pg_settings WHERE context = 'postmaster' ORDER BY 1;"
-        changed_when: false
-        failed_when: false
-        become_user: "{{ pgs12cis_pgs12_usr }}"
-        register: pgs12cis_6_3_postmaster_runtime_param
-
-      - name: "SCORED | 6.3 | AUDIT | Ensure 'Postmaster' Runtime Parameters are Configured | Get process output"
-        shell: ps aux | grep -E 'postgres' | grep -- '-[D]'
-        changed_when: false
-        failed_when: false
-        register: pgs12cis_6_3_process_output
-
-      - name: "SCORED | 6.2 | AUDIT | Ensure 'backend' runtime parameters are configured correctly | Message out parameters"
-        debug:
-            msg:
-                - "Alert! Please review this output and compare with a previous OK output looking for any changes"
-                - "Also review the postgresql.conf and postgresql.auto.conf and compare them with previously archived files looking for changes"
-                - "{{ pgs12cis_6_3_postmaster_runtime_param.stdout_lines }}"
-                - ""
-                - "Please review the process output below and look for parameters that were used at server startup"
-                - "{{ pgs12cis_6_3_process_output.stdout_lines }}"
-  when:
-      - pgs12cis_rule_6_3
-      - pgs12cis_section6
-  tags:
-      - level1-postgresql
-      - level1-postgresqlonlinux
-      - notscored
-      - audit
-      - rhel
-      - rule_6.3
 
 - name: "NOTSCORED | 6.4 | AUDIT | Ensure 'SIGHUP' Runtime Parameters are Configured"
   block:
@@ -982,7 +876,7 @@
       - level1-postgresqlonlinux
       - notscored
       - audit
-      - rhel
+      - ubuntu
       - rule_6.4
 
 - name: "NOTSCORED | 6.5 | AUDIT | Ensure 'Superuser' Runtime Parameters are Configured"
@@ -1017,7 +911,7 @@
       - level1-postgresqlonlinux
       - notscored
       - audit
-      - rhel
+      - ubuntu
       - rule_6.5
 
 - name: "NOTSCORED | 6.6 | AUDIT | Ensure 'User' Runtime Parameters are Configured"
@@ -1044,52 +938,41 @@
       - level1-postgresqlonlinux
       - notscored
       - audit
-      - rhel
+      - ubuntu
       - rule_6.6
 
-- name: "SCORED | 6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used"
+- name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used"
   block:
-      - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Check for FIPS capability"
-        command: openssl version
+      - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Check for Fips being enabled"
+        command: cat /proc/sys/crypto/fips_enabled
         changed_when: false
         failed_when: false
-        register: pgs12cis_6_7_fips_capability
+        register: pgs12cis_ubuntu_fips_enabled
 
-      - name: "SCORED | 6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Setup FIPS Enabled RHEL7"
-        include_tasks: rhel7_fips.yml
-        when:
-            - ansible_distribution_major_version == "7"
-            - "'fips' in pgs12cis_6_7_fips_capability.stdout|lower"
-
-      - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Check FIPS status"
-        command: fips-mode-setup --check
-        changed_when: false
-        failed_when: false
-        register: pgs12cis_6_7_fips_check
-        when: ansible_distribution_major_version == "8"
-
-      - name: "SCORED | 6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Set FIPS enabled RHEL8"
-        command: fips-mode-setup --enable
-        notify: reboot system
-        when:
-            - "'FIPS' in pgs12cis_6_7_fips_capability.stdout"
-            - "'disabled' in pgs12cis_6_7_fips_check.stdout"
-            - ansible_distribution_major_version == "8"
-
-      - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Alert that system is not FIPS capable"
+      - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Alert that FIPS is not enabled"
         debug:
             msg:
-                - "Alert! The system does not support FIPS 140-2"
+                - "Alert! The system does not have FIPS 140-2 enabled"
                 - "This is a finding and your system will not conform to control 6.7 of the PostgreSQL CIS"
-        when: "'fips' not in pgs12cis_6_7_fips_capability.stdout|lower"
+                - "Enabling FIPS 140-2 and installing related packages requires an Ubuntu Advantage accout"
+                - "Please follow the guide in this link to enable FIPS 140-2"
+                - "https://security-certs.docs.ubuntu.com/en/fips"
+        when: 
+            - pgs12cis_ubuntu_fips_enabled.stdout == "" or
+              "'0' in pgs12cis_ubuntu_fips_enabled.stdout"
+
+      - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Alert that FIPS is enabled"
+        debug:
+            msg: "Good News! FIPS 140-2 is enabled"
+        when: "'1' in pgs12cis_ubuntu_fips_enabled.stdout"
   when:
       - pgs12cis_rule_6_7
       - pgs12cis_section6
   tags:
       - level1-postgresqlonlinux
       - scored
-      - patch
-      - rhel
+      - audit
+      - ubuntu
       - rule_6.7
 
 - name: "SCORED | 6.8 | PATCH | Ensure SSL is enabled and configured correctly"
@@ -1113,7 +996,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_6.8
 
 - name: "NOTSCORED | 6.9 | PATCH | Ensure the pgcrypto extension is installed and configured correctly"
@@ -1130,7 +1013,7 @@
       - level1-postgresqlonlinux
       - notscored
       - patch
-      - rhel
+      - ubuntu
       - rule_6.9
 
 # Section 7
@@ -1169,7 +1052,7 @@
       - level1-postgresqlonlinux
       - notscored
       - patch
-      - rhel
+      - ubuntu
       - rule_7.1
 
 - name: "NOTSCORED | 7.2 | AUDIT | Ensure base backups are configured and functional"
@@ -1184,7 +1067,7 @@
       - level1-postgresqlonlinux
       - notscored
       - audit
-      - rhel
+      - ubuntu
       - rule_7.2
 
 - name: "SCORED | 7.3 | PATCH | Ensure WAL archiving is configured and functional"
@@ -1203,7 +1086,7 @@
       - level1-postgresqlonlinux
       - scored
       - patch
-      - rhel
+      - ubuntu
       - rule_7.3
 
 - name: "NOTSCORED | 7.4 | AUDIT | Ensure streaming replication parameters are configured correctly"
@@ -1218,7 +1101,7 @@
       - level1-postgresqlonlinux
       - notscored
       - audit
-      - rhel
+      - ubuntu
       - rule_7.4
 
 # Section 8
@@ -1245,7 +1128,7 @@
       - level1-postgresqlonlinux
       - notscored
       - audit
-      - rhel
+      - ubuntu
       - rule_8.1
 
 - name: "NOTSCORED | 8.2 | AUDIT | Ensure PostgreSQL subdirectory locations are outside the data cluster"
@@ -1271,7 +1154,7 @@
       - level1-postgresqlonlinux
       - notscored
       - audit
-      - rhel
+      - ubuntu
       - rule_8.2
 
 - name: "NOTSCORED | 8.3 | AUDIT | Ensure the backup and restore tool, 'pgBackRest', is installed and configured"
@@ -1300,7 +1183,7 @@
       - level1-postgresqlonlinux
       - notscored
       - audit
-      - rhel
+      - ubuntu
       - rule_8.3
 
 - name: "NOTSCORED | 8.4 | AUDIT | Ensure miscellaneous configuration settings are correct"
@@ -1325,5 +1208,5 @@
       - level1-postgresqlonlinux
       - notscored
       - audit
-      - rhel
+      - ubuntu
       - rule_8.4

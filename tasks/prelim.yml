@@ -35,18 +35,38 @@
 
 #       - name: "PRELIM | Install adn Start PostgreSQL | Initialize PostgreSQL 12"
 #         command: /usr/pgsql-12/bin/postgresql-12-setup initdb
+- name: "PRELIM | Install ACL when needed"
+  apt:
+      name: acl
+      state: present
+  when: ansible_distribution == 'Ubuntu'
+
+- name: "PRELIM | Get postgres config file path"
+  shell: psql -U postgres -c 'SHOW config_file' | tail -n+3 | head -n 1 | cut -c2-
+  changed_when: false
+  failed_when: false
+  become_user: "{{ pgs12cis_pgs12_usr }}"
+  register: pgs12cis_config_file_get
+
+- name: "PRELIM | Get postgres config file path"
+  shell: psql -U postgres -c 'SHOW hba_file' | tail -n+3 | head -n 1 | cut -c2-
+  changed_when: false
+  failed_when: false
+  become_user: "{{ pgs12cis_pgs12_usr }}"
+  register: pgs12cis_hba_config_file_get
+
 - name: "PRELIM | 2.1 | Get postgresql user home folder"
   shell: "grep {{ pgs12cis_pgs12_usr }} /etc/passwd | cut -f6 -d:"
   changed_when: false
   failed_when: false
-  register: pgs12cis_pgs12_usr_home_dir
+  register: pgs12cis_pgs12_usr_home_dir_get
   when:
       - pgs12cis_rule_2_1
 
 - name: "PRELIM | Finding the PostgreSQL Configured Data Directory (PGDATA)"
   block:
       - name: "PRELIM | Finding the PostgreSQL Configured Data Directory (PGDATA) | Get path"
-        shell: set -o pipefail ; psql -c 'show data_directory' | tail -n+3 | head -n 1 | cut -c2-
+        shell: psql -c 'show data_directory' | tail -n+3 | head -n 1 | cut -c2-
         check_mode: no
         changed_when: no
         register: pgs12cis_pgdata_cmd

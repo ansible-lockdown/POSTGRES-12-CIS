@@ -100,16 +100,32 @@ pgs12cis_rule_8_4: true
 # pgs12cis_pgs12_usr is the configured postgre user
 pgs12cis_pgs12_usr: postgres
 
+#pgs12cis_pgs12_usr_home_dir is the home directory of the pgs12cis_pgs12_usr user directory
+pgs12cis_pgs12_usr_home_dir: "{{ pgs12cis_pgs12_usr_home_dir_get.stdout }}"
+
+# pgs12cis_config_file_get is the location of the postgresql.config file
+# This is gathered from a prelim task 
+pgs12cis_config_file: "{{ pgs12cis_config_file_get.stdout }}"
+# pgs12cis_hba_config_file is the location o the pg_hba.conf file
+# This is gathered froma  prelim task
+pgs12cis_hba_config_file: "{{ pgs12cis_hba_config_file_get.stdout }}"
+
 # Vars for enabling FIPS 140-2, control(s) 6.7
 pgs12cis_boot_part: "{{ pgs12cis_prelim_boot_part.stdout }}"
 pgs12cis_machine_uses_uefi: "{{ pgs12cis_prelim_sys_firmware_efi.stat.exists }}"
 pgs12cis_grub_cfg_path: "{{ pgs12cis_machine_uses_uefi | ternary('/boot/efi/EFI/' ~ (ansible_distribution | lower) ~ '/grub.cfg', '/boot/grub2/grub.cfg') }}"
 
 # pgs12cis_postgresql_service is the name of the PostgreSQL service.
-# The name postgresql-12 is a general default but this allows for customization of service name if needed
-pgs12cis_postgresql_service: postgresql-12
+# The name postgresql-12 is a general default for RHEL based systems and posgresql for Ubuntu based systems
+# but this allows for customization of service name if needed
+pgs12cis_postgresql_service: postgresql
 
 # Role vars - Sections
+# Section 1
+# 1.5
+# pgs12cis_db_data_dir_ub is the data directory for the database cluster. This is for Ubuntu only
+# If you have this role installing PostgreSQL this will be used for the initdb actions in that configuration
+pgs12cis_db_data_dir_ub: /usr/local/pgsql/data
 # Section 2
 # 2.1
 # pgs12cis_umask_value is the value for the PostgreSQL users umask settings
