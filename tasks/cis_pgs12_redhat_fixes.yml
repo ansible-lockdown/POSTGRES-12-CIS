@@ -662,7 +662,7 @@
         register: pgs12cis_4_2_all_postgresql_users
 
       - set_fact:
-          pgs12cis_disallowed_superusers: "{{ pgs12cis_4_2_all_postgresql_users.stdout_lines | difference(pgs12cis_allowed_superusers) }}"
+            pgs12cis_disallowed_superusers: "{{ pgs12cis_4_2_all_postgresql_users.stdout_lines | difference(pgs12cis_allowed_superusers) }}"
 
       - name: "SCORED | 4.2 | PATCH | Ensure excessive administrative privileges are revoked | Remove excessive privileges from users"
         command: psql -c 'alter user {{ item }} with NOSUPERUSER NOCREATEROLE NOCREATEDB NOREPLICATION NOBYPASSRLS ;'

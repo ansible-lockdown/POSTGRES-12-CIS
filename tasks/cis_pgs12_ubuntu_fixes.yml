@@ -135,7 +135,7 @@
       - ubuntu
       - rule_2.1
 
-# this control makes it so you can't get run commands in postgres user 
+# this control makes it so you can't get run commands in postgres user
 - name: "SCORED | 2.2 | PATCH | Ensure the PostgreSQL pg_wheel group membership is correct"
   block:
       - name: "SCORED | 2.2 | PATCH | Ensure the PostgreSQL pg_wheel group membership is correct | Create pg_wheel group"
@@ -614,8 +614,9 @@
         become_user: "{{ pgs12cis_pgs12_usr }}"
         register: pgs12cis_4_2_all_postgresql_users
 
-      - set_fact:
-          pgs12cis_disallowed_superusers: "{{ pgs12cis_4_2_all_postgresql_users.stdout_lines | difference(pgs12cis_allowed_superusers) }}"
+      - name: "SCORED | 4.2 | PATCH | Ensure excessive administrative privileges are revoked | Get list of disallowed superusers"
+        set_fact:
+            pgs12cis_disallowed_superusers: "{{ pgs12cis_4_2_all_postgresql_users.stdout_lines | difference(pgs12cis_allowed_superusers) }}"
 
       - name: "SCORED | 4.2 | PATCH | Ensure excessive administrative privileges are revoked | Remove excessive privileges from users"
         command: psql -c 'alter user {{ item }} with NOSUPERUSER NOCREATEROLE NOCREATEDB NOREPLICATION NOBYPASSRLS ;'
@@ -645,7 +646,7 @@
       - scored
       - audit
       - ubuntu
-      - rule_4.4  
+      - rule_4.4
 
 - name: "NOTSCORED | 4.5 | AUDIT | Use pg_permission extension to audit object permissions"
   block:
@@ -957,7 +958,7 @@
                 - "Enabling FIPS 140-2 and installing related packages requires an Ubuntu Advantage accout"
                 - "Please follow the guide in this link to enable FIPS 140-2"
                 - "https://security-certs.docs.ubuntu.com/en/fips"
-        when: 
+        when:
             - pgs12cis_ubuntu_fips_enabled.stdout == "" or
               "'0' in pgs12cis_ubuntu_fips_enabled.stdout"
 

@@ -67,10 +67,10 @@
   block:
       - name: "PRELIM | Finding the PostgreSQL Configured Data Directory (PGDATA) | Get path"
         shell: psql -c 'show data_directory' | tail -n+3 | head -n 1 | cut -c2-
-        check_mode: no
-        changed_when: no
+        check_mode: false
+        changed_when: false
         register: pgs12cis_pgdata_cmd
-        become: yes
+        become: true
         become_user: "{{ pgs12cis_pgs12_usr }}"
 
       - name: "PRELIM | Finding the PostgreSQL Configured Data Directory (PGDATA) | Make var easier to use"
@@ -81,8 +81,8 @@
 
 - name: "PRELIM | 6.7 | Check if /boot or /boot/efi reside on separate partitions"
   shell: df --output=target /boot | tail -n 1
-  changed_when: no
-  check_mode: no
+  changed_when: false
+  check_mode: false
   register: pgs12cis_prelim_boot_part
   when:
       - pgs12cis_rule_6_7
@@ -106,7 +106,7 @@
         register: pgs12cis_certs_status
 
       - name: "PRELIM | 6.8 | Generate Self-Signed Cert | Create self-signed certificates"
-        command: 'openssl req -new -x509 -days 365 -nodes -text -out {{pgs12cis_data_folder }}/server.crt -keyout {{ pgs12cis_data_folder }}/server.key -subj "/CN={{ ansible_nodename }}"'
+        command: 'openssl req -new -x509 -days 365 -nodes -text -out {{ pgs12cis_data_folder }}/server.crt -keyout {{ pgs12cis_data_folder }}/server.key -subj "/CN={{ ansible_nodename }}"'
         when: pgs12cis_certs_status.matched == 0
 
       - name: "PRELIM | 6.8 | Generate Self-Signed Cert | Set permissions on key file"
