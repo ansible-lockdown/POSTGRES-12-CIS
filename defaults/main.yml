@@ -116,8 +116,8 @@ pgs12cis_grub_cfg_path: "{{ pgs12cis_machine_uses_uefi | ternary('/boot/efi/EFI/
 
 # pgs12cis_postgresql_service is the name of the PostgreSQL service.
 # The name postgresql-12 is a general default for RHEL based systems and posgresql for Ubuntu based systems
-# but this allows for customization of service name if needed
-pgs12cis_postgresql_service: postgresql
+# but this allows for customization of service name if needed. There is a prelim task to set this automatically to the default name
+pgs12cis_postgresql_service: "{{ pgs12cis_postgresql_service_auto }}"
 
 # Role vars - Sections
 # Section 1

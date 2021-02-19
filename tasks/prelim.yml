@@ -55,6 +55,10 @@
   become_user: "{{ pgs12cis_pgs12_usr }}"
   register: pgs12cis_hba_config_file_get
 
+- name: "PRELIM | Set variable for service name"
+  set_fact:
+      pgs12cis_postgresql_service_auto: "{{ (ansible_distribution == 'Ubuntu') | ternary('postgresql', 'postgresql-12') }}"
+
 - name: "PRELIM | 2.1 | Get postgresql user home folder"
   shell: "grep {{ pgs12cis_pgs12_usr }} /etc/passwd | cut -f6 -d:"
   changed_when: false
