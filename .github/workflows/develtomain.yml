@@ -33,7 +33,7 @@ jobs:
           # Job ID
           job_id: 5f90ad90f9c74e6d1e606e33
           # Variables
-          variables: '{ "gitrepo": "https://github.com/ansible-lockdown/APACHE-2.4-CIS.git", "image": "ami-098f55b4287a885ba", "username": "centos" }'
+          variables: '{ "gitrepo": "https://github.com/ansible-lockdown/POSTGRES-12-CIS.git", "image": "ami-074b33c23c01b6174", "username": "ec2-user" }'
           # Refactr API base URL
           api_url: # optional
 
@@ -50,7 +50,7 @@ jobs:
           # Job ID
           job_id: 5f90ad90f9c74e6d1e606e33
           # Variables
-          variables: '{ "gitrepo": "https://github.com/ansible-lockdown/APACHE-2.4-CIS.git", "image": "ami-0ac4afbf945e5d64f", "username": "centos" }'
+          variables: '{ "gitrepo": "https://github.com/ansible-lockdown/POSTGRES-12-CIS.git", "image": "ami-0f4b70d06fdbda578", "username": "ec2-user" }'
           # Refactr API base URL
           api_url: # optional
 
@@ -67,7 +67,7 @@ jobs:
           # Job ID
           job_id: 5f90ad90f9c74e6d1e606e33
           # Variables
-          variables: '{ "gitrepo": "https://github.com/ansible-lockdown/APACHE-2.4-CIS.git", "image": "ami-0736e75ba7ca6b797", "username": "ubuntu" }'
+          variables: '{ "gitrepo": "https://github.com/ansible-lockdown/POSTGRES-12-CIS.git", "image": "ami-08ec372e750b5355a", "username": "ubuntu" }'
           # Refactr API base URL
           api_url: # optional
 
@@ -84,7 +84,7 @@ jobs:
           # Job ID
           job_id: 5f90ad90f9c74e6d1e606e33
           # Variables
-          variables: '{ "gitrepo": "https://github.com/ansible-lockdown/APACHE-2.4-CIS.git", "image": "ami-0608f6bd6e0eec7cc", "username": "ubuntu" }'
+          variables: '{ "gitrepo": "https://github.com/ansible-lockdown/POSTGRES-12-CIS.git", "image": "ami-057f2a622a555f132", "username": "ubuntu" }'
           # Refactr API base URL
           api_url: # optional
 
@@ -101,6 +101,6 @@ jobs:
           # Job ID
           job_id: 5f90ad90f9c74e6d1e606e33
           # Variables
-          variables: '{ "gitrepo": "https://github.com/ansible-lockdown/APACHE-2.4-CIS.git", "image": "ami-0fe12c34e05228a69", "username": "ubuntu" }'
+          variables: '{ "gitrepo": "https://github.com/ansible-lockdown/POSTGRES-12-CIS.git", "image": "ami-053378670dc69fa67", "username": "ubuntu" }'
           # Refactr API base URL
           api_url: # optional

@@ -33,7 +33,7 @@ jobs:
           # Job ID
           job_id: 5f933cbcf9c74e86b1609c00
           # Variables
-          variables: '{ "gitrepo": "https://github.com/ansible-lockdown/POSTGRES-12-CIS.git", "image": "", "githubBranch": "${{ github.head_ref }}", "username": "centos" }'
+          variables: '{ "gitrepo": "https://github.com/ansible-lockdown/POSTGRES-12-CIS.git", "image": "ami-074b33c23c01b6174", "githubBranch": "${{ github.head_ref }}", "username": "ec2-user" }'
           # Refactr API base URL
           api_url: # optional
 
@@ -49,7 +49,7 @@ jobs:
           # Job ID
           job_id: 5f933cbcf9c74e86b1609c00
           # Variables
-          variables: '{ "gitrepo": "https://github.com/ansible-lockdown/POSTGRES-12-CIS.git", "image": "", "githubBranch": "${{ github.head_ref }}", "username": "centos" }'
+          variables: '{ "gitrepo": "https://github.com/ansible-lockdown/POSTGRES-12-CIS.git", "image": "ami-0f4b70d06fdbda578", "githubBranch": "${{ github.head_ref }}", "username": "ec2-user" }'
           # Refactr API base URL
           api_url: # optional
 
@@ -65,7 +65,7 @@ jobs:
           # Job ID
           job_id: 5f933cbcf9c74e86b1609c00
           # Variables
-          variables: '{ "gitrepo": "https://github.com/ansible-lockdown/POSTGRES-12-CIS.git", "image": "ami-0ccee4f209508afc0", "githubBranch": "${{ github.head_ref }}", "username": "ubuntu" }'
+          variables: '{ "gitrepo": "https://github.com/ansible-lockdown/POSTGRES-12-CIS.git", "image": "ami-08ec372e750b5355a", "githubBranch": "${{ github.head_ref }}", "username": "ubuntu" }'
           # Refactr API base URL
           api_url: # optional
 
