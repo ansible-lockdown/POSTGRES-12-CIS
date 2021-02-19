@@ -2,6 +2,10 @@
 # Adjusts role to run in a non-privileged container
 pgs12cis_system_is_container: false
 
+# pgs12cis_install_postgresql this is a toggle to have this role do a generic install of PostgreSQL
+# it is recommended that you perform the install and setup on your own and then run this role
+pgs12cis_install_postgresql: false
+
 # Enable/Disable full sections toggle
 # Set to true will run that section, set to false will skip section
 pgs12cis_section1: true
@@ -98,6 +102,10 @@ pgs12cis_rule_8_4: true
 # Role vars - Global
 # pgs12cis_pgs12_usr is the configured postgre user
 pgs12cis_pgs12_usr: postgres
+# pgs12cis_postgres_user_pw is the password for the postgres user. This is only used in the prelim task to install PostgreSQL 12
+# DO NOT USE PASSWORDS IN PLAIN TEXT
+# If you are using this role to initially install PostgreSQL 12 it is recommended to use a pw tool like vault
+pgs12cis_postgres_user_pw: letmein
 
 # pgs12cis_pgs12_usr_home_dir is the home directory of the pgs12cis_pgs12_usr user directory
 pgs12cis_pgs12_usr_home_dir: "{{ pgs12cis_pgs12_usr_home_dir_get.stdout }}"
