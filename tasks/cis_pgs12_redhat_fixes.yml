@@ -1,0 +1,1329 @@
+---
+# Section 1
+# Installation and Patches
+- name: "NOTSCORED | 1.1 | AUDIT | Ensure packages are obtained from authorized repositories"
+  block:
+      - name: "NOTSCORED | 1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Get repo list RHEL8"
+        shell: dnf repolist all | grep enabled
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_1_1_enabled_repos_rh8
+        when: ansible_distribution_major_version == "8"
+
+      - name: "NOTSCORED | 1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Get repo list RHEL7"
+        shell: yum repolist all | grep enabled
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_1_1_enabled_repos_rh7
+        when: ansible_distribution_major_version == "7"
+
+      - name: "NOTSCORED | 1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Show repo list RHEL8"
+        debug:
+            msg:
+                - "Alert! Below are the enabled repo's. Please review to confirm these are authorized repositories"
+                - "{{ pgs12cis_1_1_enabled_repos_rh8.stdout_lines }}"
+        when: ansible_distribution_major_version == "8"
+
+      - name: "NOTSCORED | 1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Show repo list RHEL8"
+        debug:
+            msg:
+                - "Alert! Below are the enabled repo's. Please review to confirm these are authorized repositories"
+                - "{{ pgs12cis_1_1_enabled_repos_rh7.stdout_lines }}"
+        when: ansible_distribution_major_version == "7"
+  when:
+      - pgs12cis_rule_1_1
+      - pgs12cis_section1
+  tags:
+      - level1-postgresql
+      - notscored
+      - audit
+      - rhel
+      - rule_1.1
+
+- name: "NOTSCORED | 1.2 | AUDIT | Ensure Installation of Binary Packages"
+  block:
+      - name: "NOTSCORED | 1.2 | AUDIT | Ensure Installation of Binary Packages | Get installed packages and repo RHEL8"
+        shell: dnf info $(rpm -qa|grep postgres) | egrep '^Name|^Version|^From'
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_1_2_installed_pckg_rpm_rh8
+        when: ansible_distribution_major_version == "8"
+
+      - name: "NOTSCORED | 1.2 | AUDIT | Ensure Installation of Binary Packages | Get installed packages and repo RHEL7"
+        shell: yum info $(rpm -qa|grep postgres) | egrep '^Name|^Version|^From'
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_1_2_installed_pckg_rpm_rh7
+        when: ansible_distribution_major_version == "7"
+
+      - name: "NOTSCORED | 1.2 | AUDIT | Ensure Installation of Binary Packages | Show installed packages and repo RHEL8"
+        debug:
+            msg:
+                - "Alert! Below are the installed postgres packages and where they came from"
+                - "Please review and if the expected binary packages are not installed or did not come from an appropriate repo, this is a fail"
+                - "{{ pgs12cis_1_2_installed_pckg_rpm_rh8.stdout_lines }}"
+        when: ansible_distribution_major_version == "8"
+
+      - name: "NOTSCORED | 1.2 | AUDIT | Ensure Installation of Binary Packages | Show installed packages and repo RHEL7"
+        debug:
+            msg:
+                - "Alert! Below are the installed postgres packages and where they came from"
+                - "Please review and if the expected binary packages are not installed or did not come from an appropriate repo, this is a fail"
+                - "{{ pgs12cis_1_2_installed_pckg_rpm_rh7.stdout_lines }}"
+        when: ansible_distribution_major_version == "7"
+  when:
+      - pgs12cis_rule_1_2
+      - pgs12cis_section1
+  tags:
+      - level1-postgresqlonlinux
+      - notscored
+      - audit
+      - rhel
+      - rule_1.2
+
+- name: "NOTSCORED | 1.3 | AUDIT | Ensure Installation of Community Packages"
+  block:
+      - name: "NOTSCORED | 1.3 | AUDIT | Ensure Installation of Community Packages | Get installed packages and repo RHEL8"
+        shell: dnf info $(rpm -qa|grep postgres) | egrep '^Name|^Version|^From'
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_1_3_installed_pckg_rpm_rh8
+        when: ansible_distribution_major_version == "8"
+
+      - name: "NOTSCORED | 1.3 | AUDIT | Ensure Installation of Community Packages | Get installed packages and repo RHEL7"
+        shell: yum info $(rpm -qa|grep postgres) | egrep '^Name|^Version|^From'
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_1_3_installed_pckg_rpm_rh7
+        when: ansible_distribution_major_version == "7"
+
+      - name: "NOTSCORED | 1.3 | AUDIT | Ensure Installation of Community Packages | Show installed packages and repo RHEL8"
+        debug:
+            msg:
+                - "Alert! Below are the installed postgres packages and where they came from"
+                - "Please review and if the expected community packages are not installed or did not come from the PGDG repo, this is a fail"
+                - "{{ pgs12cis_1_3_installed_pckg_rpm_rh8.stdout_lines }}"
+        when: ansible_distribution_major_version == "8"
+
+      - name: "NOTSCORED | 1.3 | AUDIT | Ensure Installation of Community Packages | Show installed packages and repo RHEL7"
+        debug:
+            msg:
+                - "Alert! Below are the installed postgres packages and where they came from"
+                - "Please review and if the expected community packages are not installed or did not come from an PGDG repo, this is a fail"
+                - "{{ pgs12cis_1_3_installed_pckg_rpm_rh7.stdout_lines }}"
+        when: ansible_distribution_major_version == "7"
+  when:
+      - pgs12cis_rule_1_3
+      - pgs12cis_section1
+  tags:
+      - level1-postgresqlonlinux
+      - notscored
+      - audit
+      - rhel
+      - rule_1.3
+
+- name: "SCORED | 1.4 | PATCH | Ensure systemd Service Files Are Enabled"
+  service:
+      name: "{{ pgs12cis_postgresql_service }}"
+      enabled: true
+  when:
+      - pgs12cis_rule_1_4
+      - pgs12cis_section1
+  tags:
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_1.4
+
+- name: "SCORED | 1.5 | PATCH | Ensure Data Cluster Initialized Successfully"
+  shell: 'PGSETUP_INITDB_OPTIONS="-k" /usr/pgsql-12/bin/postgresql-12-setup initdb'
+  changed_when: '"OK" in pgs12cis_1_5_db_initialize.stdout'
+  failed_when: false
+  register: pgs12cis_1_5_db_initialize
+  when:
+      - pgs12cis_rule_1_5
+      - pgs12cis_section1
+  tags:
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_1.5
+
+# Section 2
+# Directory and File Permissions
+- name: "SCORED | 2.1 | PATCH | Ensure the file permissions mask is correct"
+  block:
+      - name: "SCORED | 2.1 | AUDIT | Ensure the file permissions mask is correct | Get user environment file (.bashrc, .bash_profile, or .profile}"
+        # shell: ls -a /var/lib/pgsql/ | grep -e '.bashrc\|.bash_profile\|.profile'
+        shell: ls -a "{{ pgs12cis_pgs12_usr_home_dir }}" | grep -e '.bashrc\|.bash_profile\|.profile'
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_2_1_env_file
+
+      - name: "SCORED | 2.1 | PATCH | Ensure the file permissions mask is correct | Set umask"
+        lineinfile:
+            path: "{{ pgs12cis_pgs12_usr_home_dir }}/{{ pgs12cis_2_1_env_file.stdout }}"
+            regexp: '^umask|^UMASK'
+            line: "umask 0{{ pgs12cis_umask_value }}"
+  when:
+      - pgs12cis_rule_2_1
+      - pgs12cis_section2
+  tags:
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_2.1
+
+- name: "SCORED | 2.2 | PATCH | Ensure the PostgreSQL pg_wheel group membership is correct"
+  block:
+      - name: "SCORED | 2.2 | PATCH | Ensure the PostgreSQL pg_wheel group membership is correct | Create pg_wheel group"
+        group:
+            name: pg_wheel
+            state: present
+
+      - name: "SCORED | 2.2 | PATCH | Ensure the PostgreSQL pg_wheel group membership is correct"
+        user:
+            name: "{{ pgs12cis_pgs12_usr }}"
+            groups: pg_wheel
+  when:
+      - pgs12cis_rule_2_2
+      - pgs12cis_section2
+  tags:
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_2.2
+
+# Section 3
+# # Logging Monitoring and Auditing
+- name: "SCORED | 3.1.2 | PATCH |  Ensure the log destinations are set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^log_destination =|^#log_destination ='
+      line: "log_destination = '{{ pgs12cis_log_destination }}'"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_2
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.1.2
+
+- name: "SCORED | 3.1.3 | PATCH | Ensure the logging collector is enabled"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^logging_collector =|^#logging_collector ='
+      line: "logging_collector = on"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_3
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.3
+
+- name: "SCORED | 3.1.4 | PATCH | Ensure the log file destination directory is set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^log_directory =|^#log_directory ='
+      line: "log_directory = '{{ pgs12cis_log_directory }}'"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_4
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.1.4
+
+- name: "SCORED | 3.1.5 | PATCH | Ensure the filename pattern for log files is set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^log_filename =|^#log_filename ='
+      line: "log_filename = '{{ pgs12cis_log_filename }}'"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_5
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.1.4
+
+- name: "SCORED | 3.1.6 | PATCH | Ensure the log file permissions are set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^log_truncate_on_rotation =|^#log_truncate_on_rotation ='
+      line: "log_truncate_on_rotation = on"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_6
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.1.6
+
+- name: "SCORED | 3.1.7 | PATCH | Ensure 'log_truncate_on_rotation' is enabled"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^log_file_mode =|^#log_file_mode ='
+      line: "log_file_mode = 0{{ pgs12cis_log_file_mode }}"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_7
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.1.7
+
+- name: "SCORED | 3.1.8 | PATCH | Ensure the maximum log file lifetime is set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^log_rotation_age =|^#log_rotation_age ='
+      line: "log_rotation_age = {{ pgs12cis_log_file_age }}"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_8
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.1.8
+
+- name: "SCORED | 3.1.9 | PATCH | Ensure the maximum log file size is set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^log_rotation_size =|^#log_rotation_size ='
+      line: "log_rotation_size = {{ pgs12cis_log_rotation_size }}"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_9
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.1.9
+
+- name: "SCORED | 3.1.10 | PATCH | Ensure the correct syslog facility is selected"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^syslog_facility =|^#syslog_facility ='
+      line: "syslog_facility = '{{ pgs12cis_syslog_facility }}'"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_10
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.1.10
+
+- name: "SCORED | 3.1.11 | PATCH | Ensure the program name for PostgreSQL syslog messages is correct"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^syslog_ident =|^#syslog_ident ='
+      line: "syslog_ident = '{{ pgs12cis_syslog_ident }}'"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_11
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.1.11
+
+- name: "NOTSCORED | 3.1.12 | PATCH | Ensure the correct messages are written to the server log"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^log_min_messages =|^#log_min_messages ='
+      line: "log_min_messages = {{ pgs12cis_log_min_messages }}"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_12
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - patch
+      - rhel
+      - rule_3.1.12
+
+- name: "NOTSCORED | 3.1.13 | PATCH | Ensure the correct SQL statements generating errors are recorded"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^log_min_error_statement =|^#log_min_error_statement ='
+      line: "log_min_error_statement = {{ pgs12cis_log_min_error_statement }}"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_13
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - patch
+      - rhel
+      - rule_3.1.13
+
+- name: "SCORED | 3.1.14 | PATCH | Ensure 'debug_print_parse' is disabled"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^debug_print_parse =|^#debug_print_parse ='
+      line: "debug_print_parse = off"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_14
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.1.14
+
+- name: "SCORED | 3.1.15 | PATCH | Ensure 'debug_print_rewritten' is disabled"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^debug_print_rewritten =|^#debug_print_rewritten ='
+      line: "debug_print_rewritten = off"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_15
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.1.15
+
+- name: "SCORED | 3.1.16 | PATCH | Ensure 'debug_print_plan' is disabled"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^debug_print_plan =|^#debug_print_plan ='
+      line: "debug_print_plan = off"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_16
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.1.16
+
+- name: "SCORED | 3.1.17 | PATCH | Ensure 'debug_pretty_print' is enabled"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^debug_pretty_print =|^#debug_pretty_print ='
+      line: "debug_pretty_print = on"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_17
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.1.17
+
+- name: "SCORED | 3.1.18 | PATCH | Ensure 'log_connections' is enabled"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^log_connections =|^#log_connections ='
+      line: "log_connections = on"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_18
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.1.18
+
+- name: "SCORED | 3.1.19 | PATCH | Ensure 'log_disconnections' is enabled"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^log_disconnections =|^#log_disconnections ='
+      line: "log_disconnections = on"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_19
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.1.19
+
+- name: "SCORED | 3.1.20 | PATCH | Ensure 'log_error_verbosity' is set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^log_error_verbosity =|^#log_error_verbosity ='
+      line: "log_error_verbosity = {{ pgs12cis_log_error_verbosity }}"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_20
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.1.20
+
+- name: "SCORED | 3.1.21 | PATCH | Ensure 'log_hostname' is set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^log_hostname =|^#log_hostname ='
+      line: "log_hostname = {{ pgs12cis_log_hostname }}"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_21
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.1.21
+
+- name: "NOTSCORED | 3.1.22 | PATCH | Ensure 'log_line_prefix' is set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^log_line_prefix =|^#log_line_prefix ='
+      line: "log_line_prefix = '{{ pgs12cis_log_line_prefix }}'"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_22
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - patch
+      - rhel
+      - rule_3.1.22
+
+- name: "SCORED | 3.1.23 | PATCH | Ensure 'log_statement' is set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^log_statement =|^#log_statement ='
+      line: "log_statement = '{{ pgs12cis_log_statement }}'"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_23
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.1.23
+
+- name: "SCORED | 3.1.24 | PATCH | Ensure 'log_timezone' is set correctly"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^log_timezone =|^#log_timezone ='
+      line: "log_timezone = '{{ pgs12cis_log_timezone }}'"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_24
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.1.24
+
+- name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled"
+  block:
+      - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Install pgAudit RHEL8"
+        dnf:
+            name: pgaudit14_12
+            state: present
+        when: ansible_distribution_major_version == "8"
+
+      - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Install pgAudit RHEL7"
+        yum:
+            name: pgaudit14_12
+            state: present
+        when: ansible_distribution_major_version == "7"
+
+      - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Set pgAudit settings in postgresql.conf"
+        lineinfile:
+            path: "{{ pgs12cis_config_file }}"
+            regexp: "{{ item.regexp }}"
+            line: "{{ item.line }}"
+            insertafter: "{{ item.insertafter }}"
+        notify: restart postgresql
+        with_items:
+            - { regexp: '^shared_preload_libraries =|^#shared_preload_libraries =', line: "shared_preload_libraries = '{{ pgs12cis_shared_preload_libraries }}'", insertafter: EOF }
+            - { regexp: '^# for this example we are logging the ddl and write operations', line: '# for this example we are logging the ddl and write operations', insertafter: EOF }
+            - { regexp: '^pgaudit.log=', line: "pgaudit.log='{{ pgs12cis_pgaudit_log_types  }}'", insertafter: '# for this example we are logging the ddl and write operations'}
+  when:
+      - pgs12cis_rule_3_2
+      - pgs12cis_section3
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_3.2
+
+# Section 4
+# User Access and Authorization
+- name: "SCORED | 4.1 | PATCH | Ensure sudo is configured correctly"
+  block:
+      - name: "SCORED | 4.1 | PATCH | Ensure sudo is configured correctly | Configure pg_wheel to sudoers"
+        lineinfile:
+            path: /etc/sudoers.d/postgres
+            regexp: '^%pg_wheel ALL='
+            line: '%pg_wheel ALL= /bin/su - {{ pgs12cis_pgs12_usr }}'
+            create: yes
+
+      - name: "SCORED | 4.1 | PATCH | Ensure sudo is configured correctly | Set file permissions"
+        file:
+            path: /etc/sudoers.d/postgres
+            mode: 0600
+  when:
+      - pgs12cis_rule_4_1
+      - pgs12cis_section4
+  tags:
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_4.1
+
+- name: "SCORED | 4.2 | PATCH | Ensure excessive administrative privileges are revoked"
+  block:
+      - name: "SCORED | 4.2 | AUDIT | Ensure excessive administrative privileges are revoked | Get list of PostgreSQL users"
+        shell: psql -t -c "\du" | awk '{print $1}' | sed -r '/^\s*$/d'
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_4_2_all_postgresql_users
+
+      - set_fact:
+            pgs12cis_disallowed_superusers: "{{ pgs12cis_4_2_all_postgresql_users.stdout_lines | difference(pgs12cis_allowed_superusers) }}"
+
+      - name: "SCORED | 4.2 | PATCH | Ensure excessive administrative privileges are revoked | Remove excessive privileges from users"
+        command: psql -c 'alter user {{ item }} with NOSUPERUSER NOCREATEROLE NOCREATEDB NOREPLICATION NOBYPASSRLS ;'
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        with_items:
+            - "{{ pgs12cis_disallowed_superusers }}"
+  when:
+      - pgs12cis_rule_4_2
+      - pgs12cis_section4
+  tags:
+      - level1-postgresql
+      - scored
+      - patch
+      - rhel
+      - rule_4.2
+
+- name: "SCORED | 4.3 | AUDIT | Ensure excessive function privileges are revoked"
+  block:
+      - name: "SCORED | 4.3 | AUDIT | Ensure excessive function privileges are revoked"
+        command: psql -c "SELECT nspname, proname, proargtypes, prosecdef, rolname, proconfig FROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid JOIN pg_authid a ON a.oid = p.proowner WHERE prosecdef OR NOT proconfig IS NULL;"
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_4_3_security_definer
+
+      - name: "SCORED | 4.3 | AUDIT | Ensure excessive function privileges are revoked"
+        debug:
+            msg:
+                - "Caution! Please review the list below and confirm all results should have Security Definer status"
+                - "When possible revoke Security Definer, Security Invoker is another option that is valid to use"
+                - "{{ pgs12cis_4_3_security_definer.stdout_lines }}"
+  when:
+      - pgs12cis_rule_4_3
+      - pgs12cis_section4
+  tags:
+      - level1-postgresqlonlinux
+      - scored
+      - audit
+      - rhel
+      - rule_4.3
+
+- name: "SCORED | 4.4 | AUDIT | Ensure excessive DML privileges are revoked"
+  debug:
+      msg:
+          - "Alert! Please review all users and databases to determine no users have excessive DML privileges"
+          - "If a user has excessive DML privileges that user can change or delete ifnormation without proper authorization and this is a finding"
+  when:
+      - pgs12cis_rule_4_4
+      - pgs12cis_section4
+  tags:
+      - level1-postgresql
+      - scored
+      - audit
+      - rhel
+      - rule_4.4
+
+- name: "NOTSCORED | 4.5 | AUDIT | Use pg_permission extension to audit object permissions"
+  block:
+      - name: "NOTSCORED | 4.5 | AUDIT | Use pg_permission extension to audit object permissions | Get pg_permission status"
+        command:  psql -c "select t.schemaname, t.tablename, u.usename, has_table_privilege(u.usename, t.tablename, 'select') as select, has_table_privilege(u.usename, t.tablename, 'insert') as insert, has_table_privilege(u.usename, t.tablename, 'update') as update, has_table_privilege(u.usename, t.tablename, 'delete') as delete from pg_tables t, pg_user u where t.schemaname not in ('information_schema','pg_catalog');" | grep rows | tr -d '()'
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_4_5_pg_permission_status
+
+      - name: "NOTSCORED | 4.5 | AUDIT | Use pg_permission extension to audit object permissions | Alert on not available"
+        debug:
+            msg:
+                - "Alert! You do not have the pg_permission module installed and this this is a finding"
+                - "Please review and install the pg_permission module"
+        when: "'0 rows' in pgs12cis_4_5_pg_permission_status.stdout"
+
+      - name: "NOTSCORED | 4.5 | AUDIT | Use pg_permission extension to audit object permissions | Alert on available"
+        debug:
+            msg: "Good News! You have the module available for use. Please make sure it configured correctly"
+        when: "'0 rows' not in pgs12cis_4_5_pg_permission_status.stdout"
+  when:
+      - pgs12cis_rule_4_5
+      - pgs12cis_section4
+  tags:
+      - level1-postgresql
+      - scored
+      - audit
+      - rhel
+      - rule_4.5
+
+- name: "NOTSCORED | 4.6 | AUDIT | Ensure Row Level Security (RLS) is configured correctly"
+  block:
+      - name: "NOTSCORED | 4.6 | AUDIT | Ensure Row Level Security (RLS) is configured correctly | Get databases using RLS"
+        command: psql -c 'SELECT oid, relname, relrowsecurity FROM pg_class WHERE relrowsecurity IS TRUE;'
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_4_6_rls_databases
+
+      - name: "NOTSCORED | 4.6 | AUDIT | Ensure Row Level Security (RLS) is configured correctly | Message out"
+        debug:
+            msg:
+                - "Alert! You need to confirm RLS is configured correctly"
+                - "Below are the tables that are using RLS"
+                - "{{ pgs12cis_4_6_rls_databases.stdout_lines }}"
+  when:
+      - pgs12cis_rule_4_6
+      - pgs12cis_section4
+  tags:
+      - level1-postgresql
+      - scored
+      - audit
+      - rhel
+      - rule_4.6
+
+- name: "NOTSCORED | 4.7 | AUDIT | Ensure the set_user extension is installed"
+  block:
+      - name: "NOTSCORED | 4.7 | AUDIT | Ensure the set_user extension is installed | Get set_user status"
+        shell: psql -c "select * from pg_available_extensions where name = 'set_user';" | grep rows | tr -d '()'
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_4_7_set_user_status
+
+      - name: "NOTSCORED | 4.7 | AUDIT | Ensure the set_user extension is installed | Alert on not available"
+        debug:
+            msg:
+                - "Alert! You do not have the set_user extention installed and this is a finding"
+                - "Please review and install the set_user extention then configure as needed"
+        when: "'0 rows' in pgs12cis_4_7_set_user_status.stdout"
+
+      - name: "NOTSCORED | 4.7 | AUDIT | Ensure the set_user extension is installed | Alert on available"
+        debug:
+            msg: "Good News! You have the module available for use. Please make sure it is configured correctly"
+        when: "'0 rows' not in pgs12cis_4_7_set_user_status.stdout"
+  when:
+      - pgs12cis_rule_4_7
+      - pgs12cis_section4
+  tags:
+      - level1-postgresql
+      - scored
+      - audit
+      - rhel
+      - rule_4.7
+
+- name: "NOTSCORED | 4.8 | AUDIT | Make use of default roles"
+  block:
+      - name: "NOTSCORED | 4.8 | AUDIT | Make use of default roles | Get superusers"
+        command: psql -c 'select rolname from pg_roles where rolsuper is true;'
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_4_8_superusers
+
+      - name: "NOTSCORED | 4.8 | AUDIT | Make use of default roles | Message out"
+        debug:
+            msg:
+                - "Alert! Below are the superusers, please review and add any needed users to the superusers or remove any users that should not have superuser status"
+                - "{{ pgs12cis_4_8_superusers.stdout_lines }}"
+  when:
+      - pgs12cis_rule_4_8
+      - pgs12cis_section4
+  tags:
+      - level1-postgresql
+      - scored
+      - audit
+      - rhel
+      - rule_4.8
+
+# Section 5
+# Connection and Login
+- name: 'NOTSCORED | 5.1 | PATCH | Ensure login via "local" UNIX Domain Socket is configured correctly'
+  debug:
+      msg:
+          - "Alert! Please ensure logins via local Unix Domain Socket is configured correctly"
+  when:
+      - pgs12cis_rule_5_1
+      - pgs12cis_section5
+  tags:
+      - level1-postgresqlonlinux
+      - scored
+      - audit
+      - rhel
+      - rule_5.1
+
+- name: 'SCORED | 5.2 | PATCH | Ensure login via "host" TCP/IP Socket is configured correctly'
+  block:
+      - name: 'SCORED | 5.2 | PATCH | Ensure login via "host" TCP/IP Socket is configured correctly | Set listen_addresses'
+        lineinfile:
+            path: "{{ pgs12cis_config_file }}"
+            regexp: '^listen_addresses =|^#listen_addresses ='
+            line: "listen_addresses = '*'"
+        notify: restart postgresql
+
+      - name: 'SCORED | 5.2 | PATCH | Ensure login via "host" TCP/IP Socket is configured correctly | Set allow encrypted and deny unencrypted'
+        lineinfile:
+            path: "{{ pgs12cis_hba_config_file }}"
+            regexp: "{{ item.regexp }}"
+            line: "{{ item.line }}"
+            insertafter: "{{ item.insertafter }}"
+        notify: restart postgresql
+        with_items:
+            - { regexp: '^this is just a place holder value', line: '# The two rules below were inserted via CIS automation', insertafter: '^#.*TYPE.*DATABASE.*USER.*ADDRESS.*METHOD' }
+            - { regexp: '^hostnossl.*all.*{{ pgs12cis_pgs12_usr }}', line: 'hostnossl all           {{ pgs12cis_pgs12_usr }}        0.0.0.0/0               reject', insertafter: '# The two rules below were inserted via CIS automation' }
+            - { regexp: '^hostssl.*all.*{{ pgs12cis_pgs12_usr }}', line: "hostssl all             {{ pgs12cis_pgs12_usr }}        0.0.0.0/0               {{ pgs12cis_encrypt_method }}", insertafter: '# The two rules below were inserted via CIS automation' }
+  when:
+      - pgs12cis_rule_5_2
+      - pgs12cis_section5
+  tags:
+      - level1-postgresqlonlinux
+      - scored
+      - audit
+      - rhel
+      - rule_5.2
+
+# Section 6
+# PostgreSQL Settings
+- name: "NOTSCORED | 6.1 | AUDIT | Ensure 'Attack Vectors' Runtime Parameters are Configured"
+  debug:
+      msg: "ALERT! Please review all configuration settings. Configure PostgreSQL loggint to record all modifications and chagnes to the RDBMS."
+  when:
+      - pgs12cis_rule_6_1
+      - pgs12cis_section6
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - audit
+      - rhel
+      - rule_6.1
+
+- name: "SCORED | 6.2 | AUDIT | Ensure 'backend' runtime parameters are configured correctly"
+  block:
+      - name: "SCORED | 6.2 | AUDIT | Ensure 'backend' runtime parameters are configured correctly | Get backend runtime parameters"
+        command: psql -c "SELECT name, setting FROM pg_settings WHERE context IN ('backend','superuser-backend') ORDER BY 1;"
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_6_2_backend_runtime_param
+
+      - name: "SCORED | 6.2 | AUDIT | Ensure 'backend' runtime parameters are configured correctly | Get process output"
+        shell: ps aux | grep -E '[p]ost' | grep -- '-[D]'
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_6_2_process_output
+
+      - name: "SCORED | 6.2 | AUDIT | Ensure 'backend' runtime parameters are configured correctly | Message out parameters"
+        debug:
+            msg:
+                - "ALert! Please review this output and compare with a previous OK output looking for any changes"
+                - "Also review the postgresql.conf and postgresql.auto.conf and compare them with previously archived files looking for changes"
+                - "{{ pgs12cis_6_2_backend_runtime_param.stdout_lines }}"
+                - ""
+                - "Please review the process output below and look for parameters that were used at server startup"
+                - "{{ pgs12cis_6_2_process_output.stdout_lines }}"
+  when:
+      - pgs12cis_rule_6_2
+      - pgs12cis_section6
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - audit
+      - rhel
+      - rule_6.2
+
+- name: "NOTSCORED | 6.3 | AUDIT | Ensure 'Postmaster' Runtime Parameters are Configured"
+  block:
+      - name: "SCORED | 6.3 | AUDIT | Ensure 'Postmaster' Runtime Parameters are Configured | Get Postmaster runtime parameters"
+        command: psql -c "SELECT name, setting FROM pg_settings WHERE context = 'postmaster' ORDER BY 1;"
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_6_3_postmaster_runtime_param
+
+      - name: "SCORED | 6.3 | AUDIT | Ensure 'Postmaster' Runtime Parameters are Configured | Get process output"
+        shell: ps aux | grep -E 'postgres' | grep -- '-[D]'
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_6_3_process_output
+
+      - name: "SCORED | 6.2 | AUDIT | Ensure 'backend' runtime parameters are configured correctly | Message out parameters"
+        debug:
+            msg:
+                - "Alert! Please review this output and compare with a previous OK output looking for any changes"
+                - "Also review the postgresql.conf and postgresql.auto.conf and compare them with previously archived files looking for changes"
+                - "{{ pgs12cis_6_3_postmaster_runtime_param.stdout_lines }}"
+                - ""
+                - "Please review the process output below and look for parameters that were used at server startup"
+                - "{{ pgs12cis_6_3_process_output.stdout_lines }}"
+  when:
+      - pgs12cis_rule_6_3
+      - pgs12cis_section6
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - audit
+      - rhel
+      - rule_6.3
+
+- name: "NOTSCORED | 6.4 | AUDIT | Ensure 'SIGHUP' Runtime Parameters are Configured"
+  block:
+      - name: "NOTSCORED | 6.4 | AUDIT | Ensure 'SIGHUP' Runtime Parameters are Configured | Get sighup settings"
+        command: psql -c "SELECT name, setting FROM pg_settings WHERE context = 'sighup' ORDER BY 1;"
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_6_4_sighup_settings
+
+      - name: "NOTSCORED | 6.4 | AUDIT | Ensure 'SIGHUP' Runtime Parameters are Configured | Message out settings"
+        debug:
+            msg:
+                - "Alert! Below are the current sighup settings. Please revert all values in the PostgreSQL configuration files"
+                - "and invoke the server to reload the configuration files."
+                - "{{ pgs12cis_6_4_sighup_settings.stdout_lines }}"
+  when:
+      - pgs12cis_rule_6_4
+      - pgs12cis_section6
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - audit
+      - rhel
+      - rule_6.4
+
+- name: "NOTSCORED | 6.5 | AUDIT | Ensure 'Superuser' Runtime Parameters are Configured"
+  block:
+      - name: "NOTSCORED | 6.5 | AUDIT | Ensure 'Superuser' Runtime Parameters are Configured | Get superuser settings"
+        command: psql -c "SELECT name, setting FROM pg_settings WHERE context = 'superuser' ORDER BY 1;"
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_6_5_superuser_settings
+
+      - name: "NOTSCORED | 6.5 | AUDIT | Ensure 'Superuser' Runtime Parameters are Configured | Get process output"
+        shell: ps aux | grep -E 'postgres' | grep -- '-[D]'
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_6_5_process_output
+
+      - name: "NOTSCORED | 6.5 | AUDIT | Ensure 'Superuser' Runtime Parameters are Configured | Message out settings"
+        debug:
+            msg:
+                - "Alert! Please review this output and compare with a previous OK output looking for any changes"
+                - "Also review the postgresql.conf and postgresql.auto.conf and compare them with previously archived files looking for changes"
+                - "{{ pgs12cis_6_5_superuser_settings.stdout_lines }}"
+                - ""
+                - "Please review the process output below and look for parameters that were used at server startup"
+                - "{{ pgs12cis_6_5_process_output.stdout_lines }}"
+  when:
+      - pgs12cis_rule_6_5
+      - pgs12cis_section6
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - audit
+      - rhel
+      - rule_6.5
+
+- name: "NOTSCORED | 6.6 | AUDIT | Ensure 'User' Runtime Parameters are Configured"
+  block:
+      - name: "NOTSCORED | 6.6 | AUDIT | Ensure 'User' Runtime Parameters are Configured | Get user settings"
+        command: psql -c "SELECT name, setting FROM pg_settings WHERE context = 'user' ORDER BY 1;"
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_6_6_user_settings
+
+      - name: "NOTSCORED | 6.6 | AUDIT | Ensure 'User' Runtime Parameters are Configured | Message out settings"
+        debug:
+            msg:
+                - "Alert! In the matter of a user session, the login sessions must be validated that it is not executing undesired parameter changes."
+                - "In the matter of attributes that have been changed in entities, they must be manually reverted to its default value(s)."
+                - "Below are the user settings"
+                - "{{ pgs12cis_6_6_user_settings.stdout_lines }}"
+  when:
+      - pgs12cis_rule_6_6
+      - pgs12cis_section6
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - audit
+      - rhel
+      - rule_6.6
+
+- name: "SCORED | 6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used"
+  block:
+      - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Check for FIPS capability"
+        command: openssl version
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_6_7_fips_capability
+
+      - name: "SCORED | 6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Setup FIPS Enabled RHEL7"
+        include_tasks: rhel7_fips.yml
+        when:
+            - ansible_distribution_major_version == "7"
+            - "'fips' in pgs12cis_6_7_fips_capability.stdout|lower"
+
+      - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Check FIPS status"
+        command: fips-mode-setup --check
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_6_7_fips_check
+        when: ansible_distribution_major_version == "8"
+
+      - name: "SCORED | 6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Set FIPS enabled RHEL8"
+        command: fips-mode-setup --enable
+        notify: reboot system
+        when:
+            - "'FIPS' in pgs12cis_6_7_fips_capability.stdout"
+            - "'disabled' in pgs12cis_6_7_fips_check.stdout"
+            - ansible_distribution_major_version == "8"
+
+      - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Alert that system is not FIPS capable"
+        debug:
+            msg:
+                - "Alert! The system does not support FIPS 140-2"
+                - "This is a finding and your system will not conform to control 6.7 of the PostgreSQL CIS"
+        when: "'fips' not in pgs12cis_6_7_fips_capability.stdout|lower"
+  when:
+      - pgs12cis_rule_6_7
+      - pgs12cis_section6
+  tags:
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_6.7
+
+- name: "SCORED | 6.8 | PATCH | Ensure SSL is enabled and configured correctly"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+      insertafter: "{{ item.insertafter }}"
+  notify: restart postgresql
+  with_items:
+      - { regexp: '^ssl =|^#ssl =', line: 'ssl = on', insertafter: '# - SSL -' }
+      - { regexp: '^ssl_ciphers =| ssl_ciphers =', line: "ssl_ciphers = '{{ pgs12cis_ssl_ciphers }}'", insertafter: 'ssl = on' }
+      - { regexp: '^ssl_cert_file =|^#ssl_cert_file =', line: "ssl_cert_file = '{{ pgs12cis_ssl_cert_file }}'", insertafter: 'ssl = on' }
+      - { regexp: '^ssl_key_file =|ssl_key_file =', line: "ssl_key_file = '{{ pgs12cis_ssl_key_file }}'", insertafter: 'ssl = on' }
+      - { regexp: '^password_encryption =|^#password_encryption =', line: 'password_encryption = {{ pgs12cis_password_encryption }}', insertafter: 'ssl = on' }
+  when:
+      - pgs12cis_rule_6_8
+      - pgs12cis_section6
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_6.8
+
+- name: "NOTSCORED | 6.9 | PATCH | Ensure the pgcrypto extension is installed and configured correctly"
+  command: psql -c "CREATE EXTENSION pgcrypto;"
+  changed_when: "'CREATE' in pgs12cis_6_9_pgcrypto_status.stdout"
+  failed_when: false
+  register: pgs12cis_6_9_pgcrypto_status
+  become_user: "{{ pgs12cis_pgs12_usr }}"
+  when:
+      - pgs12cis_rule_6_9
+      - pgs12cis_section6
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - patch
+      - rhel
+      - rule_6.9
+
+# Section 7
+# Replication
+- name: "NOTSCORED | 7.1 | | PATCH | Ensure a replication-only user is created and used for streaming replication"
+  block:
+      - name: "NOTSCORED | 7.1 | | AUDIT | Ensure a replication-only user is created and used for streaming replication | Create replication user"
+        shell: psql -t -c "select rolname from pg_roles where rolreplication is true;" | sed -r '/^\s*$/d' | awk '{$1=$1};1'
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_7_1_replication_users
+
+      - name: "NOTSCORED | 7.1 | | PATCH | Ensure a replication-only user is created and used for streaming replication | Create replication user"
+        command: psql -c "create user {{ pgs12cis_replication_user }} REPLICATION encrypted password '{{ pgs12cis_replication_user_pw }}';"
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        when: "pgs12cis_replication_user not in pgs12cis_7_1_replication_users.stdout"
+
+      - name: "NOTSCORED | 7.1 | | PATCH | Ensure a replication-only user is created and used for streaming replication | Create replication user pg_hba.conf entry"
+        lineinfile:
+            path: "{{ pgs12cis_hba_config_file }}"
+            regexp: "{{ item.regexp }}"
+            line: "{{ item.line }}"
+            insertafter: "{{ item.insertafter }}"
+        with_items:
+            - { regexp: '^this is just a place holder value', line: '# The rule below was inserted via CIS automation', insertafter: '^# TYPE  DATABASE        USER'}
+            - { regexp: '^hostssl replication     {{ pgs12cis_replication_user }}', line: "hostssl replication {{ pgs12cis_replication_user }} 0.0.0.0/0 {{ pgs12cis_replication_user_enc_method }}", insertafter: '^# The rule below was inserted via CIS automation' }
+        notify: restart postgresql
+        when: "pgs12cis_replication_user not in pgs12cis_7_1_replication_users.stdout"
+  when:
+      - pgs12cis_rule_7_1
+      - pgs12cis_section7
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - patch
+      - rhel
+      - rule_7.1
+
+- name: "NOTSCORED | 7.2 | AUDIT | Ensure base backups are configured and functional"
+  debug:
+      msg:
+          - "Alert! To conform to CIS standards make sure to use base backups"
+  when:
+      - pgs12cis_rule_7_2
+      - pgs12cis_section7
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - audit
+      - rhel
+      - rule_7.2
+
+- name: "SCORED | 7.3 | PATCH | Ensure WAL archiving is configured and functional"
+  lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+  notify: restart postgresql
+  with_items:
+      - { regexp: '^archive_mode =|^#archive_mode =', line: 'archive_mode = on' }
+      - { regexp: '^archive_command =|^#archive_command =', line: "archive_command = '{{ pgs12cis_archive_command }}'" }
+  when:
+      - pgs12cis_rule_7_3
+      - pgs12cis_section7
+  tags:
+      - level1-postgresqlonlinux
+      - scored
+      - patch
+      - rhel
+      - rule_7.3
+
+- name: "NOTSCORED | 7.4 | AUDIT | Ensure streaming replication parameters are configured correctly"
+  debug:
+      msg:
+          - "Alert! Please ensure streaming replication parameters are configured"
+  when:
+      - pgs12cis_rule_7_4
+      - pgs12cis_section7
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - audit
+      - rhel
+      - rule_7.4
+
+# Section 8
+# Special Configuration Considerations
+- name: "NOTSCORED | 8.1 | AUDIT | Ensure PostgreSQL configuration files are outside the data cluster"
+  block:
+      - name: "NOTSCORED | 8.1 | AUDIT | Ensure PostgreSQL configuration files are outside the data cluster | Get file list"
+        command: psql -c "select name, setting from pg_settings where name ~ '.*_file$';"
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_8_1_files_used
+
+      - name: "NOTSCORED | 8.1 | AUDIT | Ensure PostgreSQL configuration files are outside the data cluster | Display file listings"
+        debug:
+            msg:
+                - "Alert! Please review the settings and determine appropriate locations and file permissions for the configuration files based on organization's security policies"
+                - "{{ pgs12cis_8_1_files_used.stdout_lines }}"
+  when:
+      - pgs12cis_rule_8_1
+      - pgs12cis_section8
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - audit
+      - rhel
+      - rule_8.1
+
+- name: "NOTSCORED | 8.2 | AUDIT | Ensure PostgreSQL subdirectory locations are outside the data cluster"
+  block:
+      - name: "NOTSCORED | 8.2 | AUDIT | Ensure PostgreSQL subdirectory locations are outside the data cluster | Get directory settings"
+        command: psql -c "select name, setting from pg_settings where (name ~ '_directory$' or name ~ '_tablespace');"
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_8_2_directory_settings
+
+      - name: "NOTSCORED | 8.2 | AUDIT | Ensure PostgreSQL subdirectory locations are outside the data cluster | Display settings"
+        debug:
+            msg:
+                - "Alert! Please inspect the file and directory permissions for all returned values. Only superusers and authorized users"
+                - "should have access control rights for htese files and directories."
+                - "{{ pgs12cis_8_2_directory_settings.stdout_lines }}"
+  when:
+      - pgs12cis_rule_8_2
+      - pgs12cis_section8
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - audit
+      - rhel
+      - rule_8.2
+
+- name: "NOTSCORED | 8.3 | AUDIT | Ensure the backup and restore tool, 'pgBackRest', is installed and configured"
+  block:
+      - name: "NOTSCORED | 8.3 | AUDIT | Ensure the backup and restore tool, 'pgBackRest', is installed and configured | Check for pgBackRest"
+        command: which pgbackrest
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_pgbackrest_status
+
+      - name: "NOTSCORED | 8.3 | AUDIT | Ensure the backup and restore tool, 'pgBackRest', is installed and configured | Missing pgBackRest"
+        debug:
+            msg:
+                - "Alert! You do not have pgBackRest installed. Please install and configure pgBackRest"
+        when: "'no pgbackrest' in pgs12cis_pgbackrest_status.stdout"
+
+      - name: "NOTSCORED | 8.3 | AUDIT | Ensure the backup and restore tool, 'pgBackRest', is installed and configured | pgBackRest installed"
+        debug:
+            msg:
+                - "Good News! You have pgBackRest installed. Make sure it is configured appropriatly for things like stanza name, backup location, retention policy, logging, etc"
+        when: "'no pgbackrest' not in pgs12cis_pgbackrest_status.stdout"
+  when:
+      - pgs12cis_rule_8_3
+      - pgs12cis_section8
+  tags:
+      - level1-postgresqlonlinux
+      - notscored
+      - audit
+      - rhel
+      - rule_8.3
+
+- name: "NOTSCORED | 8.4 | AUDIT | Ensure miscellaneous configuration settings are correct"
+  block:
+      - name: "NOTSCORED | 8.4 | AUDIT | Ensure miscellaneous configuration settings are correct | Get settings"
+        command: psql -c "select name, setting from pg_settings where name in ('external_pid_file', 'unix_socket_directories','shared_preload_libraries','dynamic_library_path',' local_preload_libraries','session_preload_libraries');"
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_8_4_settings
+
+      - name: "NOTSCORED | 8.4 | AUDIT | Ensure miscellaneous configuration settings are correct | Display settings"
+        debug:
+            msg:
+                - "Alert! Please review the settings to confirm permissions are based on organization's policies"
+                - "{{ pgs12cis_8_4_settings.stdout_lines }}"
+  when:
+      - pgs12cis_rule_8_4
+      - pgs12cis_section8
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - notscored
+      - audit
+      - rhel
+      - rule_8.4
