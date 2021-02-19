@@ -1,0 +1,21 @@
+---
+# this allows us to insert a name=value into a line of the format:
+# key="name1=value1 name2=value2 nameN=valueN"
+pgs12cis_regexp_quoted_params: ^({{ pgs12cis_re_qp_key }})({{ pgs12cis_re_qp_other_params }})({{
+        pgs12cis_re_qp_param }}?)({{ pgs12cis_re_qp_other_params }})({{ pgs12cis_re_qp_key_end }})
+pgs12cis_replace_quoted_params: \1\2{{ pgs12cis_re_qp_insert | ternary('', ' ') }}{{ param }}={{
+        value }}{{ pgs12cis_re_qp_insert | ternary(' ', '') }}\4\5
+
+# none of these regexes create capture groups
+pgs12cis_re_qp_key: (?:\s*{{ key }}=")
+pgs12cis_re_qp_param: (?:{{ pgs12cis_re_qp_insert | ternary('', ' ?') }}{{
+        pgs12cis_re_qp_param_start }}{{ param }}=.*?{{
+        pgs12cis_re_qp_param_end }}{{ pgs12cis_re_qp_insert | ternary(' ?', '') }})
+pgs12cis_re_qp_other_params: (?:(?!{{ pgs12cis_re_qp_param }}.*).)*{{
+        pgs12cis_re_qp_insert | ternary('?', '') }}
+pgs12cis_re_qp_param_start: (?<=[" ])
+pgs12cis_re_qp_param_end: (?=[" ])
+pgs12cis_re_qp_key_end: (?:" *)
+
+# insert the parameter at the beginning or append to the end, default append
+pgs12cis_re_qp_insert: "{{ insert | default(not (append | default(true))) }}"

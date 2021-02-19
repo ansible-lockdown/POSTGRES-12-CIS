@@ -1,0 +1,18 @@
+---
+- name: restart postgresql
+  service:
+      name: "{{ pgs12cis_postgresql_service }}"
+      state: restarted
+
+- name: rebuild initramfs
+  command: dracut -f
+
+- name: make grub2 config
+  command: /usr/sbin/grub2-mkconfig --output={{ pgs12cis_grub_cfg_path }}
+  when:
+      - not pgs12cis_system_is_container
+
+- name: reboot system
+  shell: sleep 3; reboot
+  async: 15
+  poll: 0
