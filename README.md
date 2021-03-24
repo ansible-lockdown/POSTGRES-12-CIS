@@ -2,7 +2,7 @@ PostgresSQL 12 CIS
 =========
 ![Build Status](https://img.shields.io/github/workflow/status/ansible-lockdown/POSTGRES-12-cis/CommunityToDevel?label=Devel%20Build%20Status&style=plastic)
 ![Build Status](https://img.shields.io/github/workflow/status/ansible-lockdown/POSTGRES-12-cis/DevelToMain?label=Main%20Build%20Status&style=plastic)
-![Release](https://img.shields.io/github/v/release/ansible-lockdown/RHEL8-CIS?style=plastic)
+![Release](https://img.shields.io/github/v/release/ansible-lockdown/POSTGRES-12-CIS?style=plastic)
 
 Configure PostgreSQL 12 machine to be [CIS](https://www.cisecurity.org/cis-benchmarks/) compliant
 
