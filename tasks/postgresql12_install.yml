@@ -19,11 +19,11 @@
         changed_when: "'Disabling modules' in prelim_disable_pgs_old_rh8.stdout"
         when: ansible_distribution_major_version == "8"
 
-      - name: "PRELIM | Install and Start PostgreSQL | Disable built in PostgreSQL RHEL/CentOS 7"
-        shell: dnf -y module disable postgresql
-        register: prelim_disable_pgs_old_rh8
-        changed_when: "'Disabling modules' in prelim_disable_pgs_old_rh8.stdout"
-        when: ansible_distribution_major_version == "7"
+      # - name: "PRELIM | Install and Start PostgreSQL | Disable built in PostgreSQL RHEL/CentOS 7"
+      #   shell: yum -y module disable postgresql
+      #   register: prelim_disable_pgs_old_rh7
+      #   changed_when: "'Disabling modules' in prelim_disable_pgs_old_rh7.stdout"
+      #   when: ansible_distribution_major_version == "7"
 
       - name: "PRELIM | Install and Start PostgreSQL | Install PostgreSQL 12 RHEL/CentOS 8"
         dnf:
@@ -32,7 +32,7 @@
         when: ansible_distribution_major_version == "8"
 
       - name: "PRELIM | Install and Start PostgreSQL | Install PostgreSQL 12 RHEL/CentOS 7"
-        dnf:
+        yum:
           name: ['postgresql12', 'postgresql12-server']
           state: present
         when: ansible_distribution_major_version == "7"
