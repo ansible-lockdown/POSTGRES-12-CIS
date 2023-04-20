@@ -12,7 +12,7 @@
       - name: "NOTSCORED | 1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Show repo list Ubuntu"
         debug:
             msg:
-                - "Alert! Below are teh enabled repo's. Please review to confirm these are authorized repositories"
+                - "Alert! Below are the enabled repo's. Please review to confirm these are authorized repositories"
                 - "{{ pgs12cis_1_1_enabled_repos_ub.stdout_lines }}"
   when:
       - pgs12cis_rule_1_1
@@ -59,7 +59,7 @@
       - name: "NOTSCORED | 1.3 | AUDIT | Ensure Installation of Community Packages | Show installed packages"
         debug:
             msg:
-                - "Alert! Below are teh installed postgres packages"
+                - "Alert! Below are the installed postgres packages"
                 - "Please review and if the expected community packages are not installed or did not come from the PGDG repo, this is a fail"
                 - "{{ pgs12cis_1_3_installed_pckg_ub.stdout_lines }}"
   when:

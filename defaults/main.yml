@@ -111,7 +111,7 @@ pgs12cis_postgres_user_pw: letmein
 pgs12cis_pgs12_usr_home_dir: "{{ pgs12cis_pgs12_usr_home_dir_get.stdout }}"
 
 # pgs12cis_config_file_get is the location of the postgresql.config file
-# This is gathered from a prelim task 
+# This is gathered from a prelim task
 pgs12cis_config_file: "{{ pgs12cis_config_file_get.stdout }}"
 # pgs12cis_hba_config_file is the location of the pg_hba.conf file
 # This is gathered from a prelim task
@@ -175,7 +175,7 @@ pgs12cis_log_file_age: 1d
 pgs12cis_log_rotation_size: 1GB
 
 # 3.1.10
-# pgs12cis_syslog_facility is the syslog "facility" to be used when logging to syslog is enabled. 
+# pgs12cis_syslog_facility is the syslog "facility" to be used when logging to syslog is enabled.
 # Possible values are LOCAL0, LOCAL1, through LOCAL7
 pgs12cis_syslog_facility: LOCAL1
 
@@ -257,7 +257,7 @@ pgs12cis_ssl_ciphers: HIGH:MEDIUM:+3DES:!aNULL
 pgs12cis_ssl_cert_file: server.crt
 # pgs12cis_ssl_key_file the key file. Default config value (key file used) server.key
 pgs12cis_ssl_key_file: server.key
-# pgs12cis_password_encryption the encryption method used. Default config value 
+# pgs12cis_password_encryption the encryption method used. Default config value
 pgs12cis_password_encryption: scram-sha-256
 
 # Section 7
