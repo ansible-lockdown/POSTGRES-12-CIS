@@ -1,4 +1,5 @@
 ---
+
 - name: restart postgresql
   service:
       name: "{{ pgs12cis_postgresql_service }}"

@@ -1,4 +1,5 @@
 ---
+
 # Adjusts role to run in a non-privileged container
 pgs12cis_system_is_container: false
 

@@ -2,7 +2,7 @@
 
 ## 1.0.2
 Updated License
-Added .yamlit file
+Added .yamlint file
 Updated .gitattributes
 Updated .ansible-lint
 

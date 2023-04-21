@@ -7,24 +7,32 @@ PostgresSQL 12 CIS
 ---
 
 ![Org Stars](https://img.shields.io/github/stars/ansible-lockdown?label=Org%20Stars&style=social)
+
 ![Stars](https://img.shields.io/github/stars/ansible-lockdown/POSTGRES-12-CIS?label=Repo%20Stars&style=social)
+
 ![Forks](https://img.shields.io/github/forks/ansible-lockdown/POSTGRES-12-CIS?style=social)
+
 ![followers](https://img.shields.io/github/followers/ansible-lockdown?style=social)
+
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/AnsibleLockdown.svg?style=social&label=Follow%20%40AnsibleLockdown)](https://twitter.com/AnsibleLockdown)
 
-![Ansible Galaxy Quality](https://img.shields.io/ansible/quality/61781?label=Quality&&logo=ansible)
 ![Discord Badge](https://img.shields.io/discord/925818806838919229?logo=discord)
 
 ![Devel Build Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/POSTGRES-12-CIS/linux_benchmark_testing.yml?label=Devel%20Build%20Status)
+
 ![Devel Commits](https://img.shields.io/github/commit-activity/m/ansible-lockdown/POSTGRES-12-CIS/devel?color=dark%20green&label=Devel%20Branch%20commits)
 
 ![Release Branch](https://img.shields.io/badge/Release%20Branch-Main-brightgreen)
+
 ![Main Build Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/POSTGRES-12-CIS/linux_benchmark_testing.yml?label=Build%20Status)
+
 ![Main Release Date](https://img.shields.io/github/release-date/ansible-lockdown/POSTGRES-12-CIS?label=Release%20Date)
 ![Release Tag](https://img.shields.io/github/v/tag/ansible-lockdown/POSTGRES-12-CIS?label=Release%20Tag&&color=success)
 
 ![Issues Open](https://img.shields.io/github/issues-raw/ansible-lockdown/POSTGRES-12-CIS?label=Open%20Issues)
+
 ![Issues Closed](https://img.shields.io/github/issues-closed-raw/ansible-lockdown/POSTGRES-12-CIS?label=Closed%20Issues&&color=success)
+
 ![Pull Requests](https://img.shields.io/github/issues-pr/ansible-lockdown/POSTGRES-12-CIS?label=Pull%20Requests)
 
 ![License](https://img.shields.io/github/license/ansible-lockdown/POSTGRES-12-CIS?label=License)
@@ -70,10 +78,10 @@ Further details can be seen in the [Changelog](./ChangeLog.md)
 ## Documentation
 
 - [Read The Docs](https://ansible-lockdown.readthedocs.io/en/latest/)
-- [Getting Started](https://www.lockdownenterprise.com/docs/getting-started-with-lockdown#GH_AL_RH9_cis)
-- [Customizing Roles](https://www.lockdownenterprise.com/docs/customizing-lockdown-enterprise#GH_AL_RH9_cis)
-- [Per-Host Configuration](https://www.lockdownenterprise.com/docs/per-host-lockdown-enterprise-configuration#GH_AL_RH9_cis)
-- [Getting the Most Out of the Role](https://www.lockdownenterprise.com/docs/get-the-most-out-of-lockdown-enterprise#GH_AL_RH9_cis)
+- [Getting Started](https://www.lockdownenterprise.com/docs/getting-started-with-lockdown)
+- [Customizing Roles](https://www.lockdownenterprise.com/docs/customizing-lockdown-enterprise)
+- [Per-Host Configuration](https://www.lockdownenterprise.com/docs/per-host-lockdown-enterprise-configuration)
+- [Getting the Most Out of the Role](https://www.lockdownenterprise.com/docs/get-the-most-out-of-lockdown-enterprise)
 
 ## Requirements
 
@@ -195,6 +203,3 @@ ansible-core 2.13.4  - python 3.10
 - pip packages
   - jmespath ( complete list found in requirements.txt)
 - collections found in collections/requirememnts.yml
-
-
-
