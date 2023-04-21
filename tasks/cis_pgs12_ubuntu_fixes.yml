@@ -37,12 +37,17 @@
         failed_when: false
         register: pgs12cis_1_2_installed_pckg_ub
 
-      - name: "NOTSCORED | 1.2 | AUDIT | Ensure Installation of Binary Packages | Show installed packages"
-        debug:
+      - name: "NOTSCORED | 1.2 | AUDIT | Ensure Installation of Binary Packages | Show installed packages | Absent"
+        ansible.builtin.debug:
             msg:
-                - "Alert! Below are the installed postgres packages"
-                - "Please review and if the expected packages did not come from an appropriate repo, this is a fail"
+                - "Warning!! Below are the installed postgres packages"
+                - "Please review and if the expected packages did not come from an appropriate repo, this is a fail. This is a manual task."
                 - "{{ pgs12cis_1_2_installed_pckg_ub.stdout_lines }}"
+
+      - name: "NOTSCORED 1.2 | AUDIT | Ensure Installation of Binary Packages | Get installed packages and repo Ubuntu | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '1.2'
   when:
       - pgs12cis_rule_1_2
       - pgs12cis_section1
@@ -61,12 +66,17 @@
         failed_when: false
         register: pgs12cis_1_3_installed_pckg_ub
 
-      - name: "NOTSCORED | 1.3 | AUDIT | Ensure Installation of Community Packages | Show installed packages"
-        debug:
+      - name: "NOTSCORED | 1.3 | AUDIT | Ensure Installation of Community Packages | Show installed packages | Absent"
+        ansible.builtin.debug:
             msg:
-                - "Alert! Below are the installed postgres packages"
-                - "Please review and if the expected community packages are not installed or did not come from the PGDG repo, this is a fail"
+                - "Warning!! Below are the installed postgres packages"
+                - "Please review and if the expected community packages are not installed or did not come from the PGDG repo, this is a fail. This is a manual task."
                 - "{{ pgs12cis_1_3_installed_pckg_ub.stdout_lines }}"
+
+      - name: "NOTSCORED | 1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '1.3'
   when:
       - pgs12cis_rule_1_3
       - pgs12cis_section1
@@ -638,11 +648,16 @@
       - ubuntu
       - rule_4.2
 
-- name: "SCORED | 4.4 | AUDIT | Ensure excessive DML privileges are revoked"
-  debug:
+- name: "SCORED | 4.4 | AUDIT | Ensure excessive DML privileges are revoked | Absent"
+  ansible.builtin.debug:
       msg:
-          - "Alert! Please review all users and databases to determine no users have excessive DML privileges"
-          - "If a user has excessive DML privileges that user can change or delete ifnormation without proper authorization and this is a finding"
+          - "Warning!! Please review all users and databases to determine no users have excessive DML privileges"
+          - "If a user has excessive DML privileges that user can change or delete ifnormation without proper authorization and this is a finding. This is a manual task."
+
+      - name: "NOTSCORED | 4.4 | AUDIT  | Ensure excessive DML privileges are revoked | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '4.4'
   when:
       - pgs12cis_rule_4_4
       - pgs12cis_section4
@@ -662,17 +677,22 @@
         become_user: "{{ pgs12cis_pgs12_usr }}"
         register: pgs12cis_4_5_pg_permission_status
 
-      - name: "NOTSCORED | 4.5 | AUDIT | Use pg_permission extension to audit object permissions | Alert on not available"
-        debug:
+      - name: "NOTSCORED | 4.5 | AUDIT | Use pg_permission extension to audit object permissions | Alert on not available | Absent"
+        ansible.builtin.debug:
             msg:
-                - "Alert! You do not have the pg_permission module installed and this this is a finding"
-                - "Please review and install the pg_permission module then configure as needed"
+                - "Warning!! You do not have the pg_permission module installed and this this is a finding"
+                - "Please review and install the pg_permission module then configure as needed. This is a manual task."
         when: "'0 rows' in pgs12cis_4_5_pg_permission_status.stdout"
 
-      - name: "NOTSCORED | 4.5 | AUDIT | Use pg_permission extension to audit object permissions | Alert on available"
-        debug:
+      - name: "NOTSCORED | 4.5 | AUDIT | Use pg_permission extension to audit object permissions | Warning on available"
+        ansible.builtin.debug:
             msg: "Good News! You have the module available for use. Please make sure it configured correctly"
         when: "'0 rows' not in pgs12cis_4_5_pg_permission_status.stdout"
+
+      - name: "NOTSCORED | 4.5 | AUDIT | Use pg_permission extension to audit object permissions | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '4.5'
   when:
       - pgs12cis_rule_4_5
       - pgs12cis_section4
@@ -692,12 +712,17 @@
         become_user: "{{ pgs12cis_pgs12_usr }}"
         register: pgs12cis_4_6_rls_databases
 
-      - name: "NOTSCORED | 4.6 | AUDIT | Ensure Row Level Security (RLS) is configured correctly | Message out"
-        debug:
+      - name: "NOTSCORED | 4.6 | AUDIT | Ensure Row Level Security (RLS) is configured correctly | Absent"
+        ansible.builtin.debug:
             msg:
-                - "Alert! You need to confirm RLS is configured correctly"
-                - "Below are the tables that are using RLS"
+                - "Warning!! You need to confirm RLS is configured correctly"
+                - "Below are the tables that are using RLS. This is a manual task."
                 - "{{ pgs12cis_4_6_rls_databases.stdout_lines }}"
+
+      - name: "NOTSCORED | 4.6 | AUDIT | Ensure Row Level Security (RLS) is configured correctly | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '4.6'
   when:
       - pgs12cis_rule_4_6
       - pgs12cis_section4
@@ -717,17 +742,22 @@
         become_user: "{{ pgs12cis_pgs12_usr }}"
         register: pgs12cis_4_7_set_user_status
 
-      - name: "NOTSCORED | 4.7 | AUDIT | Ensure the set_user extension is installed | Alert on not available"
-        debug:
+      - name: "NOTSCORED | 4.7 | AUDIT | Ensure the set_user extension is installed | Absent"
+        ansible.builtin.debug:
             msg:
-                - "Alert! You do not have the set_user extention installed and this is a finding"
-                - "Please review and install the set_user extention then configure as needed"
+                - "Warning!! You do not have the set_user extention installed and this is a finding."
+                - "Please review and install the set_user extention then configure as needed. This is a manual task."
         when: "'0 rows' in pgs12cis_4_7_set_user_status.stdout"
 
-      - name: "NOTSCORED | 4.7 | AUDIT | Ensure the set_user extension is installed | Alert on available"
-        debug:
+      - name: "NOTSCORED | 4.7 | AUDIT | Ensure the set_user extension is installed | Absent"
+        ansible.builtin.debug:
             msg: "Good News! You have the module available for use. Please make sure it is configured correctly"
         when: "'0 rows' not in pgs12cis_4_7_set_user_status.stdout"
+
+      - name: "NOTSCORED | 4.7 | AUDIT | Ensure the set_user extension is installed | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '4.7'
   when:
       - pgs12cis_rule_4_7
       - pgs12cis_section4
@@ -747,11 +777,16 @@
         become_user: "{{ pgs12cis_pgs12_usr }}"
         register: pgs12cis_4_8_superusers
 
-      - name: "NOTSCORED | 4.8 | AUDIT | Make use of default roles | Message out"
-        debug:
+      - name: "NOTSCORED | 4.8 | AUDIT | Make use of default roles | Absent"
+        ansible.builtin.debug:
             msg:
-                - "Alert! Below are the superusers, please review and add any needed users to the superusers or remove any users that should not have superuser status"
+                - "Warning!! Below are the superusers, please review and add any needed users to the superusers or remove any users that should not have superuser status. This is a manual task."
                 - "{{ pgs12cis_4_8_superusers.stdout_lines }}"
+
+      - name: "NOTSCORED | 4.8 | AUDIT | Make use of default roles | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '4.8'
   when:
       - pgs12cis_rule_4_8
       - pgs12cis_section4
@@ -764,10 +799,15 @@
 
 # Section 5
 # Connection and Login
-- name: 'NOTSCORED | 5.1 | PATCH | Ensure login via "local" UNIX Domain Socket is configured correctly'
-  debug:
+- name: "NOTSCORED | 5.1 | PATCH | Ensure login via local UNIX Domain Socket is configured correctly | Absent"
+  ansible.builtin.debug:
       msg:
-          - "Alert! Please ensure logins via local Unix Domain Socket is configured correctly"
+          - "Warning!! Please ensure logins via local Unix Domain Socket is configured correctly"
+
+      - name: "NOTSCORED | 5.1 | AUDIT | Ensure login via local UNIX Domain Socket is configured correctly | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '5.1'
   when:
       - pgs12cis_rule_5_1
       - pgs12cis_section5
@@ -810,9 +850,14 @@
 
 # Section 6
 # PostgreSQL Settings
-- name: "NOTSCORED | 6.1 | AUDIT | Ensure 'Attack Vectors' Runtime Parameters are Configured"
-  debug:
-      msg: "ALERT! Please review all configuration settings. Configure PostgreSQL loggint to record all modifications and chagnes to the RDBMS."
+- name: "NOTSCORED | 6.1 | AUDIT | Ensure 'Attack Vectors' Runtime Parameters are Configured | Absent"
+  ansible.builtin.debug:
+      msg: "Warning!! Please review all configuration settings. Configure PostgreSQL logging to record all modifications and changes to the RDBMS. This is a manual task."
+
+      - name: "NOTSCORED | 6.1 | AUDIT | Ensure 'Attack Vectors' Runtime Parameters are Configured | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '6.1'
   when:
       - pgs12cis_rule_6_1
       - pgs12cis_section6
@@ -955,13 +1000,13 @@
         failed_when: false
         register: pgs12cis_ubuntu_fips_enabled
 
-      - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Alert that FIPS is not enabled"
+      - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Alert that FIPS is not enabled | Absent"
         debug:
             msg:
-                - "Alert! The system does not have FIPS 140-2 enabled"
+                - "Warning!! The system does not have FIPS 140-2 enabled"
                 - "This is a finding and your system will not conform to control 6.7 of the PostgreSQL CIS"
-                - "Enabling FIPS 140-2 and installing related packages requires an Ubuntu Advantage accout"
-                - "Please follow the guide in this link to enable FIPS 140-2"
+                - "Enabling FIPS 140-2 and installing related packages requires an Ubuntu Advantage account"
+                - "Please follow the guide in this link to enable FIPS 140-2. This is a manual task."
                 - "https://security-certs.docs.ubuntu.com/en/fips"
         when:
             - pgs12cis_ubuntu_fips_enabled.stdout == "" or
@@ -971,6 +1016,11 @@
         debug:
             msg: "Good News! FIPS 140-2 is enabled"
         when: "'1' in pgs12cis_ubuntu_fips_enabled.stdout"
+
+      - name: "NOTSCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '6.7'
   when:
       - pgs12cis_rule_6_7
       - pgs12cis_section6
@@ -1061,10 +1111,15 @@
       - ubuntu
       - rule_7.1
 
-- name: "NOTSCORED | 7.2 | AUDIT | Ensure base backups are configured and functional"
-  debug:
+- name: "NOTSCORED | 7.2 | AUDIT | Ensure base backups are configured and functional | Absent"
+  ansible.builtin.debug:
       msg:
-          - "Alert! To conform to CIS standards make sure to use base backups"
+          - "Warning!! To conform to CIS standards make sure to use base backups. This is a manual task."
+
+      - name: "NOTSCORED | 7.2 | AUDIT | Ensure base backups are configured and functional | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '7.2'
   when:
       - pgs12cis_rule_7_2
       - pgs12cis_section7
@@ -1095,10 +1150,15 @@
       - ubuntu
       - rule_7.3
 
-- name: "NOTSCORED | 7.4 | AUDIT | Ensure streaming replication parameters are configured correctly"
-  debug:
+- name: "NOTSCORED | 7.4 | AUDIT | Ensure streaming replication parameters are configured correctly | Absent"
+  ansible.builtin.debug:
       msg:
-          - "Alert! Please ensure streaming replication parameters are configured"
+          - "Warning!! Please ensure streaming replication parameters are configured. This is a manual task."
+
+      - name: "NOTSCORED | 7.4 | AUDIT | Ensure packages are obtained from authorized repositories | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '7.4'
   when:
       - pgs12cis_rule_7_4
       - pgs12cis_section7
@@ -1121,11 +1181,16 @@
         become_user: "{{ pgs12cis_pgs12_usr }}"
         register: pgs12cis_8_1_files_used
 
-      - name: "NOTSCORED | 8.1 | AUDIT | Ensure PostgreSQL configuration files are outside the data cluster | Display file listings"
-        debug:
+      - name: "NOTSCORED | 8.1 | AUDIT | Ensure PostgreSQL configuration files are outside the data cluster | Display file listings | Absent"
+        ansible.builtin.debug:
             msg:
-                - "Alert! Please review the settings and determine appropriate locations and file permissions for the configuration files based on organization's security policies"
+                - "Warning!! Please review the settings and determine appropriate locations and file permissions for the configuration files based on organization's security policies. This is a manual task."
                 - "{{ pgs12cis_8_1_files_used.stdout_lines }}"
+
+      - name: "NOTSCORED | 8.1 | AUDIT | Ensure PostgreSQL configuration files are outside the data cluster | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '8.1'
   when:
       - pgs12cis_rule_8_1
       - pgs12cis_section8
@@ -1146,12 +1211,17 @@
         become_user: "{{ pgs12cis_pgs12_usr }}"
         register: pgs12cis_8_2_directory_settings
 
-      - name: "NOTSCORED | 8.2 | AUDIT | Ensure PostgreSQL subdirectory locations are outside the data cluster | Display settings"
+      - name: "NOTSCORED | 8.2 | AUDIT | Ensure PostgreSQL subdirectory locations are outside the data cluster | Display settings | Absent"
         debug:
             msg:
-                - "Alert! Please inspect the file and directory permissions for all returned values. Only superusers and authorized users"
-                - "should have access control rights for htese files and directories."
+                - "Warning!! Please inspect the file and directory permissions for all returned values. Only superusers and authorized users"
+                - "should have access control rights for these files and directories. This is a manual task."
                 - "{{ pgs12cis_8_2_directory_settings.stdout_lines }}"
+
+      - name: "NOTSCORED | 8.2 | AUDIT | Ensure PostgreSQL subdirectory locations are outside the data cluster | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '8.2'
   when:
       - pgs12cis_rule_8_2
       - pgs12cis_section8
@@ -1171,17 +1241,22 @@
         failed_when: false
         register: pgs12cis_pgbackrest_status
 
-      - name: "NOTSCORED | 8.3 | AUDIT | Ensure the backup and restore tool, 'pgBackRest', is installed and configured | Missing pgBackRest"
-        debug:
+      - name: "NOTSCORED | 8.3 | AUDIT | Ensure the backup and restore tool, 'pgBackRest', is installed and configured | Missing pgBackRest | Absent"
+        ansible.builtin.debug:
             msg:
-                - "Alert! You do not have pgBackRest installed. Please install and configure pgBackRest"
+                - "Warning!! You do not have pgBackRest installed. Please install and configure pgBackRest. This is a manual task."
         when: "'no pgbackrest' in pgs12cis_pgbackrest_status.stdout"
 
       - name: "NOTSCORED | 8.3 | AUDIT | Ensure the backup and restore tool, 'pgBackRest', is installed and configured | pgBackRest installed"
-        debug:
+        ansible.builtin.debug:
             msg:
                 - "Good News! You have pgBackRest installed. Make sure it is configured appropriatly for things like stanza name, backup location, retention policy, logging, etc"
         when: "'no pgbackrest' not in pgs12cis_pgbackrest_status.stdout"
+
+      - name: "NOTSCORED | 8.3 | AUDIT | Ensure packages are obtained from authorized repositories | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '8.3'
   when:
       - pgs12cis_rule_8_3
       - pgs12cis_section8
