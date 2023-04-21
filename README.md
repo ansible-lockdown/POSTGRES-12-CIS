@@ -82,8 +82,6 @@ ansible 2.10
 jmespath
 relevant collections
 
-- Access to download or add the goss binary and content to the system if using auditing (other options are available on how to get the content to the system.)
-
 **General:**
 
 - Basic knowledge of Ansible, below are some links to the Ansible documentation to help get started if you are unfamiliar with Ansible
@@ -117,13 +115,10 @@ Below is an example of the tag section from a control within this role. Using th
 
 ```sh
       tags:
-      - level1-server
-      - level1-workstation
-      - scored
-      - avahi
-      - services
-      - patch
-      - rule_2.2.4
+      - level1-postgresql
+      - notscored
+      - audit
+      - rule_1.1
 ```
 
 ## Community Contribution
