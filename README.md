@@ -11,16 +11,21 @@ PostgresSQL 12 CIS
 ![Forks](https://img.shields.io/github/forks/ansible-lockdown/POSTGRES-12-CIS?style=social)
 ![followers](https://img.shields.io/github/followers/ansible-lockdown?style=social)
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/AnsibleLockdown.svg?style=social&label=Follow%20%40AnsibleLockdown)](https://twitter.com/AnsibleLockdown)
+
 ![Discord Badge](https://img.shields.io/discord/925818806838919229?logo=discord)
+
 ![Devel Build Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/POSTGRES-12-CIS/linux_benchmark_testing.yml?label=Devel%20Build%20Status)
 ![Devel Commits](https://img.shields.io/github/commit-activity/m/ansible-lockdown/POSTGRES-12-CIS/devel?color=dark%20green&label=Devel%20Branch%20commits)
+
 ![Release Branch](https://img.shields.io/badge/Release%20Branch-Main-brightgreen)
 ![Main Build Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/POSTGRES-12-CIS/linux_benchmark_testing.yml?label=Build%20Status)
 ![Main Release Date](https://img.shields.io/github/release-date/ansible-lockdown/POSTGRES-12-CIS?label=Release%20Date)
 ![Release Tag](https://img.shields.io/github/v/tag/ansible-lockdown/POSTGRES-12-CIS?label=Release%20Tag&&color=success)
+
 ![Issues Open](https://img.shields.io/github/issues-raw/ansible-lockdown/POSTGRES-12-CIS?label=Open%20Issues)
 ![Issues Closed](https://img.shields.io/github/issues-closed-raw/ansible-lockdown/POSTGRES-12-CIS?label=Closed%20Issues&&color=success)
 ![Pull Requests](https://img.shields.io/github/issues-pr/ansible-lockdown/POSTGRES-12-CIS?label=Pull%20Requests)
+
 ![License](https://img.shields.io/github/license/ansible-lockdown/POSTGRES-12-CIS?label=License)
 
 ---
