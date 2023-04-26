@@ -1,9 +1,9 @@
 ---
 - name: import preliminary tasks
-  import_tasks: prelim.yml
+  ansible.builtin.import_tasks: prelim.yml
 
 - name: RedHat Fixes
-  import_tasks: cis_pgs12_redhat_fixes.yml
+  ansible.builtin.import_tasks: cis_pgs12_redhat_fixes.yml
   when:
       - ansible_distribution_file_variety == 'RedHat'
       - ansible_distribution_major_version == "7" or
@@ -13,7 +13,7 @@
       - CentOS
 
 - name: Ubuntu Fixes
-  import_tasks: cis_pgs12_ubuntu_fixes.yml
+  ansible.builtin.import_tasks: cis_pgs12_ubuntu_fixes.yml
   when:
       - ansible_distribution == 'Ubuntu'
       - ansible_distribution_major_version == "16" or
