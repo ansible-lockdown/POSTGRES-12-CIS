@@ -2,13 +2,13 @@
 - name: "SCORED | 6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | PostgreSQL must implement NIST FIPS 140-2 validated cryptographic modules to generate and validate cryptographic hashes (RHEL7)."
   block:
       - name: "SCORED | 6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | PostgreSQL must implement NIST FIPS 140-2 validated cryptographic modules to generate and validate cryptographic hashes (RHEL7)."
-        yum:
+        ansible.builtin.yum:
             name: dracut-fips
             state: present
         notify: rebuild initramfs
 
       - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used| Check if prelink package is installed"
-        command: rpm -q prelink
+        ansible.builtin.command: rpm -q prelink
         args:
             warn: no
         changed_when: no
@@ -17,7 +17,7 @@
         register: pgs12CIS_6_7_prelink_installed
 
       - name: "SCORED | 6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used| Disable prelinking."
-        lineinfile:
+        ansible.builtin.lineinfile:
             dest: /etc/sysconfig/prelink
             regexp: ^#?PRELINKING
             line: PRELINKING=no
@@ -25,14 +25,14 @@
         notify: undo existing prelinking
 
       - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Check for GRUB_CMDLINE_LINUX in /etc/default/grub"
-        command: grep -P '^\s*GRUB_CMDLINE_LINUX=".*"$' /etc/default/grub
+        ansible.builtin.command: grep -P '^\s*GRUB_CMDLINE_LINUX=".*"$' /etc/default/grub
         check_mode: no
         failed_when: no
         changed_when: pgs12cis_6_7_default_grub_missing_audit.rc > 0
         register: pgs12cis_6_7_default_grub_missing_audit
 
       - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | parse sane GRUB_CMDLINE_LINUX from /proc/cmdline"
-        command: grep -oP ' ro \K.*?(?= ?LANG=)' /proc/cmdline
+        ansible.builtin.command: grep -oP ' ro \K.*?(?= ?LANG=)' /proc/cmdline
         check_mode: no
         changed_when: no
         failed_when: pgs12cis_grub_cmdline_linux_audit.rc > 1
@@ -40,7 +40,7 @@
         register: pgs12cis_grub_cmdline_linux_audit
 
       - name: "SCORED | 6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Copy over a sane /etc/default/grub"
-        template:
+        ansible.builtin.template:
             src: etc_default_grub.j2
             dest: /etc/default/grub
             owner: root
@@ -51,10 +51,10 @@
         when: pgs12cis_grub_cmdline_linux_audit is changed
 
       - name: "SCORED | 6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | fips=1 must be in /etc/default/grub"
-        replace:
+        ansible.builtin.replace:
             path: /etc/default/grub
             regexp: "{{ pgs12cis_regexp_quoted_params }}"
-            replace: "{{ pgs12cis_replace_quoted_params }}"
+            replace: "{{ pgs12cis_ansible.builtin.replace_quoted_params }}"
         vars:
             key: GRUB_CMDLINE_LINUX
             param: fips
@@ -66,7 +66,7 @@
         notify: make grub2 config
 
       - name: "SCORED | 6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | If /boot or /boot/efi reside on separate partitions, the kernel parameter boot=<partition> must be added to the kernel command line."
-        replace:
+        ansible.builtin.replace:
             path: /etc/default/grub
             regexp: "{{ pgs12cis_regexp_quoted_params }}"
             replace: "{{ pgs12cis_replace_quoted_params }}"
@@ -86,7 +86,7 @@
         register: result
 
       - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Verify kernel parameters in /etc/default/grub"
-        command: grep -P '^\s*GRUB_CMDLINE_LINUX=".*(?<=[" ]){{ item | regex_escape }}(?=[" ]).*"$' /etc/default/grub
+        ansible.builtin.command: grep -P '^\s*GRUB_CMDLINE_LINUX=".*(?<=[" ]){{ item | regex_escape }}(?=[" ]).*"$' /etc/default/grub
         check_mode: no
         with_items:
             - fips=1

@@ -1,23 +1,24 @@
 ---
+
 - name: "PRELIM | Install and Start PostgreSQL"
   include_tasks: postgresql12_install.yml
   when: pgs12cis_install_postgresql
 
 - name: "PRELIM | Install ACL when needed"
-  apt:
+  ansible.builtin.apt:
       name: acl
       state: present
   when: ansible_distribution == 'Ubuntu'
 
 - name: "PRELIM | Get postgres config file path"
-  shell: psql -U postgres -c 'SHOW config_file' | tail -n+3 | head -n 1 | cut -c2-
+  ansible.builtin.shell: psql -U postgres -c 'SHOW config_file' | tail -n+3 | head -n 1 | cut -c2-
   changed_when: false
   failed_when: false
   become_user: "{{ pgs12cis_pgs12_usr }}"
   register: pgs12cis_config_file_get
 
 - name: "PRELIM | Get postgres config file path"
-  shell: psql -U postgres -c 'SHOW hba_file' | tail -n+3 | head -n 1 | cut -c2-
+  ansible.builtin.shell: psql -U postgres -c 'SHOW hba_file' | tail -n+3 | head -n 1 | cut -c2-
   changed_when: false
   failed_when: false
   become_user: "{{ pgs12cis_pgs12_usr }}"
@@ -28,7 +29,7 @@
       pgs12cis_postgresql_service_auto: "{{ (ansible_distribution == 'Ubuntu') | ternary('postgresql', 'postgresql-12') }}"
 
 - name: "PRELIM | 2.1 | Get postgresql user home folder"
-  shell: "grep {{ pgs12cis_pgs12_usr }} /etc/passwd | cut -f6 -d:"
+  ansible.builtin.shell: "grep {{ pgs12cis_pgs12_usr }} /etc/passwd | cut -f6 -d:"
   changed_when: false
   failed_when: false
   register: pgs12cis_pgs12_usr_home_dir_get
@@ -38,7 +39,7 @@
 - name: "PRELIM | Finding the PostgreSQL Configured Data Directory (PGDATA)"
   block:
       - name: "PRELIM | Finding the PostgreSQL Configured Data Directory (PGDATA) | Get path"
-        shell: psql -c 'show data_directory' | tail -n+3 | head -n 1 | cut -c2-
+        ansible.builtin.shell: psql -c 'show data_directory' | tail -n+3 | head -n 1 | cut -c2-
         check_mode: false
         changed_when: false
         register: pgs12cis_pgdata_cmd
@@ -52,7 +53,7 @@
       - pgs12cis_rule_3_1_2
 
 - name: "PRELIM | 6.7 | Check if /boot or /boot/efi reside on separate partitions"
-  shell: df --output=target /boot | tail -n 1
+  ansible.builtin.shell: df --output=target /boot | tail -n 1
   changed_when: false
   check_mode: false
   register: pgs12cis_prelim_boot_part
@@ -61,7 +62,7 @@
       - pgs12cis_section6
 
 - name: "PRELIM | 6.7 | Check whether machine is UEFI-based"
-  stat:
+  ansible.builtin.stat:
       path: /sys/firmware/efi
   register: pgs12cis_prelim_sys_firmware_efi
   when:
@@ -71,7 +72,7 @@
 - name: "PRELIM | 6.8 | Generate Self-Signed Cert"
   block:
       - name: "PRELIM | 6.8 | Generate Self-Signed Cert | Check for existing cert"
-        find:
+        ansible.builtin.find:
             paths: "{{ pgs12cis_data_folder }}"
             patterns: '*.crt,*.key'
         become_user: "{{ pgs12cis_pgs12_usr }}"
@@ -96,13 +97,13 @@
 - name: "PRELIM | 6.9 | Install PostgreSQL contrib package"
   block:
       - name: "PRELIM | 6.9 | Install PostgreSQL contrib package | RHEL 8"
-        dnf:
+        ansible.builtin.dnf:
             name: postgresql12-contrib
             state: present
         when: ansible_distribution_major_version == "8"
 
       - name: "PRELIM | 6.9 | Install PostgreSQL contrib package | RHEL 7"
-        yum:
+        ansible.builtin.yum:
             name: postgresql12-contrib
             state: present
         when: ansible_distribution_major_version == "7"

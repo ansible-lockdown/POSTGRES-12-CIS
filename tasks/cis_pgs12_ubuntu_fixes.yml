@@ -88,7 +88,7 @@
       - rule_1.3
 
 - name: "SCORED | 1.4 | PATCH | Ensure systemd Service Files Are Enabled"
-  service:
+  ansible.builtin.service:
       name: "{{ pgs12cis_postgresql_service }}"
       enabled: true
   when:
@@ -128,14 +128,14 @@
         register: pgs12cis_2_1_env_file
 
       - name: "SCORED | 2.1 | PATCH | Ensure the file permissions mask is correct | Set umask"
-        lineinfile:
+        ansible.builtin.lineinfile:
             path: "{{ pgs12cis_pgs12_usr_home_dir }}/{{ pgs12cis_2_1_env_file.stdout }}"
             regexp: '^umask|^UMASK'
             line: "umask 0{{ pgs12cis_umask_value }}"
         when: pgs12cis_2_1_env_file.stdout != ""
 
       - name: "SCORED | 2.1 | PATCH | Ensure the file permissions mask is correct | Set umask if file doesn't exist"
-        lineinfile:
+        ansible.builtin.lineinfile:
             path: "{{ pgs12cis_pgs12_usr_home_dir }}/.bashrc"
             line: "umask 0{{ pgs12cis_umask_value }}"
             create: yes
@@ -154,12 +154,12 @@
 - name: "SCORED | 2.2 | PATCH | Ensure the PostgreSQL pg_wheel group membership is correct"
   block:
       - name: "SCORED | 2.2 | PATCH | Ensure the PostgreSQL pg_wheel group membership is correct | Create pg_wheel group"
-        group:
+        ansible.builtin.group:
             name: pg_wheel
             state: present
 
       - name: "SCORED | 2.2 | PATCH | Ensure the PostgreSQL pg_wheel group membership is correct"
-        user:
+        ansible.builtin.user:
             name: "{{ pgs12cis_pgs12_usr }}"
             groups: pg_wheel
             append: yes
@@ -176,7 +176,7 @@
 # Section 3
 # # Logging Monitoring and Auditing
 - name: "SCORED | 3.1.2 | PATCH |  Ensure the log destinations are set correctly"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^log_destination =|^#log_destination ='
       line: "log_destination = '{{ pgs12cis_log_destination }}'"
@@ -193,7 +193,7 @@
       - rule_3.1.2
 
 - name: "SCORED | 3.1.3 | PATCH | Ensure the logging collector is enabled"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^logging_collector =|^#logging_collector ='
       line: "logging_collector = on"
@@ -210,7 +210,7 @@
       - rule_3.3
 
 - name: "SCORED | 3.1.4 | PATCH | Ensure the log file destination directory is set correctly"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^log_directory =|^#log_directory ='
       line: "log_directory = '{{ pgs12cis_log_directory }}'"
@@ -227,7 +227,7 @@
       - rule_3.1.4
 
 - name: "SCORED | 3.1.5 | PATCH | Ensure the filename pattern for log files is set correctly"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^log_filename =|^#log_filename ='
       line: "log_filename = '{{ pgs12cis_log_filename }}'"
@@ -244,7 +244,7 @@
       - rule_3.1.4
 
 - name: "SCORED | 3.1.6 | PATCH | Ensure the log file permissions are set correctly"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^log_truncate_on_rotation =|^#log_truncate_on_rotation ='
       line: "log_truncate_on_rotation = on"
@@ -261,7 +261,7 @@
       - rule_3.1.6
 
 - name: "SCORED | 3.1.7 | PATCH | Ensure 'log_truncate_on_rotation' is enabled"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^log_file_mode =|^#log_file_mode ='
       line: "log_file_mode = 0{{ pgs12cis_log_file_mode }}"
@@ -278,7 +278,7 @@
       - rule_3.1.7
 
 - name: "SCORED | 3.1.8 | PATCH | Ensure the maximum log file lifetime is set correctly"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^log_rotation_age =|^#log_rotation_age ='
       line: "log_rotation_age = {{ pgs12cis_log_file_age }}"
@@ -295,7 +295,7 @@
       - rule_3.1.8
 
 - name: "SCORED | 3.1.9 | PATCH | Ensure the maximum log file size is set correctly"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^log_rotation_size =|^#log_rotation_size ='
       line: "log_rotation_size = {{ pgs12cis_log_rotation_size }}"
@@ -312,7 +312,7 @@
       - rule_3.1.9
 
 - name: "SCORED | 3.1.10 | PATCH | Ensure the correct syslog facility is selected"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^syslog_facility =|^#syslog_facility ='
       line: "syslog_facility = '{{ pgs12cis_syslog_facility }}'"
@@ -329,7 +329,7 @@
       - rule_3.1.10
 
 - name: "SCORED | 3.1.11 | PATCH | Ensure the program name for PostgreSQL syslog messages is correct"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^syslog_ident =|^#syslog_ident ='
       line: "syslog_ident = '{{ pgs12cis_syslog_ident }}'"
@@ -346,7 +346,7 @@
       - rule_3.1.11
 
 - name: "NOTSCORED | 3.1.12 | PATCH | Ensure the correct messages are written to the server log"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^log_min_messages =|^#log_min_messages ='
       line: "log_min_messages = {{ pgs12cis_log_min_messages }}"
@@ -363,7 +363,7 @@
       - rule_3.1.12
 
 - name: "NOTSCORED | 3.1.13 | PATCH | Ensure the correct SQL statements generating errors are recorded"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^log_min_error_statement =|^#log_min_error_statement ='
       line: "log_min_error_statement = {{ pgs12cis_log_min_error_statement }}"
@@ -380,7 +380,7 @@
       - rule_3.1.13
 
 - name: "SCORED | 3.1.14 | PATCH | Ensure 'debug_print_parse' is disabled"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^debug_print_parse =|^#debug_print_parse ='
       line: "debug_print_parse = off"
@@ -397,7 +397,7 @@
       - rule_3.1.14
 
 - name: "SCORED | 3.1.15 | PATCH | Ensure 'debug_print_rewritten' is disabled"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^debug_print_rewritten =|^#debug_print_rewritten ='
       line: "debug_print_rewritten = off"
@@ -414,7 +414,7 @@
       - rule_3.1.15
 
 - name: "SCORED | 3.1.16 | PATCH | Ensure 'debug_print_plan' is disabled"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^debug_print_plan =|^#debug_print_plan ='
       line: "debug_print_plan = off"
@@ -431,7 +431,7 @@
       - rule_3.1.16
 
 - name: "SCORED | 3.1.17 | PATCH | Ensure 'debug_pretty_print' is enabled"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^debug_pretty_print =|^#debug_pretty_print ='
       line: "debug_pretty_print = on"
@@ -448,7 +448,7 @@
       - rule_3.1.17
 
 - name: "SCORED | 3.1.18 | PATCH | Ensure 'log_connections' is enabled"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^log_connections =|^#log_connections ='
       line: "log_connections = on"
@@ -465,7 +465,7 @@
       - rule_3.1.18
 
 - name: "SCORED | 3.1.19 | PATCH | Ensure 'log_disconnections' is enabled"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^log_disconnections =|^#log_disconnections ='
       line: "log_disconnections = on"
@@ -482,7 +482,7 @@
       - rule_3.1.19
 
 - name: "SCORED | 3.1.20 | PATCH | Ensure 'log_error_verbosity' is set correctly"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^log_error_verbosity =|^#log_error_verbosity ='
       line: "log_error_verbosity = {{ pgs12cis_log_error_verbosity }}"
@@ -499,7 +499,7 @@
       - rule_3.1.20
 
 - name: "SCORED | 3.1.21 | PATCH | Ensure 'log_hostname' is set correctly"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^log_hostname =|^#log_hostname ='
       line: "log_hostname = {{ pgs12cis_log_hostname }}"
@@ -516,7 +516,7 @@
       - rule_3.1.21
 
 - name: "NOTSCORED | 3.1.22 | PATCH | Ensure 'log_line_prefix' is set correctly"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^log_line_prefix =|^#log_line_prefix ='
       line: "log_line_prefix = '{{ pgs12cis_log_line_prefix }}'"
@@ -533,7 +533,7 @@
       - rule_3.1.22
 
 - name: "SCORED | 3.1.23 | PATCH | Ensure 'log_statement' is set correctly"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^log_statement =|^#log_statement ='
       line: "log_statement = '{{ pgs12cis_log_statement }}'"
@@ -550,7 +550,7 @@
       - rule_3.1.23
 
 - name: "SCORED | 3.1.24 | PATCH | Ensure 'log_timezone' is set correctly"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^log_timezone =|^#log_timezone ='
       line: "log_timezone = '{{ pgs12cis_log_timezone }}'"
@@ -574,7 +574,7 @@
             state: present
 
       - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Set pgAudit settings in postgresql.conf"
-        lineinfile:
+        ansible.builtin.lineinfile:
             path: "{{ pgs12cis_config_file }}"
             regexp: "{{ item.regexp }}"
             line: "{{ item.line }}"
@@ -600,7 +600,7 @@
 - name: "SCORED | 4.1 | PATCH | Ensure sudo is configured correctly"
   block:
       - name: "SCORED | 4.1 | PATCH | Ensure sudo is configured correctly | Configure pg_wheel to sudoers"
-        lineinfile:
+        ansible.builtin.lineinfile:
             path: /etc/sudoers.d/postgres
             regexp: '^%pg_wheel ALL='
             line: '%pg_wheel ALL= /bin/su - {{ pgs12cis_pgs12_usr }}'
@@ -821,14 +821,14 @@
 - name: 'SCORED | 5.2 | PATCH | Ensure login via "host" TCP/IP Socket is configured correctly'
   block:
       - name: 'SCORED | 5.2 | PATCH | Ensure login via "host" TCP/IP Socket is configured correctly | Set listen_addresses'
-        lineinfile:
+        ansible.builtin.lineinfile:
             path: "{{ pgs12cis_config_file }}"
             regexp: '^listen_addresses =|^#listen_addresses ='
             line: "listen_addresses = '*'"
         notify: restart postgresql
 
       - name: 'SCORED | 5.2 | PATCH | Ensure login via "host" TCP/IP Socket is configured correctly | Set allow encrypted and deny unencrypted'
-        lineinfile:
+        ansible.builtin.lineinfile:
             path: "{{ pgs12cis_hba_config_file }}"
             regexp: "{{ item.regexp }}"
             line: "{{ item.line }}"
@@ -1052,7 +1052,7 @@
       - rule_6.7
 
 - name: "SCORED | 6.8 | PATCH | Ensure SSL is enabled and configured correctly"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: "{{ item.regexp }}"
       line: "{{ item.line }}"
@@ -1110,7 +1110,7 @@
         when: "pgs12cis_replication_user not in pgs12cis_7_1_replication_users.stdout"
 
       - name: "NOTSCORED | 7.1 | | PATCH | Ensure a replication-only user is created and used for streaming replication | Create replication user pg_hba.conf entry"
-        lineinfile:
+        ansible.builtin.lineinfile:
             path: "{{ pgs12cis_hba_config_file }}"
             regexp: "{{ item.regexp }}"
             line: "{{ item.line }}"
@@ -1152,7 +1152,7 @@
       - rule_7.2
 
 - name: "SCORED | 7.3 | PATCH | Ensure WAL archiving is configured and functional"
-  lineinfile:
+  ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: "{{ item.regexp }}"
       line: "{{ item.line }}"

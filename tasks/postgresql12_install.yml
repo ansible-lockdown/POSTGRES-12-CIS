@@ -1,48 +1,49 @@
 ---
+
 - name: "PRELIM | Install and Start PostgreSQL | RHEL/CentOS"
   block:
       - name: "PRELIM | Install and Start PostgreSQL | Add PostgreSQL Repo RHEL/CentOS 8"
-        dnf:
+        ansible.builtin.dnf:
           name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
           state: present
         when: ansible_distribution_major_version == "8"
 
       - name: "PRELIM | Install and Start PostgreSQL | Add PostgreSQL Repo RHEL/CentOS 7"
-        yum:
+        ansible.builtin.yum:
             name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
             state: present
         when: ansible_distribution_major_version == "7"
 
       - name: "PRELIM | Install and Start PostgreSQL | Disable built in PostgreSQL RHEL/CentOS 8"
-        shell: dnf -y module disable postgresql
+        ansible.builtin.shell: dnf -y module disable postgresql
         register: prelim_disable_pgs_old_rh8
         changed_when: "'Disabling modules' in prelim_disable_pgs_old_rh8.stdout"
         when: ansible_distribution_major_version == "8"
 
       - name: "PRELIM | Install and Start PostgreSQL | Install PostgreSQL 12 RHEL/CentOS 8"
-        dnf:
+        ansible.builtin.dnf:
           name: ['postgresql12', 'postgresql12-server']
           state: present
         when: ansible_distribution_major_version == "8"
 
       - name: "PRELIM | Install and Start PostgreSQL | Install PostgreSQL 12 RHEL/CentOS 7"
-        yum:
+        ansible.builtin.yum:
           name: ['postgresql12', 'postgresql12-server']
           state: present
         when: ansible_distribution_major_version == "7"
 
       - name: "PRELIM | Install and Start PostgreSQL | Initialize PostgreSQL 12 RHEL/CentOS 7 and 8"
-        command: /usr/pgsql-12/bin/postgresql-12-setup initdb
+        ansible.builtin.command: /usr/pgsql-12/bin/postgresql-12-setup initdb
         failed_when: false
 
       - name: "PRELIM | PRELIM | Install and Start PostgreSQL | Start and enable service RHEL/CentOS 7 and 8"
-        service:
+        ansible.builtin.service:
             name: postgresql-12
             enabled: yes
             state: started
 
       - name: "PRELIM | PRELIM | Install and Start PostgreSQL | Set postgres user pw"
-        user:
+        ansible.builtin.user:
             name: postgres
             password: "{{ pgs12cis_postgres_user_pw }}"
   when: ansible_distribution_file_variety == 'RedHat'
@@ -50,29 +51,29 @@
 - name: "PRELIM | Install and Start PostgreSQL | Ubuntu"
   block:
       - name: "PRELIM | Install and Start PostgreSQL | Install wget for future task | Ubuntu"
-        apt:
+        ansible.builtin.apt:
             name: wget
             state: present
 
       - name: "PRELIM | Install and Start PostgreSQL | Get PostgreSQL GPG key | Ubuntu"
-        shell: wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+        ansible.builtin.shell: wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
 
       - name: "PRELIM | Install and Start PostgreSQL | Add PostgreSQL repo | Ubuntu"
-        shell: echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" |sudo tee  /etc/apt/sources.list.d/pgdg.list
+        ansible.builtin.shell: echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" |sudo tee  /etc/apt/sources.list.d/pgdg.list
 
       - name: "PRELIM | Install and Start PostgreSQL | Install PostgreSQL 12 | Ubuntu"
-        apt:
+        ansible.builtin.apt:
           name: ['postgresql-12','postgresql-client-12']
           state: present
           update_cache: yes
 
       - name: "PRELIM | Install and Start PostgreSQL | Start and enable service | Ubuntu"
-        service:
+        ansible.builtin.service:
             name: postgresql
             state: started
             enabled: yes
 
       - name: "PRELIM | Install and Start PostgreSQL | Change postgres user default password | Ubuntu"
-        command: psql -c "alter user postgres with password 'StrongAdminP@ssw0rd'"
+        ansible.builtin.command: psql -c "alter user postgres with password 'StrongAdminP@ssw0rd'"
         become_user: postgres
   when: ansible_distribution == 'Ubuntu'
