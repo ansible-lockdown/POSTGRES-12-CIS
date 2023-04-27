@@ -855,7 +855,9 @@
 # PostgreSQL Settings
 - name: "NOTSCORED | 6.1 | AUDIT | Ensure 'Attack Vectors' Runtime Parameters are Configured | Absent"
   ansible.builtin.debug:
-      msg: "Warning!! Please review all configuration settings. Configure PostgreSQL logging to record all modifications and changes to the RDBMS. This is a manual task."
+      msg:
+          - "Warning!! Please review all configuration settings. Configure PostgreSQL logging to record"
+          - "all modifications and changes to the RDBMS. This is a manual task."
 
 - name: "NOTSCORED | 6.1 | AUDIT | Ensure 'Attack Vectors' Runtime Parameters are Configured | Present"
   ansible.builtin.import_tasks: warning_facts.yml
@@ -891,7 +893,7 @@
         ansible.builtin.debug:
             msg:
                 - "Warning!! Please review this output and compare with a previous OK output looking for any changes"
-                - "Also review the postgresql.conf and postgresql.auto.conf and compare them with previously archived" 
+                - "Also review the postgresql.conf and postgresql.auto.conf and compare them with previously archived"
                 - "files looking for changes. This is a manual task."
                 - "{{ pgs12cis_6_2_backend_runtime_param.stdout_lines }}"
                 - ""
