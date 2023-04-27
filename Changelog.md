@@ -7,4 +7,5 @@ Updated .gitattributes file
 Updated .ansible-lint file
 Updated ReadMe file
 Updated Module names in Ubuntufix.yml
-Added WarnCount to UbuntuFix.yml
+Added WarnCount to ubuntuFix.yml
+Added WarnCount to redhat_fixes.yml

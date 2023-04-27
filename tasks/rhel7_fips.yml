@@ -10,10 +10,10 @@
       - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used| Check if prelink package is installed"
         ansible.builtin.command: rpm -q prelink
         args:
-            warn: no
-        changed_when: no
-        failed_when: no
-        check_mode: no
+            warn: false
+        changed_when: false
+        failed_when: false
+        check_mode: false
         register: pgs12CIS_6_7_prelink_installed
 
       - name: "SCORED | 6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used| Disable prelinking."
@@ -26,15 +26,15 @@
 
       - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Check for GRUB_CMDLINE_LINUX in /etc/default/grub"
         ansible.builtin.command: grep -P '^\s*GRUB_CMDLINE_LINUX=".*"$' /etc/default/grub
-        check_mode: no
-        failed_when: no
+        check_mode: false
+        failed_when: false
         changed_when: pgs12cis_6_7_default_grub_missing_audit.rc > 0
         register: pgs12cis_6_7_default_grub_missing_audit
 
       - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | parse sane GRUB_CMDLINE_LINUX from /proc/cmdline"
         ansible.builtin.command: grep -oP ' ro \K.*?(?= ?LANG=)' /proc/cmdline
-        check_mode: no
-        changed_when: no
+        check_mode: false
+        changed_when: false
         failed_when: pgs12cis_grub_cmdline_linux_audit.rc > 1
         when: pgs12cis_6_7_default_grub_missing_audit is changed
         register: pgs12cis_grub_cmdline_linux_audit
@@ -59,7 +59,7 @@
             key: GRUB_CMDLINE_LINUX
             param: fips
             value: 1
-            append: yes  # this is the default
+            append: true  # this is the default
         when:
             - not ansible_check_mode or
               pgs12cis_6_7_default_grub_missing_audit is not changed
@@ -77,7 +77,7 @@
             key: GRUB_CMDLINE_LINUX
             param: boot
             value: UUID={{ item.uuid }}
-            insert: yes
+            insert: true
         when:
             - pgs12cis_boot_part not in ['/', '']
             - not ansible_check_mode or
@@ -87,7 +87,7 @@
 
       - name: "SCORED | 6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Verify kernel parameters in /etc/default/grub"
         ansible.builtin.command: grep -P '^\s*GRUB_CMDLINE_LINUX=".*(?<=[" ]){{ item | regex_escape }}(?=[" ]).*"$' /etc/default/grub
-        check_mode: no
+        check_mode: false
         with_items:
             - fips=1
             - boot=UUID={{ ansible_mounts | json_query(query) }}
