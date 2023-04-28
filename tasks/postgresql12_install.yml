@@ -3,13 +3,13 @@
 - name: "PRELIM | Install and Start PostgreSQL | RHEL/CentOS"
   block:
       - name: "PRELIM | Install and Start PostgreSQL | Add PostgreSQL Repo RHEL/CentOS 8"
-        ansible.builtin.dnf:
-          name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-          state: present
+        ansible.builtin.package:
+            name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+            state: present
         when: ansible_distribution_major_version == "8"
 
       - name: "PRELIM | Install and Start PostgreSQL | Add PostgreSQL Repo RHEL/CentOS 7"
-        ansible.builtin.yum:
+        ansible.builtin.package:
             name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
             state: present
         when: ansible_distribution_major_version == "7"
@@ -21,15 +21,15 @@
         when: ansible_distribution_major_version == "8"
 
       - name: "PRELIM | Install and Start PostgreSQL | Install PostgreSQL 12 RHEL/CentOS 8"
-        ansible.builtin.dnf:
-          name: ['postgresql12', 'postgresql12-server']
-          state: present
+        ansible.builtin.package:
+            name: ['postgresql12', 'postgresql12-server']
+            state: present
         when: ansible_distribution_major_version == "8"
 
       - name: "PRELIM | Install and Start PostgreSQL | Install PostgreSQL 12 RHEL/CentOS 7"
-        ansible.builtin.yum:
-          name: ['postgresql12', 'postgresql12-server']
-          state: present
+        ansible.builtin.package:
+            name: ['postgresql12', 'postgresql12-server']
+            state: present
         when: ansible_distribution_major_version == "7"
 
       - name: "PRELIM | Install and Start PostgreSQL | Initialize PostgreSQL 12 RHEL/CentOS 7 and 8"
@@ -63,9 +63,9 @@
 
       - name: "PRELIM | Install and Start PostgreSQL | Install PostgreSQL 12 | Ubuntu"
         ansible.builtin.package:
-          name: ['postgresql-12','postgresql-client-12']
-          state: present
-          update_cache: true
+            name: ['postgresql-12', 'postgresql-client-12']
+            state: present
+            update_cache: true
 
       - name: "PRELIM | Install and Start PostgreSQL | Start and enable service | Ubuntu"
         ansible.builtin.service:

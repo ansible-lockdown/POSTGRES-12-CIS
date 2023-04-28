@@ -615,7 +615,7 @@
         when: ansible_distribution_major_version == "8"
 
       - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Install pgAudit RHEL7"
-        ansible.builtin.yum:
+        ansible.builtin.package:
             name: pgaudit14_12
             state: present
         when: ansible_distribution_major_version == "7"
@@ -747,7 +747,7 @@
 - name: "NOTSCORED | 4.5 | AUDIT | Use pg_permission extension to audit object permissions"
   block:
       - name: "NOTSCORED | 4.5 | AUDIT | Use pg_permission extension to audit object permissions | Get pg_permission status"
-        ansible.builtin.command:  psql -c "select t.schemaname, t.tablename, u.usename, has_table_privilege(u.usename, t.tablename, 'select') as select, has_table_privilege(u.usename, t.tablename, 'insert') as insert, has_table_privilege(u.usename, t.tablename, 'update') as update, has_table_privilege(u.usename, t.tablename, 'delete') as delete from pg_tables t, pg_user u where t.schemaname not in ('information_schema','pg_catalog');" | grep rows | tr -d '()'
+        ansible.builtin.command: psql -c "select t.schemaname, t.tablename, u.usename, has_table_privilege(u.usename, t.tablename, 'select') as select, has_table_privilege(u.usename, t.tablename, 'insert') as insert, has_table_privilege(u.usename, t.tablename, 'update') as update, has_table_privilege(u.usename, t.tablename, 'delete') as delete from pg_tables t, pg_user u where t.schemaname not in ('information_schema','pg_catalog');" | grep rows | tr -d '()'
         changed_when: false
         failed_when: false
         register: pgs12cis_4_5_pg_permission_status
