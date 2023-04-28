@@ -5,7 +5,7 @@
   when: pgs12cis_install_postgresql
 
 - name: "PRELIM | Install ACL when needed"
-  ansible.builtin.apt:
+  ansible.builtin.package:
       name: acl
       state: present
   when: ansible_distribution == 'Ubuntu'

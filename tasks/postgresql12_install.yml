@@ -51,7 +51,7 @@
 - name: "PRELIM | Install and Start PostgreSQL | Ubuntu"
   block:
       - name: "PRELIM | Install and Start PostgreSQL | Install wget for future task | Ubuntu"
-        ansible.builtin.apt:
+        ansible.builtin.package:
             name: wget
             state: present
 
@@ -62,7 +62,7 @@
         ansible.builtin.shell: echo "deb http://apt.postgresql.org/pub/repos/apt/ `lsb_release -cs`-pgdg main" |sudo tee  /etc/apt/sources.list.d/pgdg.list
 
       - name: "PRELIM | Install and Start PostgreSQL | Install PostgreSQL 12 | Ubuntu"
-        ansible.builtin.apt:
+        ansible.builtin.package:
           name: ['postgresql-12','postgresql-client-12']
           state: present
           update_cache: true
