@@ -609,7 +609,7 @@
 - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled"
   block:
       - name: "SCORED | 3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Install pgAudit RHEL8"
-        ansible.builtin.dnf:
+        ansible.builtin.package:
             name: pgaudit14_12
             state: present
         when: ansible_distribution_major_version == "8"
