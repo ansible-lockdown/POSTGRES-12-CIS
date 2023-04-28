@@ -802,12 +802,12 @@
 
 # Section 5
 # Connection and Login
-- name: "NOTSCORED | 5.1 | PATCH | Ensure login via local UNIX Domain Socket is configured correctly | Absent"
+- name: "NOTSCORED | 5.1 | PATCH | Ensure login via 'local' UNIX Domain Socket is configured correctly | Absent"
   ansible.builtin.debug:
       msg:
-          - "Warning!! Please ensure logins via local Unix Domain Socket is configured correctly"
+          - "Warning!! Please ensure logins via 'local' Unix Domain Socket is configured correctly. This is a manual task."
 
-- name: "NOTSCORED | 5.1 | AUDIT | Ensure login via local UNIX Domain Socket is configured correctly | Present"
+- name: "NOTSCORED | 5.1 | AUDIT | Ensure login via 'local' UNIX Domain Socket is configured correctly | Present"
   ansible.builtin.import_tasks: warning_facts.yml
   vars:
       warn_control_id: '5.1'
