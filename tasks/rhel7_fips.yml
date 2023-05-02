@@ -1,8 +1,9 @@
 ---
+
 - name: "SCORED | 6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | PostgreSQL must implement NIST FIPS 140-2 validated cryptographic modules to generate and validate cryptographic hashes (RHEL7)."
   block:
       - name: "SCORED | 6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | PostgreSQL must implement NIST FIPS 140-2 validated cryptographic modules to generate and validate cryptographic hashes (RHEL7)."
-        ansible.builtin.yum:
+        ansible.builtin.package:
             name: dracut-fips
             state: present
         notify: rebuild initramfs
@@ -54,7 +55,7 @@
         ansible.builtin.replace:
             path: /etc/default/grub
             regexp: "{{ pgs12cis_regexp_quoted_params }}"
-            replace: "{{ pgs12cis_ansible.builtin.replace_quoted_params }}"
+            replace: "{{ pgs12cis_replace_quoted_params }}"
         vars:
             key: GRUB_CMDLINE_LINUX
             param: fips

@@ -7,7 +7,8 @@
 - Updated .gitattributes file
 - Updated .ansible-lint file
 - Updated ReadMe file
-- Updated Module names in Ubuntufix.yml and redhat_fixes.yml
-- Added WarnCount to ubuntuFix.yml
-- Added WarnCount to redhat_fixes.yml
-- lint updates
+- Updated Module names in cis_pgs12_ubuntu_fixes.yml and cis_pgs12_redhat_fixes.yml
+- Added WarnCount to cis_pgs12_ubuntu_fixes.yml
+- Added WarnCount to cis_pgs12_redhat_fixes.yml
+- yamllint and ansiblelint updates
+- Updated Module names in handlers/main.yml

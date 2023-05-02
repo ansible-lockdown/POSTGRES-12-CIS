@@ -25,7 +25,7 @@
   register: pgs12cis_hba_config_file_get
 
 - name: "PRELIM | Set variable for service name"
-  set_fact:
+  ansible.builtin.set_fact:
       pgs12cis_postgresql_service_auto: "{{ (ansible_distribution == 'Ubuntu') | ternary('postgresql', 'postgresql-12') }}"
 
 - name: "PRELIM | 2.1 | Get postgresql user home folder"
@@ -47,7 +47,7 @@
         become_user: "{{ pgs12cis_pgs12_usr }}"
 
       - name: "PRELIM | Finding the PostgreSQL Configured Data Directory (PGDATA) | Make var easier to use"
-        set_fact:
+        ansible.builtin.set_fact:
             pgs12cis_data_folder: "{{ pgs12cis_pgdata_cmd.stdout }}"
   when:
       - pgs12cis_rule_3_1_2

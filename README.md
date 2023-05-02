@@ -32,9 +32,9 @@ PostgresSQL 12 CIS
 
 ## Looking for support?
 
-[Lockdown Enterprise](https://www.lockdownenterprise.com)
+[Lockdown Enterprise](https://www.lockdownenterprise.com#GH_AL_POSTGRES_12_CIS)
 
-[Ansible support](https://www.mindpointgroup.com/cybersecurity-products/ansible-counselor)
+[Ansible support](https://www.mindpointgroup.com/cybersecurity-products/ansible-counselor#GH_AL_POSTGRES_12_CIS)
 
 ### Community
 
@@ -57,7 +57,7 @@ To use release version please point to main branch and relevant release for the 
 ## Matching a security Level for CIS
 
 
-The control found in defaults main also need to reflect this as this control the testing thet takes place if you are using the audit component.
+The control found in defaults main also need to reflect this as this control the testing that takes place if you are using the audit component.
 
 ## Coming from a previous release
 
@@ -69,10 +69,10 @@ Further details can be seen in the [Changelog](./ChangeLog.md)
 ## Documentation
 
 - [Read The Docs](https://ansible-lockdown.readthedocs.io/en/latest/)
-- [Getting Started](https://www.lockdownenterprise.com/docs/getting-started-with-lockdown)
-- [Customizing Roles](https://www.lockdownenterprise.com/docs/customizing-lockdown-enterprise)
-- [Per-Host Configuration](https://www.lockdownenterprise.com/docs/per-host-lockdown-enterprise-configuration)
-- [Getting the Most Out of the Role](https://www.lockdownenterprise.com/docs/get-the-most-out-of-lockdown-enterprise)
+- [Getting Started](https://www.lockdownenterprise.com/docs/getting-started-with-lockdown#GH_AL_POSTGRES_12_CIS)
+- [Customizing Roles](https://www.lockdownenterprise.com/docs/customizing-lockdown-enterprise#GH_AL_POSTGRES_12_CIS)
+- [Per-Host Configuration](https://www.lockdownenterprise.com/docs/per-host-lockdown-enterprise-configuration#GH_AL_POSTGRES_12_CIS)
+- [Getting the Most Out of the Role](https://www.lockdownenterprise.com/docs/get-the-most-out-of-lockdown-enterprise#GH_AL_POSTGRES_12_CIS)
 
 ## Requirements
 
@@ -91,7 +91,7 @@ relevant collections
   - [Tower User Guide](https://docs.ansible.com/ansible-tower/latest/html/userguide/index.html)
   - [Ansible Community Info](https://docs.ansible.com/ansible/latest/community/index.html)
 - Functioning Ansible and/or Tower Installed, configured, and running. This includes all of the base Ansible/Tower configurations, needed packages installed, and infrastructure setup.
-- Please read through the tasks in this role to gain an understanding of what each control is doing. Some of the tasks are disruptive and can have unintended consiquences in a live production system. Also familiarize yourself with the variables in the defaults/main.yml file.
+- Please read through the tasks in this role to gain an understanding of what each control is doing. Some of the tasks are disruptive and can have unintended consequences in a live production system. Also familiarize yourself with the variables in the defaults/main.yml file.
 
 **Technical Dependencies:**
 
@@ -101,11 +101,11 @@ relevant collections
 - libselinux-python
 - pip packages
   - jmespath ( complete list found in requirements.txt)
-- collections found in collections/requirememnts.yml
+- collections found in collections/requirements.yml
 
 ## Role Variables
 
-This role is designed that the end user should not have to edit the tasks themselves. All customizing should be done by overriding the required varaibles as found in defaults/main.yml file. e.g. using inventory, group_vars, extra_vars
+This role is designed that the end user should not have to edit the tasks themselves. All customizing should be done by overriding the required variables as found in defaults/main.yml file. e.g. using inventory, group_vars, extra_vars
 
 ## Tags
 
@@ -137,9 +137,9 @@ On our [Discord Server](https://discord.io/ansible-lockdown) to ask questions, d
 
 ## Caution(s)
 
-This role **will make changes to the system** which may have unintended concequences.
+This role **will make changes to the system** which may have unintended consequences.
 
-This role was developed against a clean install of the Operating System. If you are implimenting to an existing system please review this role for any site specific changes that are needed.
+This role was developed against a clean install of the Operating System. If you are implementing to an existing system please review this role for any site specific changes that are needed.
 
 To use release version please point to main branch
 
@@ -178,7 +178,7 @@ ansible-core 2.13.4  - python 3.10
 
 - Functioning Ansible and/or Tower Installed, configured, and running. This includes all of the base Ansible/Tower configurations, needed packages installed, and infrastructure setup.
 - Please read through the tasks in this role to gain an understanding of what each control is doing.
-  - Some of the tasks are disruptive and can have unintended consiquences in a live production system. Also familiarize yourself with the variables in the defaults/main.yml file
+  - Some of the tasks are disruptive and can have unintended consequences in a live production system. Also familiarize yourself with the variables in the defaults/main.yml file
 
 ## Dependencies
 
@@ -188,4 +188,4 @@ ansible-core 2.13.4  - python 3.10
 - libselinux-python
 - pip packages
   - jmespath ( complete list found in requirements.txt)
-- collections found in collections/requirememnts.yml
+- collections found in collections/requirements.yml
