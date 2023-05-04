@@ -1095,7 +1095,7 @@
         register: pgs12cis_6_7_fips_capability
 
       - name: "6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Setup FIPS Enabled RHEL7"
-        include_tasks: rhel7_fips.yml
+        ansible.builtin.include_tasks: rhel7_fips.yml
         when:
             - ansible_distribution_major_version == "7"
             - "'fips' in pgs12cis_6_7_fips_capability.stdout|lower"
