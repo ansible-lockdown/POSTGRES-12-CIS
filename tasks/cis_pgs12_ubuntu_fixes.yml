@@ -4,7 +4,7 @@
 - name: "1.1 | AUDIT | Ensure packages are obtained from authorized repositories"
   block:
       - name: "1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Get repo list Ubuntu"
-        ansible.builtin.command: apt-cache policy
+        ansible.builtin.shell: apt-cache policy
         changed_when: false
         failed_when: false
         register: pgs12cis_1_1_enabled_repos_ub
@@ -99,7 +99,7 @@
       - rule_1.4
 
 - name: "1.5 | PATCH | Ensure Data Cluster Initialized Successfully"
-  ansible.builtin.command: "/usr/lib/postgresql/12/bin/initdb -D {{ pgs12cis_db_data_dir_ub }}"
+  ansible.builtin.shell: "/usr/lib/postgresql/12/bin/initdb -D {{ pgs12cis_db_data_dir_ub }}"
   changed_when: '"Success" in pgs12cis_1_5_db_initialize.stdout'
   failed_when: false
   become_user: "{{ pgs12cis_pgs12_usr }}"
@@ -603,7 +603,7 @@
             pgs12cis_disallowed_superusers: "{{ pgs12cis_4_2_all_postgresql_users.stdout_lines | difference(pgs12cis_allowed_superusers) }}"
 
       - name: "4.2 | PATCH | Ensure excessive administrative privileges are revoked | Remove excessive privileges from users"
-        ansible.builtin.command: psql -c 'alter user {{ item }} with NOSUPERUSER NOCREATEROLE NOCREATEDB NOREPLICATION NOBYPASSRLS ;'
+        ansible.builtin.shell: psql -c 'alter user {{ item }} with NOSUPERUSER NOCREATEROLE NOCREATEDB NOREPLICATION NOBYPASSRLS ;'
         become_user: "{{ pgs12cis_pgs12_usr }}"
         with_items:
             - "{{ pgs12cis_disallowed_superusers }}"
@@ -673,7 +673,7 @@
 - name: "4.6 | AUDIT | Ensure Row Level Security (RLS) is configured correctly"
   block:
       - name: "4.6 | AUDIT | Ensure Row Level Security (RLS) is configured correctly | Get databases using RLS"
-        ansible.builtin.command: psql -c 'SELECT oid, relname, relrowsecurity FROM pg_class WHERE relrowsecurity IS TRUE;'
+        ansible.builtin.shell: psql -c 'SELECT oid, relname, relrowsecurity FROM pg_class WHERE relrowsecurity IS TRUE;'
         changed_when: false
         failed_when: false
         become_user: "{{ pgs12cis_pgs12_usr }}"
@@ -736,7 +736,7 @@
 - name: "4.8 | AUDIT | Make use of default roles"
   block:
       - name: "4.8 | AUDIT | Make use of default roles | Get superusers"
-        ansible.builtin.command: psql -c 'select rolname from pg_roles where rolsuper is true;'
+        ansible.builtin.shell: psql -c 'select rolname from pg_roles where rolsuper is true;'
         changed_when: false
         failed_when: false
         become_user: "{{ pgs12cis_pgs12_usr }}"
@@ -836,7 +836,7 @@
 - name: "6.2 | AUDIT | Ensure 'backend' runtime parameters are configured correctly"
   block:
       - name: "6.2 | AUDIT | Ensure 'backend' runtime parameters are configured correctly | Get backend runtime parameters"
-        ansible.builtin.command: psql -c "SELECT name, setting FROM pg_settings WHERE context IN ('backend','superuser-backend') ORDER BY 1;"
+        ansible.builtin.shell: psql -c "SELECT name, setting FROM pg_settings WHERE context IN ('backend','superuser-backend') ORDER BY 1;"
         changed_when: false
         failed_when: false
         become_user: "{{ pgs12cis_pgs12_usr }}"
@@ -876,7 +876,7 @@
 - name: "6.4 | AUDIT | Ensure 'SIGHUP' Runtime Parameters are Configured"
   block:
       - name: "6.4 | AUDIT | Ensure 'SIGHUP' Runtime Parameters are Configured | Get sighup settings"
-        ansible.builtin.command: psql -c "SELECT name, setting FROM pg_settings WHERE context = 'sighup' ORDER BY 1;"
+        ansible.builtin.shell: psql -c "SELECT name, setting FROM pg_settings WHERE context = 'sighup' ORDER BY 1;"
         changed_when: false
         failed_when: false
         become_user: "{{ pgs12cis_pgs12_usr }}"
@@ -906,7 +906,7 @@
 - name: "6.5 | AUDIT | Ensure 'Superuser' Runtime Parameters are Configured"
   block:
       - name: "6.5 | AUDIT | Ensure 'Superuser' Runtime Parameters are Configured | Get superuser settings"
-        ansible.builtin.command: psql -c "SELECT name, setting FROM pg_settings WHERE context = 'superuser' ORDER BY 1;"
+        ansible.builtin.shell: psql -c "SELECT name, setting FROM pg_settings WHERE context = 'superuser' ORDER BY 1;"
         changed_when: false
         failed_when: false
         become_user: "{{ pgs12cis_pgs12_usr }}"
@@ -945,7 +945,7 @@
 - name: "6.6 | AUDIT | Ensure 'User' Runtime Parameters are Configured"
   block:
       - name: "6.6 | AUDIT | Ensure 'User' Runtime Parameters are Configured | Get user settings"
-        ansible.builtin.command: psql -c "SELECT name, setting FROM pg_settings WHERE context = 'user' ORDER BY 1;"
+        ansible.builtin.shell: psql -c "SELECT name, setting FROM pg_settings WHERE context = 'user' ORDER BY 1;"
         changed_when: false
         failed_when: false
         become_user: "{{ pgs12cis_pgs12_usr }}"
@@ -977,7 +977,7 @@
 - name: "6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used"
   block:
       - name: "6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Check for Fips being enabled"
-        ansible.builtin.command: cat /proc/sys/crypto/fips_enabled
+        ansible.builtin.shell: cat /proc/sys/crypto/fips_enabled
         changed_when: false
         failed_when: false
         register: pgs12cis_ubuntu_fips_enabled
@@ -1036,7 +1036,7 @@
       - rule_6.8
 
 - name: "6.9 | PATCH | Ensure the pgcrypto extension is installed and configured correctly"
-  ansible.builtin.command: psql -c "CREATE EXTENSION pgcrypto;"
+  ansible.builtin.shell: psql -c "CREATE EXTENSION pgcrypto;"
   changed_when: "'CREATE' in pgs12cis_6_9_pgcrypto_status.stdout"
   failed_when: false
   register: pgs12cis_6_9_pgcrypto_status
@@ -1063,7 +1063,7 @@
         register: pgs12cis_7_1_replication_users
 
       - name: "7.1 | | PATCH | Ensure a replication-only user is created and used for streaming replication | Create replication user"
-        ansible.builtin.command: psql -c "create user {{ pgs12cis_replication_user }} REPLICATION encrypted password '{{ pgs12cis_replication_user_pw }}';"
+        ansible.builtin.shell: psql -c "create user {{ pgs12cis_replication_user }} REPLICATION encrypted password '{{ pgs12cis_replication_user_pw }}';"
         failed_when: false
         become_user: "{{ pgs12cis_pgs12_usr }}"
         when: "pgs12cis_replication_user not in pgs12cis_7_1_replication_users.stdout"
@@ -1150,7 +1150,7 @@
 - name: "8.1 | AUDIT | Ensure PostgreSQL configuration files are outside the data cluster"
   block:
       - name: "8.1 | AUDIT | Ensure PostgreSQL configuration files are outside the data cluster | Get file list"
-        ansible.builtin.command: psql -c "select name, setting from pg_settings where name ~ '.*_file$';"
+        ansible.builtin.shell: psql -c "select name, setting from pg_settings where name ~ '.*_file$';"
         changed_when: false
         failed_when: false
         become_user: "{{ pgs12cis_pgs12_usr }}"
@@ -1180,7 +1180,7 @@
 - name: "8.2 | AUDIT | Ensure PostgreSQL subdirectory locations are outside the data cluster"
   block:
       - name: "8.2 | AUDIT | Ensure PostgreSQL subdirectory locations are outside the data cluster | Get directory settings"
-        ansible.builtin.command: psql -c "select name, setting from pg_settings where (name ~ '_directory$' or name ~ '_tablespace');"
+        ansible.builtin.shell: psql -c "select name, setting from pg_settings where (name ~ '_directory$' or name ~ '_tablespace');"
         changed_when: false
         failed_when: false
         become_user: "{{ pgs12cis_pgs12_usr }}"
@@ -1210,7 +1210,7 @@
 - name: "8.3 | AUDIT | Ensure the backup and restore tool, 'pgBackRest', is installed and configured"
   block:
       - name: "8.3 | AUDIT | Ensure the backup and restore tool, 'pgBackRest', is installed and configured | Check for pgBackRest"
-        ansible.builtin.command: which pgbackrest
+        ansible.builtin.shell: which pgbackrest
         changed_when: false
         failed_when: false
         register: pgs12cis_pgbackrest_status
@@ -1244,7 +1244,7 @@
 - name: "8.4 | AUDIT | Ensure miscellaneous configuration settings are correct"
   block:
       - name: "8.4 | AUDIT | Ensure miscellaneous configuration settings are correct | Get settings"
-        ansible.builtin.command: psql -c "select name, setting from pg_settings where name in ('external_pid_file', 'unix_socket_directories','shared_preload_libraries','dynamic_library_path',' local_preload_libraries','session_preload_libraries');"
+        ansible.builtin.shell: psql -c "select name, setting from pg_settings where name in ('external_pid_file', 'unix_socket_directories','shared_preload_libraries','dynamic_library_path',' local_preload_libraries','session_preload_libraries');"
         changed_when: false
         failed_when: false
         become_user: "{{ pgs12cis_pgs12_usr }}"

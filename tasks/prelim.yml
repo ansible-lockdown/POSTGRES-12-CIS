@@ -79,7 +79,7 @@
         register: pgs12cis_certs_status
 
       - name: "PRELIM | 6.8 | Generate Self-Signed Cert | Create self-signed certificates"
-        command: 'openssl req -new -x509 -days 365 -nodes -text -out {{ pgs12cis_data_folder }}/server.crt -keyout {{ pgs12cis_data_folder }}/server.key -subj "/CN={{ ansible_nodename }}"'
+        ansible.builtin.shell: 'openssl req -new -x509 -days 365 -nodes -text -out {{ pgs12cis_data_folder }}/server.crt -keyout {{ pgs12cis_data_folder }}/server.key -subj "/CN={{ ansible_nodename }}"'
         when: pgs12cis_certs_status.matched == 0
 
       - name: "PRELIM | 6.8 | Generate Self-Signed Cert | Set permissions on key file"

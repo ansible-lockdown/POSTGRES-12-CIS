@@ -12,6 +12,8 @@
   tags:
       - RedHat
       - CentOS
+      - Rocky
+      - AlmaLinux
 
 - name: Ubuntu Fixes
   ansible.builtin.import_tasks: cis_pgs12_ubuntu_fixes.yml
@@ -19,7 +21,8 @@
       - ansible_distribution == 'Ubuntu'
       - ansible_distribution_major_version == "16" or
         ansible_distribution_major_version == "18" or
-        ansible_distribution_major_version == "20"
+        ansible_distribution_major_version == "20" or
+        ansible_distribution_major_version == "22"
   tags:
       - Ubuntu
 

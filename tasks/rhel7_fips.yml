@@ -9,7 +9,7 @@
         notify: rebuild initramfs
 
       - name: "6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used| Check if prelink package is installed"
-        ansible.builtin.command: rpm -q prelink
+        ansible.builtin.shell: rpm -q prelink
         check_mode: false
         changed_when: false
         failed_when: false
@@ -26,14 +26,14 @@
         when: pgs12CIS_6_7_prelink_installed.rc == 0
 
       - name: "6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Check for GRUB_CMDLINE_LINUX in /etc/default/grub"
-        ansible.builtin.command: grep -P '^\s*GRUB_CMDLINE_LINUX=".*"$' /etc/default/grub
+        ansible.builtin.shell: grep -P '^\s*GRUB_CMDLINE_LINUX=".*"$' /etc/default/grub
         check_mode: false
         failed_when: false
         changed_when: pgs12cis_6_7_default_grub_missing_audit.rc > 0
         register: pgs12cis_6_7_default_grub_missing_audit
 
       - name: "6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | parse sane GRUB_CMDLINE_LINUX from /proc/cmdline"
-        ansible.builtin.command: grep -oP ' ro \K.*?(?= ?LANG=)' /proc/cmdline
+        ansible.builtin.shell: grep -oP ' ro \K.*?(?= ?LANG=)' /proc/cmdline
         check_mode: false
         changed_when: false
         failed_when: pgs12cis_grub_cmdline_linux_audit.rc > 1
@@ -87,7 +87,7 @@
         register: result
 
       - name: "6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Verify kernel parameters in /etc/default/grub"
-        ansible.builtin.command: grep -P '^\s*GRUB_CMDLINE_LINUX=".*(?<=[" ]){{ item | regex_escape }}(?=[" ]).*"$' /etc/default/grub
+        ansible.builtin.shell: grep -P '^\s*GRUB_CMDLINE_LINUX=".*(?<=[" ]){{ item | regex_escape }}(?=[" ]).*"$' /etc/default/grub
         check_mode: false
         with_items:
             - fips=1

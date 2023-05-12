@@ -6,10 +6,10 @@
       state: restarted
 
 - name: rebuild initramfs
-  ansible.builtin.command: dracut -f
+  ansible.builtin.shell: dracut -f
 
 - name: make grub2 config
-  ansible.builtin.command: /usr/sbin/grub2-mkconfig --output={{ pgs12cis_grub_cfg_path }}
+  ansible.builtin.shell: /usr/sbin/grub2-mkconfig --output={{ pgs12cis_grub_cfg_path }}
   when:
       - not pgs12cis_system_is_container
 
