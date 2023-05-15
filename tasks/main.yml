@@ -7,8 +7,7 @@
   ansible.builtin.import_tasks: cis_pgs12_redhat_fixes.yml
   when:
       - ansible_distribution_file_variety == 'RedHat'
-      - ansible_distribution_major_version == "7" or
-        ansible_distribution_major_version == "8"
+      - ansible_distribution_major_version >= "7"
   tags:
       - RedHat
       - CentOS
@@ -19,10 +18,7 @@
   ansible.builtin.import_tasks: cis_pgs12_ubuntu_fixes.yml
   when:
       - ansible_distribution == 'Ubuntu'
-      - ansible_distribution_major_version == "16" or
-        ansible_distribution_major_version == "18" or
-        ansible_distribution_major_version == "20" or
-        ansible_distribution_major_version == "22"
+      - ansible_distribution_major_version >= "16"
   tags:
       - Ubuntu
 

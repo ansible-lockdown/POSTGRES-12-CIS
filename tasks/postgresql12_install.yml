@@ -24,13 +24,6 @@
         ansible.builtin.package:
             name: ['postgresql12', 'postgresql12-server']
             state: present
-        when: ansible_distribution_major_version == "8"
-
-      - name: "PRELIM | Install and Start PostgreSQL | Install PostgreSQL 12 RHEL/CentOS 7"
-        ansible.builtin.package:
-            name: ['postgresql12', 'postgresql12-server']
-            state: present
-        when: ansible_distribution_major_version == "7"
 
       - name: "PRELIM | Install and Start PostgreSQL | Initialize PostgreSQL 12 RHEL/CentOS 7 and 8"
         ansible.builtin.shell: /usr/pgsql-12/bin/postgresql-12-setup initdb

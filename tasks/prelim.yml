@@ -8,7 +8,6 @@
   ansible.builtin.package:
       name: acl
       state: present
-  when: ansible_distribution == 'Ubuntu'
 
 - name: "PRELIM | Get postgres config file path"
   ansible.builtin.shell: psql -U postgres -c 'SHOW config_file' | tail -n+3 | head -n 1 | cut -c2-
@@ -96,17 +95,10 @@
 
 - name: "PRELIM | 6.9 | Install PostgreSQL contrib package"
   block:
-      - name: "PRELIM | 6.9 | Install PostgreSQL contrib package | RHEL 8"
-        ansible.builtin.dnf:
+      - name: "PRELIM | 6.9 | Install PostgreSQL contrib package"
+        ansible.builtin.package:
             name: postgresql12-contrib
             state: present
-        when: ansible_distribution_major_version == "8"
-
-      - name: "PRELIM | 6.9 | Install PostgreSQL contrib package | RHEL 7"
-        ansible.builtin.yum:
-            name: postgresql12-contrib
-            state: present
-        when: ansible_distribution_major_version == "7"
   when:
       - pgs12cis_rule_6_9
       - pgs12cis_section6
