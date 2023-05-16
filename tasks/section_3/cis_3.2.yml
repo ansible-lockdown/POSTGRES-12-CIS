@@ -2,7 +2,7 @@
 
 - name: "3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled"
   block:
-      - name: "3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Install pgAudit RHEL8"
+      - name: "3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Install pgAudit RHEL"
         ansible.builtin.package:
             name: pgaudit14_12
             state: present

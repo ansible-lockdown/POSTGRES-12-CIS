@@ -1,0 +1,29 @@
+---
+
+- name: "4.3 | AUDIT | Ensure excessive function privileges are revoked"
+  block:
+      - name: "4.3 | AUDIT | Ensure excessive function privileges are revoked"
+        ansible.builtin.shell: psql -c "SELECT nspname, proname, proargtypes, prosecdef, rolname, proconfig FROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid JOIN pg_authid a ON a.oid = p.proowner WHERE prosecdef OR NOT proconfig IS NULL;"
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_4_3_security_definer
+
+      - name: "4.3 | AUDIT | Ensure excessive function privileges are revoked"
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! Please review the list below and confirm all results should have Security Definer status. This is a manual task."
+                - "When possible revoke Security Definer, Security Invoker is another option that is valid to use."
+                - "{{ pgs12cis_4_3_security_definer.stdout_lines }}"
+
+      - name: "4.3 | AUDIT | Ensure excessive function privileges are revoked | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '4.3'
+  when:
+      - pgs12cis_rule_4_3
+      - pgs12cis_section4
+  tags:
+      - level1-postgresqlonlinux
+      - audit
+      - rule_4.3

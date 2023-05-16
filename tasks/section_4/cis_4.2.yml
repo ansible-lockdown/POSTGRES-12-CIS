@@ -1,0 +1,27 @@
+---
+
+- name: "4.2 | PATCH | Ensure excessive administrative privileges are revoked"
+  block:
+      - name: "4.2 | AUDIT | Ensure excessive administrative privileges are revoked | Get list of PostgreSQL users"
+        ansible.builtin.shell: psql -t -c "\du" | awk '{print $1}' | sed -r '/^\s*$/d'
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_4_2_all_postgresql_users
+
+      - name: "4.2 | PATCH | Ensure excessive administrative privileges are revoked | Get list of disallowed superusers"
+        ansible.builtin.set_fact:
+            pgs12cis_disallowed_superusers: "{{ pgs12cis_4_2_all_postgresql_users.stdout_lines | difference(pgs12cis_allowed_superusers) }}"
+
+      - name: "4.2 | PATCH | Ensure excessive administrative privileges are revoked | Remove excessive privileges from users"
+        ansible.builtin.shell: psql -c 'alter user {{ item }} with NOSUPERUSER NOCREATEROLE NOCREATEDB NOREPLICATION NOBYPASSRLS ;'
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        with_items:
+            - "{{ pgs12cis_disallowed_superusers }}"
+  when:
+      - pgs12cis_rule_4_2
+      - pgs12cis_section4
+  tags:
+      - level1-postgresql
+      - patch
+      - rule_4.2
