@@ -1,6 +1,6 @@
 ---
 # Section 1
-# Installation and Patches
+# Installation and Patches RHEL
 - name: "1.1 | AUDIT | Ensure packages are obtained from authorized repositories"
   block:
       - name: "1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Get repo list RHEL8"
@@ -45,7 +45,7 @@
       - rule_1.1
 
 # Section 1
-# Installation and Patches
+# Installation and Patches Ubuntu
 - name: "1.1 | AUDIT | Ensure packages are obtained from authorized repositories"
   block:
       - name: "1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Get repo list Ubuntu"
@@ -59,7 +59,7 @@
             msg:
                 - "Warning!! Below are the enabled repo's. Please review to confirm these are authorized repositories. This is a manual task."
                 - "{{ pgs12cis_1_1_enabled_repos_ub.stdout_lines }}"
-            when: ansible_distribution == 'Ubuntu'
+        when: ansible_distribution == 'Ubuntu'
 
       - name: "1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Present"
         ansible.builtin.import_tasks: warning_facts.yml

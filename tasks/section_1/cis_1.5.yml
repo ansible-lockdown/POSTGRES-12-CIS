@@ -1,0 +1,30 @@
+---
+
+- name: "1.5 | PATCH | Ensure Data Cluster Initialized Successfully"
+  ansible.builtin.shell: 'PGSETUP_INITDB_OPTIONS="-k" /usr/pgsql-12/bin/postgresql-12-setup initdb'
+  changed_when: '"OK" in pgs12cis_1_5_db_initialize.stdout'
+  failed_when: false
+  register: pgs12cis_1_5_db_initialize
+  when:
+      - pgs12cis_rule_1_5
+      - pgs12cis_section1
+  tags:
+      - level1-postgresqlonlinux
+      - patch
+      - rhel
+      - rule_1.5
+
+- name: "1.5 | PATCH | Ensure Data Cluster Initialized Successfully"
+  ansible.builtin.shell: "/usr/lib/postgresql/12/bin/initdb -D {{ pgs12cis_db_data_dir_ub }}"
+  changed_when: '"Success" in pgs12cis_1_5_db_initialize.stdout'
+  failed_when: false
+  become_user: "{{ pgs12cis_pgs12_usr }}"
+  register: pgs12cis_1_5_db_initialize
+  when:
+      - pgs12cis_rule_1_5
+      - pgs12cis_section1
+  tags:
+      - level1-postgresqlonlinux
+      - patch
+      - ubuntu
+      - rule_1.5

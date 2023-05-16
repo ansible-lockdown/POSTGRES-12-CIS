@@ -1,0 +1,27 @@
+---
+
+- name: "1.4 | PATCH | Ensure systemd Service Files Are Enabled"
+  ansible.builtin.service:
+      name: "{{ pgs12cis_postgresql_service }}"
+      enabled: true
+  when:
+      - pgs12cis_rule_1_4
+      - pgs12cis_section1
+  tags:
+      - level1-postgresqlonlinux
+      - patch
+      - rhel
+      - rule_1.4
+
+- name: "1.4 | PATCH | Ensure systemd Service Files Are Enabled"
+  ansible.builtin.service:
+      name: "{{ pgs12cis_postgresql_service }}"
+      enabled: true
+  when:
+      - pgs12cis_rule_1_4
+      - pgs12cis_section1
+  tags:
+      - level1-postgresqlonlinux
+      - patch
+      - ubuntu
+      - rule_1.4

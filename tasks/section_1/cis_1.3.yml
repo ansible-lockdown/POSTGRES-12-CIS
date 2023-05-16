@@ -1,0 +1,75 @@
+---
+
+- name: "1.3 | AUDIT | Ensure Installation of Community Packages"
+  block:
+      - name: "1.3 | AUDIT | Ensure Installation of Community Packages | Get installed packages and repo RHEL8"
+        ansible.builtin.shell: dnf info $(rpm -qa|grep postgres) | egrep '^Name|^Version|^From'
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_1_3_installed_pckg_rpm_rh8
+        when: ansible_distribution_major_version == "8"
+
+      - name: "1.3 | AUDIT | Ensure Installation of Community Packages | Get installed packages and repo RHEL7"
+        ansible.builtin.shell: yum info $(rpm -qa|grep postgres) | egrep '^Name|^Version|^From'
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_1_3_installed_pckg_rpm_rh7
+        when: ansible_distribution_major_version == "7"
+
+      - name: "1.3 | AUDIT | Ensure Installation of Community Packages | Show installed packages and repo RHEL8"
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! Below are the installed postgres packages and where they came from. This is a manual task."
+                - "Please review and if the expected community packages are not installed or did not come from the PGDG repo, this is a fail"
+                - "{{ pgs12cis_1_3_installed_pckg_rpm_rh8.stdout_lines }}"
+        when: ansible_distribution_major_version == "8"
+
+      - name: "1.3 | AUDIT | Ensure Installation of Community Packages | Show installed packages and repo RHEL7"
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! Below are the installed postgres packages and where they came from. This is a manual task."
+                - "Please review and if the expected community packages are not installed or did not come from an PGDG repo, this is a fail."
+                - "{{ pgs12cis_1_3_installed_pckg_rpm_rh7.stdout_lines }}"
+        when: ansible_distribution_major_version == "7"
+
+      - name: "1.3 | AUDIT | Ensure Installation of Community Packages | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '1.3'
+  when:
+      - pgs12cis_rule_1_3
+      - pgs12cis_section1
+  tags:
+      - level1-postgresqlonlinux
+      - audit
+      - rhel
+      - rule_1.3
+
+- name: "1.3 | AUDIT | Ensure Installation of Community Packages"
+  block:
+      - name: "1.3 | AUDIT | Ensure Installation of Community Packages | Get installed packages and repo Ubuntu"
+        ansible.builtin.shell: apt list --installed | grep postgres
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_1_3_installed_pckg_ub
+
+      - name: "1.3 | AUDIT | Ensure Installation of Community Packages | Show installed packages | Absent"
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! Below are the installed postgres packages"
+                - "Please review and if the expected community packages are not installed"
+                - "or did not come from the PGDG repo, this is a fail. This is a manual task."
+                - "{{ pgs12cis_1_3_installed_pckg_ub.stdout_lines }}"
+
+      - name: "1.3 | AUDIT | Ensure Installation of Community Packages | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '1.3'
+  when:
+      - pgs12cis_rule_1_3
+      - pgs12cis_section1
+  tags:
+      - level1-postgresqlonlinux
+      - audit
+      - ubuntu
+      - rule_1.3
