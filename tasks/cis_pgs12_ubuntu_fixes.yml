@@ -1,37 +1,5 @@
 ---
 
-# Section 2
-# Directory and File Permissions
-- name: "2.1 | PATCH | Ensure the file permissions mask is correct"
-  block:
-      - name: "2.1 | AUDIT | Ensure the file permissions mask is correct | Get user environment file (.bashrc, .bash_profile, or .profile}"
-        ansible.builtin.shell: ls -a "{{ pgs12cis_pgs12_usr_home_dir }}" | grep -e '.bashrc\|.bash_profile\|.profile'
-        changed_when: false
-        failed_when: false
-        register: pgs12cis_2_1_env_file
-
-      - name: "2.1 | PATCH | Ensure the file permissions mask is correct | Set umask"
-        ansible.builtin.lineinfile:
-            path: "{{ pgs12cis_pgs12_usr_home_dir }}/{{ pgs12cis_2_1_env_file.stdout }}"
-            regexp: '^umask|^UMASK'
-            line: "umask 0{{ pgs12cis_umask_value }}"
-        when: pgs12cis_2_1_env_file.stdout != ""
-
-      - name: "2.1 | PATCH | Ensure the file permissions mask is correct | Set umask if file doesn't exist"
-        ansible.builtin.lineinfile:
-            path: "{{ pgs12cis_pgs12_usr_home_dir }}/.bashrc"
-            line: "umask 0{{ pgs12cis_umask_value }}"
-            create: true
-        when: pgs12cis_2_1_env_file.stdout == ""
-  when:
-      - pgs12cis_rule_2_1
-      - pgs12cis_section2
-  tags:
-      - level1-postgresqlonlinux
-      - patch
-      - ubuntu
-      - rule_2.1
-
 # this control makes it so you can't get run commands in postgres user
 - name: "2.2 | PATCH | Ensure the PostgreSQL pg_wheel group membership is correct"
   block:
