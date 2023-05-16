@@ -99,6 +99,7 @@
         ansible.builtin.package:
             name: postgresql12-contrib
             state: present
+        when: ansible_distribution_file_variety == 'RedHat'
   when:
       - pgs12cis_rule_6_9
       - pgs12cis_section6
