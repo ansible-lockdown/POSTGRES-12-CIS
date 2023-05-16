@@ -1,0 +1,4 @@
+---
+
+- name: "SECTION | 1.1.1.x | Ensure packages are obtained from authorized repositories"
+  ansible.builtin.import_tasks: cis_1.1yml

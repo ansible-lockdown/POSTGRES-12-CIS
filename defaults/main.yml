@@ -18,6 +18,9 @@ pgs12cis_section6: true
 pgs12cis_section7: true
 pgs12cis_section8: true
 
+pgs12cis_level_1: true
+pgs12cis_level_2: true
+
 # Section 1
 # Installation and Patches
 pgs12cis_rule_1_1: true
