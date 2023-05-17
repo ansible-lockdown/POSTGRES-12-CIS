@@ -11,7 +11,6 @@
   tags:
       - level1-postgresqlonlinux
       - patch
-      - rhel
       - rule_1.5
 
 - name: "1.5 | PATCH | Ensure Data Cluster Initialized Successfully"
@@ -23,6 +22,7 @@
   when:
       - pgs12cis_rule_1_5
       - pgs12cis_section1
+      - ansible_distribution == 'Ubuntu'
   tags:
       - level1-postgresqlonlinux
       - patch
