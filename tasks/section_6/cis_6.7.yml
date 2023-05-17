@@ -1,0 +1,90 @@
+---
+
+- name: "6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used"
+  block:
+      - name: "6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Check for FIPS capability"
+        ansible.builtin.shell: openssl version
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_6_7_fips_capability
+
+      - name: "6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Setup FIPS Enabled RHEL7"
+        ansible.builtin.include_tasks: rhel7_fips.yml
+        when:
+            - ansible_distribution_major_version == "7"
+            - "'fips' in pgs12cis_6_7_fips_capability.stdout|lower"
+
+      - name: "6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Check FIPS status"
+        ansible.builtin.shell: fips-mode-setup --check
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_6_7_fips_check
+        when: ansible_distribution_major_version == "8"
+
+      - name: "6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Set FIPS enabled RHEL8"
+        ansible.builtin.shell: fips-mode-setup --enable
+        notify: reboot system
+        when:
+            - "'FIPS' in pgs12cis_6_7_fips_capability.stdout"
+            - "'disabled' in pgs12cis_6_7_fips_check.stdout"
+            - ansible_distribution_major_version == "8"
+
+      - name: "6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Warning that system is not FIPS capable"
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! The system does not support FIPS 140-2, this is a finding."
+                - "Your system will not conform to control 6.7 of the PostgreSQL CIS. This is manual task."
+        when: "'fips' not in pgs12cis_6_7_fips_capability.stdout|lower"
+
+      - name: "6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+        vars:
+            warn_control_id: '6.7'
+  when:
+      - pgs12cis_rule_6_7
+      - pgs12cis_section6
+      - ansible_distribution_file_variety == 'RedHat'
+  tags:
+      - level1-postgresqlonlinux
+      - patch
+      - rhel
+      - rule_6.7
+
+- name: "6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used"
+  block:
+      - name: "6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Check for Fips being enabled"
+        ansible.builtin.shell: cat /proc/sys/crypto/fips_enabled
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_ubuntu_fips_enabled
+
+      - name: "6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Alert that FIPS is not enabled | Absent"
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! The system does not have FIPS 140-2 enabled"
+                - "This is a finding and your system will not conform to control 6.7 of the PostgreSQL CIS"
+                - "Enabling FIPS 140-2 and installing related packages requires an Ubuntu Advantage account"
+                - "Please follow the guide in this link to enable FIPS 140-2. This is a manual task."
+                - "https://security-certs.docs.ubuntu.com/en/fips"
+        when:
+            - pgs12cis_ubuntu_fips_enabled.stdout == "" or
+              "'0' in pgs12cis_ubuntu_fips_enabled.stdout"
+
+      - name: "6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Alert that FIPS is enabled"
+        ansible.builtin.debug:
+            msg: "Good News! FIPS 140-2 is enabled"
+        when: "'1' in pgs12cis_ubuntu_fips_enabled.stdout"
+
+      - name: "6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '6.7'
+  when:
+      - pgs12cis_rule_6_7
+      - pgs12cis_section6
+      - ansible_distribution == 'Ubuntu'
+  tags:
+      - level1-postgresqlonlinux
+      - audit
+      - ubuntu
+      - rule_6.7

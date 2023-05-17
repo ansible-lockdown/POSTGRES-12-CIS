@@ -1,0 +1,32 @@
+---
+
+- name: "6.6 | AUDIT | Ensure 'User' Runtime Parameters are Configured"
+  block:
+      - name: "6.6 | AUDIT | Ensure 'User' Runtime Parameters are Configured | Get user settings"
+        ansible.builtin.shell: psql -c "SELECT name, setting FROM pg_settings WHERE context = 'user' ORDER BY 1;"
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_6_6_user_settings
+
+      - name: "6.6 | AUDIT | Ensure 'User' Runtime Parameters are Configured | Message out settings"
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! In the matter of a user session, the login sessions must be validated that it is not executing undesired parameter changes."
+                - "In the matter of attributes that have been changed in entities, they must be manually reverted to its default value(s)."
+                - "This is a manual task."
+                - "Below are the user settings"
+                - "{{ pgs12cis_6_6_user_settings.stdout_lines }}"
+
+      - name: "6.6 | AUDIT | Ensure 'User' Runtime Parameters are Configured | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '6.6'
+  when:
+      - pgs12cis_rule_6_6
+      - pgs12cis_section6
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - audit
+      - rule_6.6

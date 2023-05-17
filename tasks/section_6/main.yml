@@ -1,0 +1,28 @@
+---
+
+- name: "SECTION | 6.1 | Ensure 'Attack Vectors' Runtime Parameters are Configured"
+  ansible.builtin.import_tasks: cis_6.1.yml
+
+- name: "SECTION | 6.2 | Ensure 'backend' runtime parameters are configured correctly"
+  ansible.builtin.import_tasks: cis_6.2.yml
+
+- name: "SECTION | 6.3 | Ensure 'Postmaster' Runtime Parameters are Configured"
+  ansible.builtin.import_tasks: cis_6.3.yml
+
+- name: "SECTION | 6.4 | Ensure 'SIGHUP' Runtime Parameters are Configured"
+  ansible.builtin.import_tasks: cis_6.4.yml
+
+- name: "SECTION | 6.5 | Ensure 'Superuser' Runtime Parameters are Configured"
+  ansible.builtin.import_tasks: cis_6.5.yml
+
+- name: "SECTION | 6.6 | Ensure 'User' Runtime Parameters are Configured"
+  ansible.builtin.import_tasks: cis_6.6.yml
+
+- name: "SECTION | 6.7 | Ensure FIPS 140-2 OpenSSL Cryptography Is Used"
+  ansible.builtin.import_tasks: cis_6.7.yml
+
+- name: "SECTION | 6.8 | Ensure SSL is enabled and configured correctly"
+  ansible.builtin.import_tasks: cis_6.8.yml
+
+- name: "SECTION | 6.9 | Ensure the pgcrypto extension is installed and configured correctly"
+  ansible.builtin.import_tasks: cis_6.9.yml

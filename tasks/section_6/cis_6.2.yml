@@ -1,0 +1,39 @@
+---
+
+- name: "6.2 | AUDIT | Ensure 'backend' runtime parameters are configured correctly"
+  block:
+      - name: "6.2 | AUDIT | Ensure 'backend' runtime parameters are configured correctly | Get backend runtime parameters"
+        ansible.builtin.shell: psql -c "SELECT name, setting FROM pg_settings WHERE context IN ('backend','superuser-backend') ORDER BY 1;"
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_6_2_backend_runtime_param
+
+      - name: "6.2 | AUDIT | Ensure 'backend' runtime parameters are configured correctly | Get process output"
+        ansible.builtin.shell: ps aux | grep -E '[p]ost' | grep -- '-[D]'
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_6_2_process_output
+
+      - name: "6.2 | AUDIT | Ensure 'backend' runtime parameters are configured correctly | Message out parameters"
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! Please review this output and compare with a previous OK output looking for any changes. This is a manual task."
+                - "Also review the postgresql.conf and postgresql.auto.conf and compare them with previously archived files looking for changes"
+                - "{{ pgs12cis_6_2_backend_runtime_param.stdout_lines }}"
+                - ""
+                - "Please review the process output below and look for parameters that were used at server startup"
+                - "{{ pgs12cis_6_2_process_output.stdout_lines }}"
+
+      - name: "6.2 | AUDIT | Ensure 'backend' runtime parameters are configured correctly | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '6.2'
+  when:
+      - pgs12cis_rule_6_2
+      - pgs12cis_section6
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - audit
+      - rule_6.2

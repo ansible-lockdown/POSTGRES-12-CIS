@@ -50,6 +50,20 @@
   tags:
       - pgs12cis_section4
 
+- name: run Section 5 tasks
+  ansible.builtin.import_tasks: section_5/main.yml
+  when:
+      - pgs12cis_section5
+  tags:
+      - pgs12cis_section5
+
+- name: run Section 6 tasks
+  ansible.builtin.import_tasks: section_6/main.yml
+  when:
+      - pgs12cis_section6
+  tags:
+      - pgs12cis_section6
+
 - name: If Warnings found Output count and control IDs affected
   ansible.builtin.debug:
       msg: "You have {{ warn_count }} Warning(s) that require investigating that are related to the following benchmark ID(s) {{ warn_control_list }}"

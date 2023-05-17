@@ -39,6 +39,7 @@
   when:
       - pgs12cis_rule_1_2
       - pgs12cis_section1
+      - ansible_distribution_file_variety == 'RedHat'
   tags:
       - level1-postgresqlonlinux
       - audit
@@ -67,6 +68,7 @@
   when:
       - pgs12cis_rule_1_2
       - pgs12cis_section1
+      - ansible_distribution == 'Ubuntu'
   tags:
       - level1-postgresqlonlinux
       - audit

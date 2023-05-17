@@ -1,0 +1,23 @@
+---
+
+- name: "6.8 | PATCH | Ensure SSL is enabled and configured correctly"
+  ansible.builtin.lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+      insertafter: "{{ item.insertafter }}"
+  notify: restart postgresql
+  with_items:
+      - { regexp: '^ssl =|^#ssl =', line: 'ssl = on', insertafter: '# - SSL -' }
+      - { regexp: '^ssl_ciphers =| ssl_ciphers =', line: "ssl_ciphers = '{{ pgs12cis_ssl_ciphers }}'", insertafter: 'ssl = on' }
+      - { regexp: '^ssl_cert_file =|^#ssl_cert_file =', line: "ssl_cert_file = '{{ pgs12cis_ssl_cert_file }}'", insertafter: 'ssl = on' }
+      - { regexp: '^ssl_key_file =|ssl_key_file =', line: "ssl_key_file = '{{ pgs12cis_ssl_key_file }}'", insertafter: 'ssl = on' }
+      - { regexp: '^password_encryption =|^#password_encryption =', line: 'password_encryption = {{ pgs12cis_password_encryption }}', insertafter: 'ssl = on' }
+  when:
+      - pgs12cis_rule_6_8
+      - pgs12cis_section6
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - patch
+      - rule_6.8
