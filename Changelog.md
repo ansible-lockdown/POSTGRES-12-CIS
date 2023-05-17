@@ -12,3 +12,4 @@
 - Added WarnCount to cis_pgs12_redhat_fixes.yml
 - yamllint and ansiblelint updates
 - Updated Module names in handlers/main.yml
+- Restructured directories to CIS Repo Standard with each section and task in their own directory
