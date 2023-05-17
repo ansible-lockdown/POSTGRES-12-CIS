@@ -3,25 +3,6 @@
 - name: import preliminary tasks
   ansible.builtin.import_tasks: prelim.yml
 
-- name: RedHat Fixes
-  ansible.builtin.import_tasks: cis_pgs12_redhat_fixes.yml
-  when:
-      - ansible_distribution_file_variety == 'RedHat'
-      - ansible_distribution_major_version >= "7"
-  tags:
-      - RedHat
-      - CentOS
-      - Rocky
-      - AlmaLinux
-
-- name: Ubuntu Fixes
-  ansible.builtin.import_tasks: cis_pgs12_ubuntu_fixes.yml
-  when:
-      - ansible_distribution == 'Ubuntu'
-      - ansible_distribution_major_version >= "16"
-  tags:
-      - Ubuntu
-
 - name: run Section 1 tasks
   ansible.builtin.import_tasks: section_1/main.yml
   when:
@@ -63,6 +44,20 @@
       - pgs12cis_section6
   tags:
       - pgs12cis_section6
+
+- name: run Section 7 tasks
+  ansible.builtin.import_tasks: section_7/main.yml
+  when:
+      - pgs12cis_section7
+  tags:
+      - pgs12cis_section7
+
+- name: run Section 8 tasks
+  ansible.builtin.import_tasks: section_8/main.yml
+  when:
+      - pgs12cis_section8
+  tags:
+      - pgs12cis_section8
 
 - name: If Warnings found Output count and control IDs affected
   ansible.builtin.debug:

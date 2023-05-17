@@ -1,0 +1,32 @@
+---
+
+# Section 8
+# Special Configuration Considerations
+- name: "8.1 | AUDIT | Ensure PostgreSQL configuration files are outside the data cluster"
+  block:
+      - name: "8.1 | AUDIT | Ensure PostgreSQL configuration files are outside the data cluster | Get file list"
+        ansible.builtin.shell: psql -c "select name, setting from pg_settings where name ~ '.*_file$';"
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_8_1_files_used
+
+      - name: "8.1 | AUDIT | Ensure PostgreSQL configuration files are outside the data cluster | Display file listings"
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! Please review the settings and determine appropriate locations"
+                - "and file permissions for the configuration files based on organization's security policies. This is a manual task."
+                - "{{ pgs12cis_8_1_files_used.stdout_lines }}"
+
+      - name: "8.1 | AUDIT | Ensure PostgreSQL configuration files are outside the data cluster | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '8.1'
+  when:
+      - pgs12cis_rule_8_1
+      - pgs12cis_section8
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - audit
+      - rule_8.1

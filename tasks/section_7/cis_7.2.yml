@@ -1,0 +1,19 @@
+---
+
+- name: "7.2 | AUDIT | Ensure base backups are configured and functional"
+  ansible.builtin.debug:
+      msg:
+          - "Warning!! To conform to CIS standards make sure to use base backups. This is a manual task."
+
+- name: "7.2 | AUDIT | Ensure base backups are configured and functional | Present"
+  ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '7.2'
+  when:
+      - pgs12cis_rule_7_2
+      - pgs12cis_section7
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - audit
+      - rule_7.2
