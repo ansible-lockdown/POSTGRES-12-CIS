@@ -5,21 +5,30 @@ galaxy_info:
     description: "Apply the CIS PostgreSQL 12 benchmarks"
     company: "MindPoint Group"
     license: MIT
-    min_ansible_version: 2.8.0
-
+    role_name: postgres_12_cis
+    namespace: mindpointgroup
+    min_ansible_version: 2.10.1
     platforms:
         - name: EL
           versions:
-              - 7
-              - 8
+              - "7"
+              - "8"
         - name: Ubuntu
           versions:
-              - 16
-
+              - "16"
     galaxy_tags:
         - system
         - security
-        - CIS
+        - cis
         - hardening
+        - benchmark
+        - compliance
+        - redhat
+        - complianceascode
+        - disa
+        - rhel
+        - ubuntu
+collections:
+    - community.general
 
 dependencies: []

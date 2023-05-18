@@ -109,14 +109,13 @@ This role is designed that the end user should not have to edit the tasks themse
 
 ## Tags
 
-There are many tags available for added control precision. Each control has it's own set of tags noting what level, if it's scored/notscored, what OS element it relates to, if it's a patch or audit, and the rule number.
+There are many tags available for added control precision. Each control has it's own set of tags noting what level, if it's a patch or audit, and the rule number.
 
 Below is an example of the tag section from a control within this role. Using this example if you set your run to skip all controls with the tag services, this task will be skipped. The opposite can also happen where you run only controls tagged with services.
 
 ```sh
       tags:
       - level1-postgresql
-      - notscored
       - audit
       - rule_1.1
 ```
@@ -141,7 +140,7 @@ This role **will make changes to the system** which may have unintended conseque
 
 This role was developed against a clean install of the Operating System. If you are implementing to an existing system please review this role for any site specific changes that are needed.
 
-To use release version please point to main branch
+To use release version, please point to main branch
 
 ## Documentation
 
