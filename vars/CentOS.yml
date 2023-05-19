@@ -1,0 +1,1 @@
+get_repo_list: "yum repolist all | grep enabled"

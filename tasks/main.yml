@@ -4,8 +4,7 @@
   ansible.builtin.import_tasks: prelim.yml
 
 - name: include OS based vars
-  ansible.builtin.include_vars:
-    File: “{{ ansible_distribution }}.yml”
+  ansible.builtin.include_vars: "{{ ansible_distribution }}.yml"
 
 - name: run Section 1 tasks
   ansible.builtin.import_tasks: section_1/main.yml
