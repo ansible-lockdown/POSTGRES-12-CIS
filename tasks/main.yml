@@ -18,7 +18,7 @@
   when:
       - pgs12cis_section2
   tags:
-    - pgs12cis_section2
+      - pgs12cis_section2
 
 - name: run Section 3 tasks
   ansible.builtin.import_tasks: section_3/main.yml
