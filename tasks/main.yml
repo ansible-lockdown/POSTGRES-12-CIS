@@ -9,62 +9,62 @@
 - name: run Section 1 tasks
   ansible.builtin.import_tasks: section_1/main.yml
   when:
-    - pgs12cis_section1
+      - pgs12cis_section1
   tags:
-    - pgs12cis_section1
+      - pgs12cis_section1
 
 - name: run Section 2 tasks
   ansible.builtin.import_tasks: section_2/main.yml
   when:
-    - pgs12cis_section2
+      - pgs12cis_section2
   tags:
     - pgs12cis_section2
 
 - name: run Section 3 tasks
   ansible.builtin.import_tasks: section_3/main.yml
   when:
-    - pgs12cis_section3
+      - pgs12cis_section3
   tags:
-    - pgs12cis_section3
+      - pgs12cis_section3
 
 - name: run Section 4 tasks
   ansible.builtin.import_tasks: section_4/main.yml
   when:
-    - pgs12cis_section4
+      - pgs12cis_section4
   tags:
-    - pgs12cis_section4
+      - pgs12cis_section4
 
 - name: run Section 5 tasks
   ansible.builtin.import_tasks: section_5/main.yml
   when:
-    - pgs12cis_section5
+      - pgs12cis_section5
   tags:
-    - pgs12cis_section5
+      - pgs12cis_section5
 
 - name: run Section 6 tasks
   ansible.builtin.import_tasks: section_6/main.yml
   when:
-    - pgs12cis_section6
+      - pgs12cis_section6
   tags:
-    - pgs12cis_section6
+      - pgs12cis_section6
 
 - name: run Section 7 tasks
   ansible.builtin.import_tasks: section_7/main.yml
   when:
-    - pgs12cis_section7
+      - pgs12cis_section7
   tags:
-    - pgs12cis_section7
+      - pgs12cis_section7
 
 - name: run Section 8 tasks
   ansible.builtin.import_tasks: section_8/main.yml
   when:
-    - pgs12cis_section8
+      - pgs12cis_section8
   tags:
-    - pgs12cis_section8
+      - pgs12cis_section8
 
 - name: If Warnings found Output count and control IDs affected
   ansible.builtin.debug:
-    msg: "You have {{ warn_count }} Warning(s) that require investigating that are related to the following benchmark ID(s) {{ warn_control_list }}"
+      msg: "You have {{ warn_count }} Warning(s) that require investigating that are related to the following benchmark ID(s) {{ warn_control_list }}"
   when: warn_count != 0
   tags:
-    - always
+      - always
