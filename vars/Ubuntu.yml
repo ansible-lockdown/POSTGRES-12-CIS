@@ -1,3 +1,4 @@
 ---
 
 get_repo_list: "apt-cache policy"
+get_postgres_binary_list: "apt list --installed | grep postgres"
