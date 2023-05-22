@@ -8,3 +8,6 @@ get_postgres_binary_list: "dnf info $(rpm -qa|grep postgres) | egrep '^Name|^Ver
 
 # 1.5
 pgs12cis_1_5_db_initialize: 'PGSETUP_INITDB_OPTIONS="-k" /usr/pgsql-12/bin/postgresql-12-setup initdb'
+
+# 3.2
+pgs12cis_3_2_pgaudit_install: "pgaudit14_12"

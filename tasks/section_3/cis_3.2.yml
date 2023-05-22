@@ -2,17 +2,10 @@
 
 - name: "3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled"
   block:
-      - name: "3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Install pgAudit RHEL"
+      - name: "3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Install pgAudit"
         ansible.builtin.package:
-            name: pgaudit14_12
+            name: "{{ pgs12cis_3_2_pgaudit_install }}"
             state: present
-        when: ansible_distribution_file_variety == 'RedHat'
-
-      - name: "3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Install pgAudit Ubuntu"
-        ansible.builtin.package:
-            name: postgresql-12-pgaudit
-            state: present
-        when: ansible_distribution == 'Ubuntu'
 
       - name: "3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Set pgAudit settings in postgresql.conf"
         ansible.builtin.lineinfile:
