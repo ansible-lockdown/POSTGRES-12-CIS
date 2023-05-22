@@ -13,7 +13,7 @@
             msg:
                 - "Warning!! Below are the installed postgres packages and where they came from. This is a manual task."
                 - "Please review and if the expected binary packages are not installed or did not come from an appropriate repo, this is a fail."
-                - "{{ pgs12cis_1_2_ppostgres_binary_list.stdout_lines }}"
+                - "{{ pgs12cis_1_2_postgres_binary_list.stdout_lines }}"
 
       - name: "1.2 | AUDIT | Ensure Installation of Binary Packages | Present"
         ansible.builtin.import_tasks: warning_facts.yml
