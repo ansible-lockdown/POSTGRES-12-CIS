@@ -1,4 +1,13 @@
 ---
 
+# Section 1
+# 1.1
 get_repo_list: "apt-cache policy"
+
+# 1.2 + 1.3
 get_postgres_binary_list: "apt list --installed | grep postgres"
+
+# 1.5
+# pgs12cis_db_data_dir_ub is the data directory for the database cluster. This is for Ubuntu only
+# If you have this role installing PostgreSQL this will be used for the initdb actions in that configuration
+pgs12cis_1_5_db_initialize: "/usr/lib/postgresql/12/bin/initdb -D /usr/local/pgsql/data"
