@@ -61,7 +61,8 @@ The control found in defaults main also need to reflect this as this control the
 
 ## Coming from a previous release
 
-CIS release always contains changes, it is highly recommended to review the new references and available variables. This have changed significantly since ansible-lockdown initial release.
+CIS release always contains changes, it is highly recommended to review the new references and available variables. This have changed significantly since Ansible-Lockdown initial release.
+
 This is now compatible with python3 if it is found to be the default interpreter. This does come with pre-requisites which it configures the system accordingly.
 
 Further details can be seen in the [Changelog](./ChangeLog.md)
@@ -76,11 +77,10 @@ Further details can be seen in the [Changelog](./ChangeLog.md)
 
 ## Requirements
 
-Postgres12x
-
-ansible 2.10
-jmespath
-relevant collections
+ - Postgres12x
+ - ansible 2.10
+ - jmespath
+ - relevant collections
 
 **General:**
 
@@ -96,11 +96,11 @@ relevant collections
 **Technical Dependencies:**
 
 - Python3
-- Ansible 2.9+
+- Ansible 2.10+
 - python-def (should be included in RHEL 9)
 - libselinux-python
 - pip packages
-  - jmespath ( complete list found in requirements.txt)
+  - jmespath ( complete list found in [requirements](./requirements.txt) )
 - collections found in collections/requirements.yml
 
 ## Role Variables
@@ -125,66 +125,6 @@ Below is an example of the tag section from a control within this role. Using th
 We encourage you (the community) to contribute to this role. Please read the rules below.
 
 - Your work is done in your own individual branch. Make sure to Signed-off and GPG sign all commits you intend to merge.
-- All community Pull Requests are pulled into the devel branch
-- Pull Requests into devel will confirm your commits have a GPG signature, Signed-off, and a functional test before being approved
-- Once your changes are merged and a more detailed review is complete, an authorized member will merge your changes into the main branch for a new release
-
-
-## Join us
-
-On our [Discord Server](https://discord.io/ansible-lockdown) to ask questions, discuss features, or just chat with other Ansible-Lockdown users
-
-## Caution(s)
-
-This role **will make changes to the system** which may have unintended consequences.
-
-This role was developed against a clean install of the Operating System. If you are implementing to an existing system please review this role for any site specific changes that are needed.
-
-To use release version, please point to main branch
-
-## Documentation
-
-- [Readthedocs](https://ansible-lockdown.readthedocs.io/en/latest/)
-- [Getting Started](https://www.lockdownenterprise.com/docs/getting-started-with-lockdown)
-- [Customizing Roles](https://www.lockdownenterprise.com/docs/customizing-lockdown-enterprise)
-- [Per-Host Configuration](https://www.lockdownenterprise.com/docs/per-host-lockdown-enterprise-configuration)
-- [Getting the Most Out of the Role](https://www.lockdownenterprise.com/docs/get-the-most-out-of-lockdown-enterprise)
-
-## Requirements
-
-Postgres12x
-
-ansible 2.10
-jmespath
-relevant collections
-
-- Access to download or add the goss binary and content to the system if using auditing (other options are available on how to get the content to the system.)
-
-## Tested with
-
-ansible-base 2.10.17 - python 3.8
-ansible-core 2.13.4  - python 3.10
-
-- makefile - this is there purely for testing and initial setup purposes.
-
-## General
-
-- Basic knowledge of Ansible, below are some links to the Ansible documentation to help get started if you are unfamiliar with Ansible
-  - [Main Ansible documentation page](https://docs.ansible.com)
-  - [Ansible Getting Started](https://docs.ansible.com/ansible/latest/user_guide/intro_getting_started.html)
-  - [Tower User Guide](https://docs.ansible.com/ansible-tower/latest/html/userguide/index.html)
-  - [Ansible Community Info](https://docs.ansible.com/ansible/latest/community/index.html)
-
-- Functioning Ansible and/or Tower Installed, configured, and running. This includes all of the base Ansible/Tower configurations, needed packages installed, and infrastructure setup.
-- Please read through the tasks in this role to gain an understanding of what each control is doing.
-  - Some of the tasks are disruptive and can have unintended consequences in a live production system. Also familiarize yourself with the variables in the defaults/main.yml file
-
-## Dependencies
-
-- Python3
-- Ansible 2.9+
-- python-def (should be included in RHEL 9)
-- libselinux-python
-- pip packages
-  - jmespath ( complete list found in requirements.txt)
-- collections found in collections/requirements.yml
+- All community Pull Requests are pulled into the devel branch.
+- Pull Requests into devel will confirm your commits have a GPG signature, Signed-off, and a functional test before being approved.
+- Once your changes are merged and a more detailed review is complete, an authorized member will merge your changes into the main branch for a new release.
