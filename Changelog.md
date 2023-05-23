@@ -13,4 +13,4 @@
 - yamllint and ansiblelint updates
 - Updated Module names in handlers/main.yml
 - Restructured directories to CIS Repo Standard with each section and task in their own directory
-- Combined separate Ubuntu vs RHEL task into one variablized task from section_1 to section_8.
+- Combined separate Ubuntu vs RHEL tasks into each variablized tasks from section_1 to section_8.
