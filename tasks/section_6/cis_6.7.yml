@@ -8,18 +8,11 @@
         failed_when: false
         register: pgs12cis_6_7_fips_capability
 
-      - name: "6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Setup FIPS Enabled RHEL7"
-        ansible.builtin.include_tasks: rhel7_fips.yml
-        when:
-            - ansible_distribution_major_version == "7"
-            - "'fips' in pgs12cis_6_7_fips_capability.stdout|lower"
-
       - name: "6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Check FIPS status"
         ansible.builtin.shell: fips-mode-setup --check
         changed_when: false
         failed_when: false
         register: pgs12cis_6_7_fips_check
-        when: ansible_distribution_major_version == "8"
 
       - name: "6.7 | PATCH | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Set FIPS enabled RHEL8"
         ansible.builtin.shell: fips-mode-setup --enable
@@ -27,7 +20,6 @@
         when:
             - "'FIPS' in pgs12cis_6_7_fips_capability.stdout"
             - "'disabled' in pgs12cis_6_7_fips_check.stdout"
-            - ansible_distribution_major_version == "8"
 
       - name: "6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Warning that system is not FIPS capable"
         ansible.builtin.debug:

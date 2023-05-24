@@ -9,6 +9,11 @@
       name: acl
       state: present
 
+- name: "PRELIM | Install crypto-policies"
+  ansible.builtin.package:
+      name: crypto-policies
+      state: present
+
 - name: "PRELIM | Get postgres config file path"
   ansible.builtin.shell: psql -U postgres -c 'SHOW config_file' | tail -n+3 | head -n 1 | cut -c2-
   changed_when: false

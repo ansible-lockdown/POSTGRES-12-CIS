@@ -1,8 +1,8 @@
-PostgresSQL 12 CIS
+# PostgresSQL 12 CIS
 
 ## Configure a PostgresSQL 12 machine to be [CIS](https://www.cisecurity.org/cis-benchmarks/) compliant
 
-### Based on [ CIS PostgreSQL 12 Benchmark v1.0.0 - 11-19-2019 ](https://www.cisecurity.org/cis-benchmarks/)
+### Based on [CIS PostgreSQL 12 Benchmark v1.0.0 - 11-19-2019](https://www.cisecurity.org/cis-benchmarks/)
 
 ---
 
@@ -56,7 +56,6 @@ To use release version please point to main branch and relevant release for the 
 
 ## Matching a security Level for CIS
 
-
 The control found in defaults main also need to reflect this as this control the testing that takes place if you are using the audit component.
 
 ## Coming from a previous release
@@ -77,10 +76,10 @@ Further details can be seen in the [Changelog](./ChangeLog.md)
 
 ## Requirements
 
- - Postgres12x
- - ansible 2.10
- - jmespath
- - relevant collections
+- Postgres12x
+- ansible 2.10
+- jmespath
+- relevant collections
 
 **General:**
 

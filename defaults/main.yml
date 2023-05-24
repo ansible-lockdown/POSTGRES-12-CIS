@@ -207,7 +207,7 @@ pgs12cis_log_error_verbosity: DEFAULT
 # 3.1.21
 # pgs12cis_log_hostname enables/disables logging of connecting host names in logs in addition to the IP
 # Enabling this could cause non-negligible  performance impacts. It is suggested to leave off, but have given the option to enable if needed
-pgs12cis_log_hostname: off
+pgs12cis_log_hostname: "off"
 
 # 3.1.22
 # pgs12cis_log_line_prefix is the printf style string that is prefixed to each log line
@@ -238,7 +238,8 @@ pgs12cis_pgaudit_log_types: ddl,write
 
 # Section 4
 # 4.2
-# pgs12cis_allowed_superusers is the list of authorized super users. These are users that should have SUPERUSER, CREATEROLE, CREATEDB, REPLICATION, and/or BYPASSRLS roles
+# pgs12cis_allowed_superusers is the list of authorized super users.
+# These are users that should have SUPERUSER, CREATEROLE, CREATEDB, REPLICATION, and/or BYPASSRLS roles
 # Please add additional users in list form starting with a dash, as the first user currently is
 pgs12cis_allowed_superusers:
     - "{{ pgs12cis_pgs12_usr }}"
@@ -252,7 +253,8 @@ pgs12cis_encrypt_method: scram-sha-256
 # Section 6
 # 6.8
 # pgs12cis_create_selfsigned_cert turns on a prelim task to generate a self-signed certificate
-# The prelim task uses these parameters (which matches defaults 'openssl req -new -x509 -days 365 -nodes -text -out {{pgs12cis_data_folder }}/server.crt -keyout {{ pgs12cis_data_folder }}/server.key -subj "/CN={{ ansible_nodename }}"'
+# The prelim task uses these parameters
+# (which matches defaults 'openssl req -new -x509 -days 365 -nodes -text -out {{pgs12cis_data_folder }}/server.crt -keyout {{ pgs12cis_data_folder }}/server.key -subj "/CN={{ ansible_nodename }}"'
 # If you have your own certificates (self-signed is not best) set this value to false and use the variables below to specify those certificates
 pgs12cis_create_selfsigned_cert: true
 # pgs12cis_ssl_ciphers are the ciphers to use with ssl. Default config value HIGH:MEDIUM:+3DES:!aNULL

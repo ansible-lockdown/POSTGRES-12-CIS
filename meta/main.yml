@@ -1,7 +1,7 @@
 ---
 
 galaxy_info:
-    author: "Sam Doran, Josh Springer, Daniel Shepherd, Bas Meijeri, James Cassell, Mike Renfro, DFed, George Nalen, Frederick Witty Jr."
+    author: "George Nalen, Mark Bolwell, Stephen Williams, Frederick Witty Jr."
     description: "Apply the CIS PostgreSQL 12 benchmarks"
     company: "MindPoint Group"
     license: MIT
@@ -11,11 +11,10 @@ galaxy_info:
     platforms:
         - name: EL
           versions:
-              - "7"
-              - "8"
+              - "9"
         - name: Ubuntu
           versions:
-              - "16"
+              - "Focal Fossa"
     galaxy_tags:
         - system
         - security
