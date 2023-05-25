@@ -5,12 +5,14 @@
       - name: "PRELIM | Install and Start PostgreSQL | Add PostgreSQL Repo RHEL 8"
         ansible.builtin.package:
             name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+            disable_gpg_check: "yes"
             state: present
         when: ansible_distribution_major_version == "8"
 
       - name: "PRELIM | Install and Start PostgreSQL | Add PostgreSQL Repo RHEL 9"
         ansible.builtin.package:
             name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+            disable_gpg_check: "yes"
             state: present
         when: ansible_distribution_major_version == "9"
 
@@ -19,7 +21,7 @@
         register: prelim_disable_pgs
         changed_when: "'Disabling modules' in prelim_disable_pgs.stdout"
 
-      - name: "PRELIM | Install and Start PostgreSQL | Install PostgreSQL 12 RHEL/CentOS 8"
+      - name: "PRELIM | Install and Start PostgreSQL | Install PostgreSQL 12 RHEL"
         ansible.builtin.package:
             name: ['postgresql12', 'postgresql12-server']
             state: present
