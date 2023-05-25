@@ -1,35 +1,34 @@
 ---
 
-- name: "PRELIM | Install and Start PostgreSQL | RHEL/CentOS"
+- name: "PRELIM | Install and Start PostgreSQL | RHEL"
   block:
-      - name: "PRELIM | Install and Start PostgreSQL | Add PostgreSQL Repo RHEL/CentOS 8"
+      - name: "PRELIM | Install and Start PostgreSQL | Add PostgreSQL Repo RHEL 8"
         ansible.builtin.package:
             name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
             state: present
         when: ansible_distribution_major_version == "8"
 
-      - name: "PRELIM | Install and Start PostgreSQL | Add PostgreSQL Repo RHEL/CentOS 7"
+      - name: "PRELIM | Install and Start PostgreSQL | Add PostgreSQL Repo RHEL 9"
         ansible.builtin.package:
-            name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-7-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+            name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
             state: present
-        when: ansible_distribution_major_version == "7"
+        when: ansible_distribution_major_version == "9"
 
-      - name: "PRELIM | Install and Start PostgreSQL | Disable built in PostgreSQL RHEL/CentOS 8"
+      - name: "PRELIM | Install and Start PostgreSQL | Disable built in PostgreSQL RHEL"
         ansible.builtin.shell: dnf -y module disable postgresql
-        register: prelim_disable_pgs_old_rh8
-        changed_when: "'Disabling modules' in prelim_disable_pgs_old_rh8.stdout"
-        when: ansible_distribution_major_version == "8"
+        register: prelim_disable_pgs
+        changed_when: "'Disabling modules' in prelim_disable_pgs.stdout"
 
       - name: "PRELIM | Install and Start PostgreSQL | Install PostgreSQL 12 RHEL/CentOS 8"
         ansible.builtin.package:
             name: ['postgresql12', 'postgresql12-server']
             state: present
 
-      - name: "PRELIM | Install and Start PostgreSQL | Initialize PostgreSQL 12 RHEL/CentOS 7 and 8"
+      - name: "PRELIM | Install and Start PostgreSQL | Initialize PostgreSQL 12"
         ansible.builtin.shell: /usr/pgsql-12/bin/postgresql-12-setup initdb
         failed_when: false
 
-      - name: "PRELIM | PRELIM | Install and Start PostgreSQL | Start and enable service RHEL/CentOS 7 and 8"
+      - name: "PRELIM | PRELIM | Install and Start PostgreSQL | Start and enable service"
         ansible.builtin.service:
             name: postgresql-12
             enabled: true
