@@ -4,7 +4,7 @@
   block:
       - name: "PRELIM | Install and Start PostgreSQL | Add PostgreSQL Repo RHEL"
         ansible.builtin.package:
-            name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-{{ ansible_distribution_major_version   }}-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+            name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-{{ ansible_distribution_major_version }}-x86_64/pgdg-redhat-repo-latest.noarch.rpm
             disable_gpg_check: "yes"
             state: present
 
@@ -64,7 +64,4 @@
             name: postgres
             password: "{{ pgs12cis_postgres_user_pw }}"
 
-      # - name: "PRELIM | Install and Start PostgreSQL | Change postgres user default password | Ubuntu"
-      #   ansible.builtin.shell: psql -c "alter user postgres with password 'StrongAdminP@ssw0rd'"
-      #   become_user: postgres
   when: ansible_distribution == 'Ubuntu'
