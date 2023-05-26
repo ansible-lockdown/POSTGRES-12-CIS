@@ -64,4 +64,4 @@
             name: postgres
             password: "{{ pgs12cis_postgres_user_pw }}"
 
-  when: ansible_distribution == 'Ubuntu'
+  when: ansible_os_family == 'Debian'

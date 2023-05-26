@@ -30,7 +30,7 @@
 
 - name: "PRELIM | Set variable for service name"
   ansible.builtin.set_fact:
-      pgs12cis_postgresql_service_auto: "{{ (ansible_distribution == 'Ubuntu') | ternary('postgresql', 'postgresql-12') }}"
+      pgs12cis_postgresql_service_auto: "{{ (ansible_os_family == 'Debian') | ternary('postgresql', 'postgresql-12') }}"
 
 - name: "PRELIM | 2.1 | Get postgresql user home folder"
   ansible.builtin.shell: "grep {{ pgs12cis_pgs12_usr }} /etc/passwd | cut -f6 -d:"

@@ -74,7 +74,7 @@
   when:
       - pgs12cis_rule_6_7
       - pgs12cis_section6
-      - ansible_distribution == 'Ubuntu'
+      - ansible_os_family == 'Debian'
   tags:
       - level1-postgresqlonlinux
       - audit
