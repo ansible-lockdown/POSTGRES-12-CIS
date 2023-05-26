@@ -77,7 +77,7 @@ Further details can be seen in the [Changelog](./ChangeLog.md)
 ## Requirements
 
 - Postgres12x
-- ansible 2.10
+- ansible 2.10.1
 - jmespath
 - relevant collections
 
