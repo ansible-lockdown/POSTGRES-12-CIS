@@ -2,19 +2,11 @@
 
 - name: "PRELIM | Install and Start PostgreSQL | RHEL"
   block:
-      - name: "PRELIM | Install and Start PostgreSQL | Add PostgreSQL Repo RHEL 8"
+      - name: "PRELIM | Install and Start PostgreSQL | Add PostgreSQL Repo RHEL"
         ansible.builtin.package:
-            name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-8-x86_64/pgdg-redhat-repo-latest.noarch.rpm
+            name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-{{ ansible_distribution_major_version   }}-x86_64/pgdg-redhat-repo-latest.noarch.rpm
             disable_gpg_check: "yes"
             state: present
-        when: ansible_distribution_major_version == "8"
-
-      - name: "PRELIM | Install and Start PostgreSQL | Add PostgreSQL Repo RHEL 9"
-        ansible.builtin.package:
-            name: https://download.postgresql.org/pub/repos/yum/reporpms/EL-9-x86_64/pgdg-redhat-repo-latest.noarch.rpm
-            disable_gpg_check: "yes"
-            state: present
-        when: ansible_distribution_major_version == "9"
 
       - name: "PRELIM | Install and Start PostgreSQL | Disable built in PostgreSQL RHEL"
         ansible.builtin.shell: dnf -y module disable postgresql
@@ -67,7 +59,12 @@
             state: started
             enabled: true
 
-      - name: "PRELIM | Install and Start PostgreSQL | Change postgres user default password | Ubuntu"
-        ansible.builtin.shell: psql -c "alter user postgres with password 'StrongAdminP@ssw0rd'"
-        become_user: postgres
+      - name: "PRELIM | PRELIM | Install and Start PostgreSQL | Set postgres user pw"
+        ansible.builtin.user:
+            name: postgres
+            password: "{{ pgs12cis_postgres_user_pw }}"
+
+      # - name: "PRELIM | Install and Start PostgreSQL | Change postgres user default password | Ubuntu"
+      #   ansible.builtin.shell: psql -c "alter user postgres with password 'StrongAdminP@ssw0rd'"
+      #   become_user: postgres
   when: ansible_distribution == 'Ubuntu'
