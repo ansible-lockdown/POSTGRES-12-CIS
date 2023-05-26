@@ -13,7 +13,7 @@
   ansible.builtin.assert:
       that:
           - ansible_distribution == 'Ubuntu' and ansible_distribution_major_version is version_compare('20', '>=')
-      msg: "This role can only be run against Ubuntu +20 or RHEL +8. {{ ansible_os_family }} {{ ansible_distribution_major_version }} is not supported."
+      msg: "This role can only be run against Ubuntu +20. {{ ansible_os_family }} {{ ansible_distribution_major_version }} is not supported."
   when: ansible_os_family == 'Debian'
   tags:
       - always
