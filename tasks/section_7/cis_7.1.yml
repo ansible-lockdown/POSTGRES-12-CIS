@@ -30,7 +30,6 @@
         when: "pgs12cis_replication_user not in pgs12cis_7_1_replication_users.stdout"
   when:
       - pgs12cis_rule_7_1
-      - pgs12cis_section7
   tags:
       - level1-postgresql
       - level1-postgresqlonlinux

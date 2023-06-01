@@ -11,7 +11,6 @@
       - { regexp: '^archive_command =|^#archive_command =', line: "archive_command = '{{ pgs12cis_archive_command }}'" }
   when:
       - pgs12cis_rule_7_3
-      - pgs12cis_section7
   tags:
       - level1-postgresqlonlinux
       - patch

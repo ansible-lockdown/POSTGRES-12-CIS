@@ -34,7 +34,6 @@
             warn_control_id: '6.7'
   when:
       - pgs12cis_rule_6_7
-      - pgs12cis_section6
       - ansible_distribution_file_variety == 'RedHat'
   tags:
       - level1-postgresqlonlinux
@@ -73,7 +72,6 @@
       warn_control_id: '6.7'
   when:
       - pgs12cis_rule_6_7
-      - pgs12cis_section6
       - ansible_os_family == 'Debian'
   tags:
       - level1-postgresqlonlinux

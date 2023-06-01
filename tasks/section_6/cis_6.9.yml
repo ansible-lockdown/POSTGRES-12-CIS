@@ -8,7 +8,6 @@
   become_user: "{{ pgs12cis_pgs12_usr }}"
   when:
       - pgs12cis_rule_6_9
-      - pgs12cis_section6
   tags:
       - level1-postgresql
       - level1-postgresqlonlinux

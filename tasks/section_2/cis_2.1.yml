@@ -25,7 +25,6 @@
         when: pgs12cis_2_1_env_file.stdout == ""
   when:
       - pgs12cis_rule_2_1
-      - pgs12cis_section2
   tags:
       - level1-postgresqlonlinux
       - patch

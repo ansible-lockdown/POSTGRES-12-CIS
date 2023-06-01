@@ -7,7 +7,6 @@
   register: pgs12cis_1_5_db_initialize
   when:
       - pgs12cis_rule_1_5
-      - pgs12cis_section1
   tags:
       - level1-postgresqlonlinux
       - audit
@@ -21,7 +20,6 @@
   register: pgs12cis_1_5_db_initialize
   when:
       - pgs12cis_rule_1_5
-      - pgs12cis_section1
   tags:
       - level1-postgresqlonlinux
       - patch

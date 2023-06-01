@@ -14,7 +14,6 @@
             groups: pg_wheel
   when:
       - pgs12cis_rule_2_2
-      - pgs12cis_section2
   tags:
       - level1-postgresqlonlinux
       - patch

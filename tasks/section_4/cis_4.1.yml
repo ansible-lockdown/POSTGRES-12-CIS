@@ -17,7 +17,6 @@
             mode: 0600
   when:
       - pgs12cis_rule_4_1
-      - pgs12cis_section4
   tags:
       - level1-postgresqlonlinux
       - patch

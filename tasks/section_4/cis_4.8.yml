@@ -22,7 +22,6 @@
       warn_control_id: '4.8'
   when:
       - pgs12cis_rule_4_8
-      - pgs12cis_section4
   tags:
       - level1-postgresql
       - audit

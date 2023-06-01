@@ -20,7 +20,6 @@
             - { regexp: '^pgaudit.log=', line: "pgaudit.log='{{ pgs12cis_pgaudit_log_types  }}'", insertafter: '# for this example we are logging the ddl and write operations'}
   when:
       - pgs12cis_rule_3_2
-      - pgs12cis_section3
   tags:
       - level1-postgresql
       - level1-postgresqlonlinux

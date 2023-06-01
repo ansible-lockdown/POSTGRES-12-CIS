@@ -27,7 +27,6 @@
       warn_control_id: '8.3'
   when:
       - pgs12cis_rule_8_3
-      - pgs12cis_section8
   tags:
       - level1-postgresqlonlinux
       - audit

@@ -13,7 +13,6 @@
       warn_control_id: '5.1'
   when:
       - pgs12cis_rule_5_1
-      - pgs12cis_section5
   tags:
       - level1-postgresqlonlinux
       - audit

@@ -22,7 +22,6 @@
             - { regexp: '^hostssl.*all.*{{ pgs12cis_pgs12_usr }}', line: "hostssl all             {{ pgs12cis_pgs12_usr }}        0.0.0.0/0               {{ pgs12cis_encrypt_method }}", insertafter: '# The two rules below were inserted via CIS automation' }
   when:
       - pgs12cis_rule_5_2
-      - pgs12cis_section5
   tags:
       - level1-postgresqlonlinux
       - patch

@@ -24,7 +24,6 @@
       warn_control_id: '6.6'
   when:
       - pgs12cis_rule_6_6
-      - pgs12cis_section6
   tags:
       - level1-postgresql
       - level1-postgresqlonlinux

@@ -23,7 +23,6 @@
       warn_control_id: '8.2'
   when:
       - pgs12cis_rule_8_2
-      - pgs12cis_section8
   tags:
       - level1-postgresql
       - level1-postgresqlonlinux

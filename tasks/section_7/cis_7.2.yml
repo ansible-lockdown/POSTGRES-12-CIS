@@ -11,7 +11,6 @@
       warn_control_id: '7.2'
   when:
       - pgs12cis_rule_7_2
-      - pgs12cis_section7
   tags:
       - level1-postgresql
       - level1-postgresqlonlinux

@@ -1,6 +1,6 @@
 ---
 
-- name: "4.3 | AUDIT | Ensure excessive function privileges are revoked"
+- name: "4.3 | AUDIT | Ensure excessive function privileges are revoked | Absent"
   block:
       - name: "4.3 | AUDIT | Ensure excessive function privileges are revoked"
         ansible.builtin.shell: psql -c "SELECT nspname, proname, proargtypes, prosecdef, rolname, proconfig FROM pg_proc p JOIN pg_namespace n ON p.pronamespace = n.oid JOIN pg_authid a ON a.oid = p.proowner WHERE prosecdef OR NOT proconfig IS NULL;"
@@ -22,7 +22,6 @@
       warn_control_id: '4.3'
   when:
       - pgs12cis_rule_4_3
-      - pgs12cis_section4
   tags:
       - level1-postgresqlonlinux
       - audit

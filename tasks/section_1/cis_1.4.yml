@@ -6,7 +6,6 @@
       enabled: true
   when:
       - pgs12cis_rule_1_4
-      - pgs12cis_section1
   tags:
       - level1-postgresqlonlinux
       - patch

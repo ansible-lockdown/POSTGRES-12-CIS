@@ -63,7 +63,6 @@
   register: pgs12cis_prelim_boot_part
   when:
       - pgs12cis_rule_6_7
-      - pgs12cis_section6
 
 - name: "PRELIM | 6.7 | Check whether machine is UEFI-based"
   ansible.builtin.stat:
@@ -71,7 +70,6 @@
   register: pgs12cis_prelim_sys_firmware_efi
   when:
       - pgs12cis_rule_6_7
-      - pgs12cis_section6
 
 - name: "PRELIM | 6.8 | Generate Self-Signed Cert"
   block:
@@ -95,7 +93,6 @@
         when: pgs12cis_certs_status.matched == 0
   when:
       - pgs12cis_rule_6_8
-      - pgs12cis_section6
       - pgs12cis_create_selfsigned_cert
 
 - name: "PRELIM | 6.9 | Install PostgreSQL contrib package"
@@ -107,4 +104,3 @@
         when: ansible_distribution_file_variety == 'RedHat'
   when:
       - pgs12cis_rule_6_9
-      - pgs12cis_section6

@@ -20,7 +20,6 @@
             - "{{ pgs12cis_disallowed_superusers }}"
   when:
       - pgs12cis_rule_4_2
-      - pgs12cis_section4
   tags:
       - level1-postgresql
       - patch
