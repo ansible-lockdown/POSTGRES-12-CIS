@@ -1,4 +1,4 @@
-# Changes to PROGRES-12-CIS
+# Changes to POSTGRES-12-CIS
 
 ## 1.0.2
 
@@ -14,3 +14,9 @@
 - Updated Module names in handlers/main.yml
 - Restructured directories to CIS Repo Standard with each section and task in their own directory
 - Combined separate Ubuntu vs RHEL tasks into each variablized tasks from section_1 to section_8.
+- Added 'key-order' to skip in .ansible-lint file
+- Added Ansible Core minimum version requirements, Distribution#, and OS_family restriction via Assert Module
+- Added warn-count system for manual tasks.
+- Removed all RHEL7 tagging and conditions.
+- Fixed Truthy syntax, typos, and Linting.
+- Removed Section* tags in each task.
