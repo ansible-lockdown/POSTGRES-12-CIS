@@ -1,6 +1,7 @@
 .env
 *.log
 *.retry
+.cache
 .vagrant
 tests/*redhat-subscription
 tests/Dockerfile
@@ -9,6 +10,7 @@ tests/Dockerfile
 packer_cache
 delete*
 ignore*
+test_inv
 # VSCode
 .vscode
 
@@ -39,7 +41,6 @@ travis.env
 benchparse/
 *xccdf.xml
 *.retry
-test_inv
 
 # GitHub Action/Workflow files
 .github/

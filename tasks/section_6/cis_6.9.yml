@@ -1,0 +1,15 @@
+---
+
+- name: "6.9 | PATCH | Ensure the pgcrypto extension is installed and configured correctly"
+  ansible.builtin.shell: psql -c "CREATE EXTENSION pgcrypto;"
+  changed_when: "'CREATE' in pgs12cis_6_9_pgcrypto_status.stdout"
+  failed_when: false
+  register: pgs12cis_6_9_pgcrypto_status
+  become_user: "{{ pgs12cis_pgs12_usr }}"
+  when:
+      - pgs12cis_rule_6_9
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - patch
+      - rule_6.9

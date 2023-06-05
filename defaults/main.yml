@@ -1,4 +1,5 @@
 ---
+
 # Adjusts role to run in a non-privileged container
 pgs12cis_system_is_container: false
 
@@ -16,6 +17,9 @@ pgs12cis_section5: true
 pgs12cis_section6: true
 pgs12cis_section7: true
 pgs12cis_section8: true
+
+pgs12cis_level_1: true
+pgs12cis_level_2: true
 
 # Section 1
 # Installation and Patches
@@ -100,7 +104,7 @@ pgs12cis_rule_8_3: true
 pgs12cis_rule_8_4: true
 
 # Role vars - Global
-# pgs12cis_pgs12_usr is the configured postgre user
+# pgs12cis_pgs12_usr is the configured postgres user
 pgs12cis_pgs12_usr: postgres
 # pgs12cis_postgres_user_pw is the password for the postgres user. This is only used in the prelim task to install PostgreSQL 12
 # DO NOT USE PASSWORDS IN PLAIN TEXT
@@ -111,7 +115,7 @@ pgs12cis_postgres_user_pw: letmein
 pgs12cis_pgs12_usr_home_dir: "{{ pgs12cis_pgs12_usr_home_dir_get.stdout }}"
 
 # pgs12cis_config_file_get is the location of the postgresql.config file
-# This is gathered from a prelim task 
+# This is gathered from a prelim task
 pgs12cis_config_file: "{{ pgs12cis_config_file_get.stdout }}"
 # pgs12cis_hba_config_file is the location of the pg_hba.conf file
 # This is gathered from a prelim task
@@ -175,7 +179,7 @@ pgs12cis_log_file_age: 1d
 pgs12cis_log_rotation_size: 1GB
 
 # 3.1.10
-# pgs12cis_syslog_facility is the syslog "facility" to be used when logging to syslog is enabled. 
+# pgs12cis_syslog_facility is the syslog "facility" to be used when logging to syslog is enabled.
 # Possible values are LOCAL0, LOCAL1, through LOCAL7
 pgs12cis_syslog_facility: LOCAL1
 
@@ -203,7 +207,7 @@ pgs12cis_log_error_verbosity: DEFAULT
 # 3.1.21
 # pgs12cis_log_hostname enables/disables logging of connecting host names in logs in addition to the IP
 # Enabling this could cause non-negligible  performance impacts. It is suggested to leave off, but have given the option to enable if needed
-pgs12cis_log_hostname: off
+pgs12cis_log_hostname: "off"
 
 # 3.1.22
 # pgs12cis_log_line_prefix is the printf style string that is prefixed to each log line
@@ -234,7 +238,8 @@ pgs12cis_pgaudit_log_types: ddl,write
 
 # Section 4
 # 4.2
-# pgs12cis_allowed_superusers is the list of authorized super users. These are users that should have SUPERUSER, CREATEROLE, CREATEDB, REPLICATION, and/or BYPASSRLS roles
+# pgs12cis_allowed_superusers is the list of authorized super users.
+# These are users that should have SUPERUSER, CREATEROLE, CREATEDB, REPLICATION, and/or BYPASSRLS roles
 # Please add additional users in list form starting with a dash, as the first user currently is
 pgs12cis_allowed_superusers:
     - "{{ pgs12cis_pgs12_usr }}"
@@ -248,7 +253,8 @@ pgs12cis_encrypt_method: scram-sha-256
 # Section 6
 # 6.8
 # pgs12cis_create_selfsigned_cert turns on a prelim task to generate a self-signed certificate
-# The prelim task uses these parameters (which matches defaults 'openssl req -new -x509 -days 365 -nodes -text -out {{pgs12cis_data_folder }}/server.crt -keyout {{ pgs12cis_data_folder }}/server.key -subj "/CN={{ ansible_nodename }}"'
+# The prelim task uses these parameters
+# (which matches defaults 'openssl req -new -x509 -days 365 -nodes -text -out {{pgs12cis_data_folder }}/server.crt -keyout {{ pgs12cis_data_folder }}/server.key -subj "/CN={{ ansible_nodename }}"'
 # If you have your own certificates (self-signed is not best) set this value to false and use the variables below to specify those certificates
 pgs12cis_create_selfsigned_cert: true
 # pgs12cis_ssl_ciphers are the ciphers to use with ssl. Default config value HIGH:MEDIUM:+3DES:!aNULL
@@ -257,7 +263,7 @@ pgs12cis_ssl_ciphers: HIGH:MEDIUM:+3DES:!aNULL
 pgs12cis_ssl_cert_file: server.crt
 # pgs12cis_ssl_key_file the key file. Default config value (key file used) server.key
 pgs12cis_ssl_key_file: server.key
-# pgs12cis_password_encryption the encryption method used. Default config value 
+# pgs12cis_password_encryption the encryption method used. Default config value
 pgs12cis_password_encryption: scram-sha-256
 
 # Section 7

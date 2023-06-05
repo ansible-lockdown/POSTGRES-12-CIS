@@ -1,0 +1,28 @@
+---
+
+- name: "4.6 | AUDIT | Ensure Row Level Security (RLS) is configured correctly"
+  block:
+      - name: "4.6 | AUDIT | Ensure Row Level Security (RLS) is configured correctly | Get databases using RLS"
+        ansible.builtin.shell: psql -c 'SELECT oid, relname, relrowsecurity FROM pg_class WHERE relrowsecurity IS TRUE;'
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_4_6_rls_databases
+
+      - name: "4.6 | AUDIT | Ensure Row Level Security (RLS) is configured correctly | Message out"
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! You need to confirm RLS is configured correctly. This is a manual task."
+                - "Below are the tables that are using RLS"
+                - "{{ pgs12cis_4_6_rls_databases.stdout_lines }}"
+
+      - name: "4.6 | AUDIT | Ensure Row Level Security (RLS) is configured correctly | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '4.6'
+  when:
+      - pgs12cis_rule_4_6
+  tags:
+      - level1-postgresql
+      - audit
+      - rule_4.6

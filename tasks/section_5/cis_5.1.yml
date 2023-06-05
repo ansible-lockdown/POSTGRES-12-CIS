@@ -1,0 +1,19 @@
+---
+
+# Section 5
+# Connection and Login
+- name: "5.1 | PATCH | Ensure login via local UNIX Domain Socket is configured correctly"
+  ansible.builtin.debug:
+      msg:
+          - "Warning!! Please ensure logins via local Unix Domain Socket is configured correctly. This is a manual task."
+
+- name: "5.1 | PATCH | Ensure login via local UNIX Domain Socket is configured correctly | Present"
+  ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '5.1'
+  when:
+      - pgs12cis_rule_5_1
+  tags:
+      - level1-postgresqlonlinux
+      - audit
+      - rule_5.1

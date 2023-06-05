@@ -1,0 +1,23 @@
+---
+
+# Section 1
+# 1.1
+# get_repo_list is the list of configured repositories to ensure
+# packages are obtained from authorized repositories.
+get_repo_list: "apt-cache policy"
+
+# 1.2 + 1.3
+# get_postgres_binary_list is PostgreSQL packages installed
+# on the Operating System to ensure installation of Binary Packages.
+get_postgres_binary_list: "apt list --installed | grep postgres"
+
+# 1.5
+# pgs12cis_db_data_dir_ub is the data directory for the database cluster.
+# This is for Ubuntu only.
+pgs12cis_1_5_db_initialize: "/usr/lib/postgresql/12/bin/initdb -D /usr/local/pgsql/data"
+
+# Section 3
+# 3.2
+# pgs12cis_3_2_pgaudit_install is the package to install pgAudit
+# to ensure the PostgreSQL Audit Extension (pgAudit) is enabled.
+pgs12cis_3_2_pgaudit_install: "postgresql-12-pgaudit"

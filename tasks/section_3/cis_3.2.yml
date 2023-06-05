@@ -1,0 +1,27 @@
+---
+
+- name: "3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled"
+  block:
+      - name: "3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Install pgAudit"
+        ansible.builtin.package:
+            name: "{{ pgs12cis_3_2_pgaudit_install }}"
+            state: present
+
+      - name: "3.2 | PATCH | Ensure the PostgreSQL Audit Extension (pgAudit) is enabled | Set pgAudit settings in postgresql.conf"
+        ansible.builtin.lineinfile:
+            path: "{{ pgs12cis_config_file }}"
+            regexp: "{{ item.regexp }}"
+            line: "{{ item.line }}"
+            insertafter: "{{ item.insertafter }}"
+        notify: restart postgresql
+        with_items:
+            - { regexp: '^shared_preload_libraries =|^#shared_preload_libraries =', line: "shared_preload_libraries = '{{ pgs12cis_shared_preload_libraries }}'", insertafter: EOF }
+            - { regexp: '^# for this example we are logging the ddl and write operations', line: '# for this example we are logging the ddl and write operations', insertafter: EOF }
+            - { regexp: '^pgaudit.log=', line: "pgaudit.log='{{ pgs12cis_pgaudit_log_types  }}'", insertafter: '# for this example we are logging the ddl and write operations'}
+  when:
+      - pgs12cis_rule_3_2
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - patch
+      - rule_3.2

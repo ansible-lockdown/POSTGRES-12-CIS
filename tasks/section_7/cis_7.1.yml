@@ -1,0 +1,37 @@
+---
+
+# Section 7
+# Replication
+- name: "7.1 | PATCH | Ensure a replication-only user is created and used for streaming replication"
+  block:
+      - name: "7.1 | AUDIT | Ensure a replication-only user is created and used for streaming replication | Create replication user"
+        ansible.builtin.shell: psql -t -c "select rolname from pg_roles where rolreplication is true;" | sed -r '/^\s*$/d' | awk '{$1=$1};1'
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_7_1_replication_users
+
+      - name: "7.1 | PATCH | Ensure a replication-only user is created and used for streaming replication | Create replication user"
+        ansible.builtin.shell: psql -c "create user {{ pgs12cis_replication_user }} REPLICATION encrypted password '{{ pgs12cis_replication_user_pw }}';"
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        when: "pgs12cis_replication_user not in pgs12cis_7_1_replication_users.stdout"
+
+      - name: "7.1 | PATCH | Ensure a replication-only user is created and used for streaming replication | Create replication user pg_hba.conf entry"
+        ansible.builtin.lineinfile:
+            path: "{{ pgs12cis_hba_config_file }}"
+            regexp: "{{ item.regexp }}"
+            line: "{{ item.line }}"
+            insertafter: "{{ item.insertafter }}"
+        with_items:
+            - { regexp: '^this is just a place holder value', line: '# The rule below was inserted via CIS automation', insertafter: '^# TYPE  DATABASE        USER'}
+            - { regexp: '^hostssl replication     {{ pgs12cis_replication_user }}', line: "hostssl replication {{ pgs12cis_replication_user }} 0.0.0.0/0 {{ pgs12cis_replication_user_enc_method }}", insertafter: '^# The rule below was inserted via CIS automation' }
+        notify: restart postgresql
+        when: "pgs12cis_replication_user not in pgs12cis_7_1_replication_users.stdout"
+  when:
+      - pgs12cis_rule_7_1
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - patch
+      - rule_7.1

@@ -1,0 +1,13 @@
+---
+
+- name: "SECTION | 8.1 | Ensure PostgreSQL configuration files are outside the data cluster"
+  ansible.builtin.import_tasks: cis_8.1.yml
+
+- name: "SECTION | 8.2 | Ensure PostgreSQL subdirectory locations are outside the data cluster"
+  ansible.builtin.import_tasks: cis_8.2.yml
+
+- name: "SECTION | 8.3 | Ensure the backup and restore tool, 'pgBackRest', is installed and configured"
+  ansible.builtin.import_tasks: cis_8.3.yml
+
+- name: "SECTION | 8.4 | Ensure miscellaneous configuration settings are correct"
+  ansible.builtin.import_tasks: cis_8.4.yml

@@ -1,0 +1,19 @@
+---
+
+- name: "4.4 | AUDIT | Ensure excessive DML privileges are revoked | Absent"
+  ansible.builtin.debug:
+      msg:
+          - "Warning!! Please review all users and databases to determine no users have excessive DML privileges"
+          - "If a user has excessive DML privileges that user can change or delete ifnormation without proper"
+          - "authorization and this is a finding. This is a manual task."
+
+- name: "4.4 | AUDIT  | Ensure excessive DML privileges are revoked | Present"
+  ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '4.4'
+  when:
+      - pgs12cis_rule_4_4
+  tags:
+      - level1-postgresql
+      - audit
+      - rule_4.4

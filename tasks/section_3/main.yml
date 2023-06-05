@@ -1,0 +1,7 @@
+---
+
+- name: "SECTION | 3.1 | PostgreSQL Logging"
+  ansible.builtin.import_tasks: cis_3.1.x.yml
+
+- name: "SECTION | 3.2 | PostgreSQL Logging"
+  ansible.builtin.import_tasks: cis_3.2.yml
