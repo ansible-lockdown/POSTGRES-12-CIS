@@ -5,7 +5,7 @@ pgs12cis_system_is_container: false
 
 # pgs12cis_install_postgresql this is a toggle to have this role do a generic install of PostgreSQL
 # it is recommended that you perform the install and setup on your own and then run this role
-pgs12cis_install_postgresql: false
+pgs12cis_install_postgresql: true
 
 # Enable/Disable full sections toggle
 # Set to true will run that section, set to false will skip section
