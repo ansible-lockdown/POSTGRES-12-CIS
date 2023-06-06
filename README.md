@@ -13,12 +13,11 @@
 [![Twitter URL](https://img.shields.io/twitter/url/https/twitter.com/AnsibleLockdown.svg?style=social&label=Follow%20%40AnsibleLockdown)](https://twitter.com/AnsibleLockdown)
 
 ![Discord Badge](https://img.shields.io/discord/925818806838919229?logo=discord)
-
-![Devel Build Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/POSTGRES-12-CIS/linux_benchmark_testing.yml?label=Devel%20Build%20Status)
+![Devel Build Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/POSTGRES-12-CIS/vagrantup.yml?branch=devel&style=flat)
 ![Devel Commits](https://img.shields.io/github/commit-activity/m/ansible-lockdown/POSTGRES-12-CIS/devel?color=dark%20green&label=Devel%20Branch%20commits)
 
 ![Release Branch](https://img.shields.io/badge/Release%20Branch-Main-brightgreen)
-![Main Build Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/POSTGRES-12-CIS/linux_benchmark_testing.yml?label=Build%20Status)
+![Main Build Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/POSTGRES-12-CIS/vagrantup.yml?branch=main&style=flat)
 ![Main Release Date](https://img.shields.io/github/release-date/ansible-lockdown/POSTGRES-12-CIS?label=Release%20Date)
 ![Release Tag](https://img.shields.io/github/v/tag/ansible-lockdown/POSTGRES-12-CIS?label=Release%20Tag&&color=success)
 
