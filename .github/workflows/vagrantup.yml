@@ -1,0 +1,55 @@
+name: vagrant-up
+
+on:
+  push:
+    branches: ["devel"]
+  pull_request:
+    branches: ["devel"]
+
+  pull_request_target:
+    branches:
+      - 'devel'
+      - 'main'
+    paths:
+      - '**.yml'
+      - '**.sh'
+      - '**.j2'
+      - '**.cfg'
+
+jobs:
+  vagrant-up:
+    runs-on: macos-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python 3.
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+
+      - name: Install test dependencies.
+        run: pip3 install ansible yamllint ansible-lint jmespath
+
+      - name: Download Virtualbox
+        run: brew install virtualbox
+
+      - name: Install vagrant
+        run: brew install vagrant
+
+      - name: Install vagrant-manager
+        run: brew install vagrant-manager
+
+      - name: Show Vagrant version
+        run: vagrant --version
+
+      - name: Run vagrant up
+        run: vagrant up
+
+      - name: Cache Vagrant boxes
+        uses: actions/cache@v3
+        with:
+          path: ~/.vagrant.d/boxes
+          key: ${{ runner.os }}-vagrant-${{ hashFiles('Vagrantfile') }}
+          restore-keys: |
+            ${{ runner.os }}-vagrant-
