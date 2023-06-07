@@ -6,15 +6,14 @@
 # packages are obtained from authorized repositories.
 get_repo_list: "apt-cache policy"
 
-# 1.2 + 1.3
 # get_postgres_binary_list is PostgreSQL packages installed
 # on the Operating System to ensure installation of Binary Packages.
 get_postgres_binary_list: "apt list --installed | grep postgres"
 
-# 1.5
-# pgs12cis_db_data_dir_ub is the data directory for the database cluster.
+# 1.3
+# pgs12cis_1_3_db_initialize is the data directory for the database cluster.
 # This is for Ubuntu only.
-pgs12cis_1_5_db_initialize: "/usr/lib/postgresql/12/bin/initdb -D /usr/local/pgsql/data"
+pgs12cis_1_3_db_initialize: "/usr/lib/postgresql/12/bin/initdb -D /usr/local/pgsql/data"
 
 # Section 3
 # 3.2

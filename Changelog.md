@@ -20,3 +20,5 @@
 - Removed all RHEL7 tagging and conditions.
 - Fixed Truthy syntax, typos, and Linting.
 - Removed Section* tags in each task.
+- Added Vagrantfile and GitHub Workflow automation
+- Updated CIS PostgreSQL 12 Benchmark baseline to v1.1.0 - 04-28-2023
