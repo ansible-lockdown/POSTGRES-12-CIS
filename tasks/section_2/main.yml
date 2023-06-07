@@ -1,0 +1,7 @@
+---
+
+- name: "SECTION | 2.1 | Ensure the file permissions mask is correct"
+  ansible.builtin.import_tasks: cis_2.1.yml
+
+- name: "SECTION | 2.2 | Ensure the PostgreSQL pg_wheel group membership is correct"
+  ansible.builtin.import_tasks: cis_2.2.yml

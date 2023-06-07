@@ -1,0 +1,28 @@
+---
+
+- name: "4.8 | AUDIT | Make use of default roles"
+  block:
+      - name: "4.8 | AUDIT | Make use of default roles | Get superusers"
+        ansible.builtin.shell: psql -c 'select rolname from pg_roles where rolsuper is true;'
+        changed_when: false
+        failed_when: false
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_4_8_superusers
+
+      - name: "4.8 | AUDIT | Make use of default roles | Message out"
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! Below are the superusers, please review and add any needed users to the superusers."
+                - "Or remove any users that should not have superuser status. This is a manual task."
+                - "{{ pgs12cis_4_8_superusers.stdout_lines }}"
+
+- name: "4.8 | AUDIT | Make use of default roles | Present"
+  ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '4.8'
+  when:
+      - pgs12cis_rule_4_8
+  tags:
+      - level1-postgresql
+      - audit
+      - rule_4.8

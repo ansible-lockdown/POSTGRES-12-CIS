@@ -1,0 +1,28 @@
+---
+
+- name: "5.2 | PATCH | Ensure login via 'host' TCP/IP Socket is configured correctly"
+  block:
+      - name: "5.2 | PATCH | Ensure login via 'host' TCP/IP Socket is configured correctly | Set listen_addresses"
+        ansible.builtin.lineinfile:
+            path: "{{ pgs12cis_config_file }}"
+            regexp: '^listen_addresses =|^#listen_addresses ='
+            line: "listen_addresses = '*'"
+        notify: restart postgresql
+
+      - name: "5.2 | PATCH | Ensure login via 'host' TCP/IP Socket is configured correctly | Set allow encrypted and deny unencrypted"
+        ansible.builtin.lineinfile:
+            path: "{{ pgs12cis_hba_config_file }}"
+            regexp: "{{ item.regexp }}"
+            line: "{{ item.line }}"
+            insertafter: "{{ item.insertafter }}"
+        notify: restart postgresql
+        with_items:
+            - { regexp: '^this is just a place holder value', line: '# The two rules below were inserted via CIS automation', insertafter: '^#.*TYPE.*DATABASE.*USER.*ADDRESS.*METHOD' }
+            - { regexp: '^hostnossl.*all.*{{ pgs12cis_pgs12_usr }}', line: 'hostnossl all           {{ pgs12cis_pgs12_usr }}        0.0.0.0/0               reject', insertafter: '# The two rules below were inserted via CIS automation' }
+            - { regexp: '^hostssl.*all.*{{ pgs12cis_pgs12_usr }}', line: "hostssl all             {{ pgs12cis_pgs12_usr }}        0.0.0.0/0               {{ pgs12cis_encrypt_method }}", insertafter: '# The two rules below were inserted via CIS automation' }
+  when:
+      - pgs12cis_rule_5_2
+  tags:
+      - level1-postgresqlonlinux
+      - patch
+      - rule_5.2

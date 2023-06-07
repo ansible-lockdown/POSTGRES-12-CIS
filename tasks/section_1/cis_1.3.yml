@@ -1,0 +1,27 @@
+---
+
+- name: "1.3 | AUDIT | Ensure Installation of Community Packages"
+  block:
+      - name: "1.3 | AUDIT | Ensure Installation of Community Packages | Get installed packages and repo"
+        ansible.builtin.shell: "{{ get_postgres_binary_list }}"
+        changed_when: false
+        failed_when: false
+        register: pgs12cis_1_3_postgres_binary_list
+
+      - name: "1.3 | AUDIT | Ensure Installation of Community Packages | Show installed packages and repo"
+        ansible.builtin.debug:
+            msg:
+                - "Warning!! Below are the installed postgres packages and where they came from. This is a manual task."
+                - "Please review and if the expected community packages are not installed or did not come from an PGDG repo, this is a fail."
+                - "{{ pgs12cis_1_3_postgres_binary_list.stdout_lines }}"
+
+      - name: "1.3 | AUDIT | Ensure Installation of Community Packages | Present"
+        ansible.builtin.import_tasks: warning_facts.yml
+  vars:
+      warn_control_id: '1.3'
+  when:
+      - pgs12cis_rule_1_3
+  tags:
+      - level1-postgresqlonlinux
+      - audit
+      - rule_1.3

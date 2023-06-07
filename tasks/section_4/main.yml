@@ -1,0 +1,25 @@
+---
+
+- name: "SECTION | 4.1 | Ensure sudo is configured correctly"
+  ansible.builtin.import_tasks: cis_4.1.yml
+
+- name: "SECTION | 4.2 | Ensure excessive administrative privileges are revoked"
+  ansible.builtin.import_tasks: cis_4.2.yml
+
+- name: "SECTION | 4.3 | Ensure excessive function privileges are revoked"
+  ansible.builtin.import_tasks: cis_4.3.yml
+
+- name: "SECTION | 4.4 | Ensure excessive DML privileges are revoked"
+  ansible.builtin.import_tasks: cis_4.4.yml
+
+- name: "SECTION | 4.5 | Use pg_permission extension to audit object permissions"
+  ansible.builtin.import_tasks: cis_4.5.yml
+
+- name: "SECTION | 4.6 | Ensure Row Level Security (RLS) is configured correctly"
+  ansible.builtin.import_tasks: cis_4.6.yml
+
+- name: "SECTION | 4.7 | Ensure the set_user extension is installed"
+  ansible.builtin.import_tasks: cis_4.7.yml
+
+- name: "SECTION | 4.8 | Make use of default roles"
+  ansible.builtin.import_tasks: cis_4.8.yml
