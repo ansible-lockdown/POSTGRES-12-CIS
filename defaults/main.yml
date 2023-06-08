@@ -57,6 +57,8 @@ pgs12cis_rule_3_1_21: true
 pgs12cis_rule_3_1_22: true
 pgs12cis_rule_3_1_23: true
 pgs12cis_rule_3_1_24: true
+pgs12cis_rule_3_1_25: true
+pgs12cis_rule_3_1_26: true
 pgs12cis_rule_3_2: true
 
 # Section 4
@@ -182,44 +184,80 @@ pgs12cis_log_rotation_size: 1GB
 pgs12cis_syslog_facility: LOCAL1
 
 # 3.1.11
+# pgs12cis_syslog_sequence_numbers is the program used to ensure that the syslog_sequence_numbers is enabled.
+pgs12cis_syslog_sequence_numbers: "on"
+
+# 3.1.12
+# pgs12cis_syslog_split_messages is the program used to to confirm that long log messages are split when logging to Syslog.
+pgs12cis_syslog_split_messages: "on"
+
+# 3.1.13
 # pgs12cis_syslog_ident is the program name used to identify PostgreSQL messages in rsyslog logs
 pgs12cis_syslog_ident: postgres
 
-# 3.1.12
+# 3.1.14
 # pgs12cis_log_min_messages specifies the warning levels that are written to the server log.
 # Options are DEBUG5, DEBUG4, DEBUG3, DEBUG2, DEBUG1, INFO, NOTICE, WARNING, ERROR, LOG, FATAL, PANIC
 # The list above is in order from most chatty (DEBUG5) to practically mute (PANIC). The level WARNING is considered best practice unless indicated otherwise.
 pgs12cis_log_min_messages: WARNING
 
-# 3.1.13
+# 3.1.15
 # pgs12cis_log_min_error_statement is the value the rate at which all SQL statements generating errors will be logged at
 # Options are DEBUG5, DEBUG4, DEBUG3, DEBUG2, DEBUG1, INFO, NOTICE, WARNING, ERROR, LOG, FATAL, PANIC
 # The list above are in order from most chatty (DEBUG5) to practically mute (PANIC). The level ERROR is considered best practice unless indicated otherwise.
 pgs12cis_log_min_error_statement: ERROR
 
+# 3.1.16
+# pgs12cis_debug_print_parse is the program name used to disable printing the resulting parse tree for each executed query.
+pgs12cis_debug_print_parse: "off"
+
+# 3.1.17
+# pgs12cis_debug_print_rewritten is the program name used to enable printing the query rewriter output for each executed query.
+pgs12cis_debug_print_rewritten: "off"
+
+
+# 3.1.18
+# pgs12cis_debug_print_plan is the program name used to enable printing the execution plan for each executed query.
+# These messages are emitted at the LOG message level.
+pgs12cis_debug_print_plan: "off"
+
+# 3.1.19
+# pgs12cis_debug_pretty_print is the program name used to making the messages produced by
+# debug_print_parse, debug_print_rewritten, or debug_print_plan making them significantly easier to read.
+pgs12cis_debug_pretty_print: "on"
+
 # 3.1.20
+# pgs12cis_log_connections is the program name used to Enabling the log_connections setting causes each
+# attempted connection to the server to be logged, as well as successful completion of client authentication.
+pgs12cis_log_connections: "on"
+
+# 3.1.21
+# pgs12cis_log_disconnections is the program name used to Enabling the log_disconnections setting logs the end of each session, including session duration.
+pgs12cis_log_disconnections: "on"
+
+# 3.1.22
 # pgs12cis_log_error_verbosity sets the verbosity (amount of detail) of logged messages
 # Options are TERSE, DEFAULT, and VERBOSE.
 pgs12cis_log_error_verbosity: DEFAULT
 
-# 3.1.21
+# 3.1.23
 # pgs12cis_log_hostname enables/disables logging of connecting host names in logs in addition to the IP
 # Enabling this could cause non-negligible  performance impacts. It is suggested to leave off, but have given the option to enable if needed
 pgs12cis_log_hostname: "off"
 
-# 3.1.22
+# 3.1.24
 # pgs12cis_log_line_prefix is the printf style string that is prefixed to each log line
 # for this var you must use the single ticks before and after the values
 # Example pgs12cis_log_line_prefix: '%m [%p]: [%l-1] db=%d,user=%u,app=%a,client=%h '
 pgs12cis_log_line_prefix: '%m [%p]: [%l-1] db=%d,user=%u,app=%a,client=%h '
 
-# 3.1.23
+# 3.1.25
 # pgs12cis_log_statement specifies the types of SQL statements that are logged
 # The values are none, ddl, mod, and all. Value none logs no SQL statements and all logs all SQL statements
 # To conform to CIS standards this must NOT be set to none
 pgs12cis_log_statement: ddl
 
-# 3.1.24
+# 3.1.26
 # pgs12cis_log_timezone is the timezone to use in timestamps within log messages
 # This value needs to be set to GMT, UTC, or the timezone defined by your organization's logging policy
 pgs12cis_log_timezone: GMT

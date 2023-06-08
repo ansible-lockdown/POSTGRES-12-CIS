@@ -131,8 +131,8 @@
 - name: "3.1.11 | PATCH | Ensure the program name for PostgreSQL syslog messages is correct"
   ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
-      regexp: '^syslog_ident =|^#syslog_ident ='
-      line: "syslog_ident = '{{ pgs12cis_syslog_ident }}'"
+      regexp: '^syslog_sequence_numbers =|^#syslog_sequence_numbers ='
+      line: "syslog_sequence_numbers = '{{ pgs12cis_syslog_sequence_numbers }}'"
   notify: restart postgresql
   when:
       - pgs12cis_rule_3_1_11
@@ -142,11 +142,11 @@
       - patch
       - rule_3.1.11
 
-- name: "3.1.12 | PATCH | Ensure the correct messages are written to the server log"
+- name: "3.1.12 | PATCH | Ensure syslog messages are not lost due to size"
   ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
-      regexp: '^log_min_messages =|^#log_min_messages ='
-      line: "log_min_messages = {{ pgs12cis_log_min_messages }}"
+      regexp: '^syslog_split_messages =|^#syslog_split_messages ='
+      line: "syslog_split_messages = '{{ pgs12cis_syslog_split_messages }}'"
   notify: restart postgresql
   when:
       - pgs12cis_rule_3_1_12
@@ -156,11 +156,11 @@
       - patch
       - rule_3.1.12
 
-- name: "3.1.13 | PATCH | Ensure the correct SQL statements generating errors are recorded"
+- name: "3.1.13 | PATCH | Ensure the program name for PostgreSQL syslog messages is correct"
   ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
-      regexp: '^log_min_error_statement =|^#log_min_error_statement ='
-      line: "log_min_error_statement = {{ pgs12cis_log_min_error_statement }}"
+      regexp: '^syslog_ident =|^#syslog_ident ='
+      line: "syslog_ident = '{{ pgs12cis_syslog_ident }}'"
   notify: restart postgresql
   when:
       - pgs12cis_rule_3_1_13
@@ -170,11 +170,11 @@
       - patch
       - rule_3.1.13
 
-- name: "3.1.14 | PATCH | Ensure 'debug_print_parse' is disabled"
+- name: "3.1.14 | PATCH | Ensure the correct messages are written to the server log"
   ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
-      regexp: '^debug_print_parse =|^#debug_print_parse ='
-      line: "debug_print_parse = off"
+      regexp: '^log_min_messages =|^#log_min_messages ='
+      line: "log_min_messages = {{ pgs12cis_log_min_messages }}"
   notify: restart postgresql
   when:
       - pgs12cis_rule_3_1_14
@@ -184,11 +184,11 @@
       - patch
       - rule_3.1.14
 
-- name: "3.1.15 | PATCH | Ensure 'debug_print_rewritten' is disabled"
+- name: "3.1.15 | PATCH | Ensure the correct SQL statements generating errors are recorded"
   ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
-      regexp: '^debug_print_rewritten =|^#debug_print_rewritten ='
-      line: "debug_print_rewritten = off"
+      regexp: '^log_min_error_statement =|^#log_min_error_statement ='
+      line: "log_min_error_statement = {{ pgs12cis_log_min_error_statement }}"
   notify: restart postgresql
   when:
       - pgs12cis_rule_3_1_15
@@ -198,11 +198,11 @@
       - patch
       - rule_3.1.15
 
-- name: "3.1.16 | PATCH | Ensure 'debug_print_plan' is disabled"
+- name: "3.1.16 | PATCH | Ensure 'debug_print_parse' is disabled"
   ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
-      regexp: '^debug_print_plan =|^#debug_print_plan ='
-      line: "debug_print_plan = off"
+      regexp: '^debug_print_parse =|^#debug_print_parse ='
+      line: "debug_print_parse = {{ pgs12cis_debug_print_parse }}"
   notify: restart postgresql
   when:
       - pgs12cis_rule_3_1_16
@@ -212,11 +212,11 @@
       - patch
       - rule_3.1.16
 
-- name: "3.1.17 | PATCH | Ensure 'debug_pretty_print' is enabled"
+- name: "3.1.17 | PATCH | Ensure 'debug_print_rewritten' is disabled"
   ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
-      regexp: '^debug_pretty_print =|^#debug_pretty_print ='
-      line: "debug_pretty_print = on"
+      regexp: '^debug_print_rewritten =|^#debug_print_rewritten ='
+      line: "debug_print_rewritten = {{ pgs12cis_debug_print_rewritten }}"
   notify: restart postgresql
   when:
       - pgs12cis_rule_3_1_17
@@ -226,11 +226,11 @@
       - patch
       - rule_3.1.17
 
-- name: "3.1.18 | PATCH | Ensure 'log_connections' is enabled"
+- name: "3.1.18 | PATCH | Ensure 'debug_print_plan' is disabled"
   ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
-      regexp: '^log_connections =|^#log_connections ='
-      line: "log_connections = on"
+      regexp: '^debug_print_plan =|^#debug_print_plan ='
+      line: "debug_print_plan = {{ pgs12cis_debug_print_plan }}"
   notify: restart postgresql
   when:
       - pgs12cis_rule_3_1_18
@@ -240,11 +240,11 @@
       - patch
       - rule_3.1.18
 
-- name: "3.1.19 | PATCH | Ensure 'log_disconnections' is enabled"
+- name: "3.1.19 | PATCH | Ensure 'debug_pretty_print' is enabled"
   ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
-      regexp: '^log_disconnections =|^#log_disconnections ='
-      line: "log_disconnections = on"
+      regexp: '^debug_pretty_print =|^#debug_pretty_print ='
+      line: "debug_pretty_print = {{ pgs12cis_debug_pretty_print }}"
   notify: restart postgresql
   when:
       - pgs12cis_rule_3_1_19
@@ -254,11 +254,11 @@
       - patch
       - rule_3.1.19
 
-- name: "3.1.20 | PATCH | Ensure 'log_error_verbosity' is set correctly"
+- name: "3.1.20 | PATCH | Ensure 'log_connections' is enabled"
   ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
-      regexp: '^log_error_verbosity =|^#log_error_verbosity ='
-      line: "log_error_verbosity = {{ pgs12cis_log_error_verbosity }}"
+      regexp: '^log_connections =|^#log_connections ='
+      line: "log_connections = {{ pgs12cis_log_connections }}"
   notify: restart postgresql
   when:
       - pgs12cis_rule_3_1_20
@@ -268,11 +268,11 @@
       - patch
       - rule_3.1.20
 
-- name: "3.1.21 | PATCH | Ensure 'log_hostname' is set correctly"
+- name: "3.1.21 | PATCH | Ensure 'log_disconnections' is enabled"
   ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
-      regexp: '^log_hostname =|^#log_hostname ='
-      line: "log_hostname = {{ pgs12cis_log_hostname }}"
+      regexp: '^log_disconnections =|^#log_disconnections ='
+      line: "log_disconnections = {{ pgs12cis_log_disconnections }}"
   notify: restart postgresql
   when:
       - pgs12cis_rule_3_1_21
@@ -282,11 +282,11 @@
       - patch
       - rule_3.1.21
 
-- name: "3.1.22 | PATCH | Ensure 'log_line_prefix' is set correctly"
+- name: "3.1.22 | PATCH | Ensure 'log_error_verbosity' is set correctly"
   ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
-      regexp: '^log_line_prefix =|^#log_line_prefix ='
-      line: "log_line_prefix = '{{ pgs12cis_log_line_prefix }}'"
+      regexp: '^log_error_verbosity =|^#log_error_verbosity ='
+      line: "log_error_verbosity = {{ pgs12cis_log_error_verbosity }}"
   notify: restart postgresql
   when:
       - pgs12cis_rule_3_1_22
@@ -296,11 +296,11 @@
       - patch
       - rule_3.1.22
 
-- name: "3.1.23 | PATCH | Ensure 'log_statement' is set correctly"
+- name: "3.1.23 | PATCH | Ensure 'log_hostname' is set correctly"
   ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
-      regexp: '^log_statement =|^#log_statement ='
-      line: "log_statement = '{{ pgs12cis_log_statement }}'"
+      regexp: '^log_hostname =|^#log_hostname ='
+      line: "log_hostname = {{ pgs12cis_log_hostname }}"
   notify: restart postgresql
   when:
       - pgs12cis_rule_3_1_23
@@ -310,14 +310,42 @@
       - patch
       - rule_3.1.23
 
-- name: "3.1.24 | PATCH | Ensure 'log_timezone' is set correctly"
+- name: "3.1.24 | PATCH | Ensure 'log_line_prefix' is set correctly"
+  ansible.builtin.lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^log_line_prefix =|^#log_line_prefix ='
+      line: "log_line_prefix = '{{ pgs12cis_log_line_prefix }}'"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_24
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - patch
+      - rule_3.1.24
+
+- name: "3.1.25 | PATCH | Ensure 'log_statement' is set correctly"
+  ansible.builtin.lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: '^log_statement =|^#log_statement ='
+      line: "log_statement = '{{ pgs12cis_log_statement }}'"
+  notify: restart postgresql
+  when:
+      - pgs12cis_rule_3_1_25
+  tags:
+      - level1-postgresql
+      - level1-postgresqlonlinux
+      - patch
+      - rule_3.1.25
+
+- name: "3.1.26 | PATCH | Ensure 'log_timezone' is set correctly"
   ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^log_timezone =|^#log_timezone ='
       line: "log_timezone = '{{ pgs12cis_log_timezone }}'"
   notify: restart postgresql
   when:
-      - pgs12cis_rule_3_1_24
+      - pgs12cis_rule_3_1_26
   tags:
       - level1-postgresql
       - level1-postgresqlonlinux
