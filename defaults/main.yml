@@ -168,6 +168,12 @@ pgs12cis_log_filename: postgresql-%a.log
 # In most cases 600 is the best setting, but 640 is another common one as well
 pgs12cis_log_file_mode: 600
 
+# 3.1.7
+# pgs12cis_log_truncate_on_rotation enables the log_truncate_on_rotation setting when
+# logging_collector is enabled causes PostgreSQL to truncate (overwrite) existing log files
+# with the same name during log rotation instead of appending to them.
+pgs12cis_log_truncate_on_rotation: "on"
+
 # 3.1.8
 # pgs12cis_log_file_age is the duration to keep a log file
 # Please set this to an acceptable value
