@@ -13,10 +13,10 @@
   ansible.builtin.import_tasks: cis_4.4.yml
 
 - name: "SECTION | 4.5 | Ensure Row Level Security (RLS) is configured correctly"
-  ansible.builtin.import_tasks: cis_4.6.yml
+  ansible.builtin.import_tasks: cis_4.5.yml
 
 - name: "SECTION | 4.6 | Ensure the set_user extension is installed"
-  ansible.builtin.import_tasks: cis_4.7.yml
+  ansible.builtin.import_tasks: cis_4.6.yml
 
 - name: "SECTION | 4.7 | Make use of default roles"
   ansible.builtin.import_tasks: cis_4.7.yml
