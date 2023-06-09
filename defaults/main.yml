@@ -151,6 +151,11 @@ pgs12cis_umask_value: "077"
 # One of these destinations should be et for server log output
 pgs12cis_log_destination: syslog
 
+# 3.1.3
+# pgs12cis_logging_collector is a background process that captures log messages sent to stderr and redirects
+# them into log files. The logging_collector setting must be enabled in order for this process to run.
+pgs12cis_logging_collector: "on"
+
 # 3.1.4
 # pgs12cis_log_directory is the directory logs are written to
 # The default value is log, which is relative to the clusters data directory.

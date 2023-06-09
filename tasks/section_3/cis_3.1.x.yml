@@ -20,7 +20,7 @@
   ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^logging_collector =|^#logging_collector ='
-      line: "logging_collector = on"
+      line: "logging_collector = '{{ pgs12cis_logging_collector }}'"
   notify: restart postgresql
   when:
       - pgs12cis_rule_3_1_3
@@ -128,7 +128,7 @@
       - patch
       - rule_3.1.10
 
-- name: "3.1.11 | PATCH | Ensure the program name for PostgreSQL syslog messages is correct"
+- name: "3.1.11 | PATCH | Ensure syslog messages are not suppressed"
   ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: '^syslog_sequence_numbers =|^#syslog_sequence_numbers ='
