@@ -2,12 +2,12 @@
 
 # Section 5
 # Connection and Login
-- name: "5.1 | PATCH | Ensure login via local UNIX Domain Socket is configured correctly"
+- name: "5.1 | PATCH | Ensure login via 'local' UNIX Domain Socket is configured correctly"
   ansible.builtin.debug:
       msg:
-          - "Warning!! Please ensure logins via local Unix Domain Socket is configured correctly. This is a manual task."
+          - "Warning!! Please ensure logins via 'local' Unix Domain Socket is configured correctly. This is a manual task."
 
-- name: "5.1 | PATCH | Ensure login via local UNIX Domain Socket is configured correctly | Present"
+- name: "5.1 | PATCH | Ensure login via 'local' UNIX Domain Socket is configured correctly | Present"
   ansible.builtin.import_tasks: warning_facts.yml
   vars:
       warn_control_id: '5.1'

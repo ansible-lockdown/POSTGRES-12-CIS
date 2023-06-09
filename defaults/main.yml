@@ -292,6 +292,9 @@ pgs12cis_allowed_superusers:
 
 # Section 5
 # 5.2
+# pgs12cis_listen_addresses are the ports exposed to the remote connecting host i.e. NOT ip address 127.0.0.1
+pgs12cis_listen_addresses: "*"
+
 # pgs12cis_encrypt_method is the encryption method used for allowing ssl communication with the pgs12cis_pgs12_usr configured user
 # md5, scram-sha-256, gss, sspi, pam, ldap, radius, and cert are allowed. Trust, password, and ident methods are NOT allowed
 pgs12cis_encrypt_method: scram-sha-256
