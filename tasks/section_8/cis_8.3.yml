@@ -7,13 +7,13 @@
         changed_when: false
         failed_when: false
         become_user: "{{ pgs12cis_pgs12_usr }}"
-        register: pgs12cis_8_4_settings
+        register: pgs12cis_8_3_settings
 
       - name: "8.3 | AUDIT | Ensure miscellaneous configuration settings are correct | Display settings"
         ansible.builtin.debug:
             msg:
                 - "Warning!! Please review the settings to confirm permissions are based on organization's policies. This is a manual task."
-                - "{{ pgs12cis_8_4_settings.stdout_lines }}"
+                - "{{ pgs12cis_8_3_settings.stdout_lines }}"
 
       - name: "8.3 | AUDIT | Ensure miscellaneous configuration settings are correct | Present"
         ansible.builtin.import_tasks: warning_facts.yml
