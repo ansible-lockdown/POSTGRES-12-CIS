@@ -1,24 +1,23 @@
 ---
 
-# Section 8
-# Special Configuration Considerations
-- name: "8.1 | AUDIT | Ensure PostgreSQL configuration files are outside the data cluster"
+- name: "8.1 | AUDIT | Ensure PostgreSQL subdirectory locations are outside the data cluster"
   block:
-      - name: "8.1 | AUDIT | Ensure PostgreSQL configuration files are outside the data cluster | Get file list"
-        ansible.builtin.shell: psql -c "select name, setting from pg_settings where name ~ '.*_file$';"
+      - name: "8.1 | AUDIT | Ensure PostgreSQL subdirectory locations are outside the data cluster | Get directory settings"
+        ansible.builtin.shell: psql -c "select name, setting from pg_settings where (name ~ '_directory$' or name ~ '_tablespace');"
         changed_when: false
         failed_when: false
         become_user: "{{ pgs12cis_pgs12_usr }}"
-        register: pgs12cis_8_1_files_used
+        register: pgs12cis_8_2_directory_settings
 
-      - name: "8.1 | AUDIT | Ensure PostgreSQL configuration files are outside the data cluster | Display file listings"
+      - name: "8.1 | AUDIT | Ensure PostgreSQL subdirectory locations are outside the data cluster | Display settings"
         ansible.builtin.debug:
             msg:
-                - "Warning!! Please review the settings and determine appropriate locations"
-                - "and file permissions for the configuration files based on organization's security policies. This is a manual task."
-                - "{{ pgs12cis_8_1_files_used.stdout_lines }}"
+                - "Warning!! Please inspect the file and directory permissions for all returned values."
+                - "Only superusers and authorized users should have access control"
+                - "rights for these files and directories. This is a manual task."
+                - "{{ pgs12cis_8_2_directory_settings.stdout_lines }}"
 
-      - name: "8.1 | AUDIT | Ensure PostgreSQL configuration files are outside the data cluster | Present"
+      - name: "8.1 | AUDIT | Ensure PostgreSQL subdirectory locations are outside the data cluster | Present"
         ansible.builtin.import_tasks: warning_facts.yml
   vars:
       warn_control_id: '8.1'
