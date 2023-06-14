@@ -314,6 +314,8 @@ pgs12cis_ssl_cert_file: server.crt
 pgs12cis_ssl_key_file: server.key
 # pgs12cis_password_encryption the encryption method used. Default config value
 pgs12cis_password_encryption: scram-sha-256
+# pgs12cis_ssl_min_protocol_version force clients to use TLS v1.3 or newer
+pgs12cis_ssl_min_protocol_version: TLSv1.3
 
 # Section 7
 # 7.1
