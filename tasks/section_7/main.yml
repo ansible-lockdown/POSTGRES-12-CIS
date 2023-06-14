@@ -1,0 +1,16 @@
+---
+
+- name: "SECTION | 7.1 | Ensure a replication-only user is created and used for streaming replication"
+  ansible.builtin.import_tasks: cis_7.1.yml
+
+- name: "SECTION | 7.2 | Ensure logging of replication commands is configured"
+  ansible.builtin.import_tasks: cis_7.2.yml
+
+- name: "SECTION | 7.3 | Ensure base backups are configured and functional"
+  ansible.builtin.import_tasks: cis_7.3.yml
+
+- name: "SECTION | 7.4 | Ensure WAL archiving is configured and functional"
+  ansible.builtin.import_tasks: cis_7.4.yml
+
+- name: "SECTION | 7.5 | Ensure streaming replication parameters are configured correctly"
+  ansible.builtin.import_tasks: cis_7.5.yml
