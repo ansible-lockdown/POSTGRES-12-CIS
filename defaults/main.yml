@@ -101,7 +101,6 @@ pgs12cis_rule_7_5: true
 pgs12cis_rule_8_1: true
 pgs12cis_rule_8_2: true
 pgs12cis_rule_8_3: true
-pgs12cis_rule_8_4: true
 
 # Role vars - Global
 # pgs12cis_pgs12_usr is the configured postgres user
