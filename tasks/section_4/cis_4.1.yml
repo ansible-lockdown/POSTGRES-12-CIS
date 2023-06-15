@@ -4,11 +4,11 @@
 # User Access and Authorization
 - name: "4.1 | PATCH | Ensure sudo is configured correctly"
   block:
-      - name: "4.1 | PATCH | Ensure sudo is configured correctly | Configure pg_wheel to sudoers"
+      - name: "4.1 | PATCH | Ensure sudo is configured correctly | Configure dba to sudoers"
         ansible.builtin.lineinfile:
             path: /etc/sudoers.d/postgres
-            regexp: '^%pg_wheel ALL='
-            line: '%pg_wheel ALL= /bin/su - {{ pgs12cis_pgs12_usr }}'
+            regexp: '^%dba ALL='
+            line: '%dba ALL=({{ pgs12cis_pgs12_usr }}) PASSWD: ALL'
             create: true
 
       - name: "4.1 | PATCH | Ensure sudo is configured correctly | Set file permissions"
