@@ -1,6 +1,6 @@
 ---
 
-- name: "SECTION | 6.1 | Ensure 'Attack Vectors' Runtime Parameters are Configured"
+- name: "SECTION | 6.1 | Understanding attack vectors and runtime parameters"
   ansible.builtin.import_tasks: cis_6.1.yml
 
 - name: "SECTION | 6.2 | Ensure 'backend' runtime parameters are configured correctly"
