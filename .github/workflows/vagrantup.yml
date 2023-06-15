@@ -1,20 +1,20 @@
 name: vagrant-up
 
-on:
-  push:
-    branches: ["devel"]
-  pull_request:
-    branches: ["devel"]
-
-  pull_request_target:
-    branches:
-      - 'devel'
-      - 'main'
-    paths:
-      - '**.yml'
-      - '**.sh'
-      - '**.j2'
-      - '**.cfg'
+# Controls when the action will run.
+# Triggers the workflow on push or pull request
+# events but only for the devel branch
+on: # yamllint disable-line rule:truthy
+    pull_request_target:
+        types: [opened, reopened, synchronize]
+        branches:
+            - devel
+            - main
+        paths:
+            - '**.yml'
+            - '**.sh'
+            - '**.j2'
+            - '**.ps1'
+            - '**.cfg'
 
 jobs:
   vagrant-up:
