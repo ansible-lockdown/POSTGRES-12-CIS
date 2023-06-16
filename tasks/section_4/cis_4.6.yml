@@ -1,22 +1,27 @@
 ---
 
-- name: "4.6 | AUDIT | Ensure Row Level Security (RLS) is configured correctly"
+- name: "4.6 | AUDIT | Ensure the set_user extension is installed"
   block:
-      - name: "4.6 | AUDIT | Ensure Row Level Security (RLS) is configured correctly | Get databases using RLS"
-        ansible.builtin.shell: psql -c 'SELECT oid, relname, relrowsecurity FROM pg_class WHERE relrowsecurity IS TRUE;'
+      - name: "4.6 | AUDIT | Ensure the set_user extension is installed | Get set_user status"
+        ansible.builtin.shell: psql -c "select * from pg_available_extensions where name = 'set_user';" | grep rows | tr -d '()'
         changed_when: false
         failed_when: false
         become_user: "{{ pgs12cis_pgs12_usr }}"
-        register: pgs12cis_4_6_rls_databases
+        register: pgs12cis_4_6_set_user_status
 
-      - name: "4.6 | AUDIT | Ensure Row Level Security (RLS) is configured correctly | Message out"
+      - name: "4.6 | AUDIT | Ensure the set_user extension is installed | Warning on not available"
         ansible.builtin.debug:
             msg:
-                - "Warning!! You need to confirm RLS is configured correctly. This is a manual task."
-                - "Below are the tables that are using RLS"
-                - "{{ pgs12cis_4_6_rls_databases.stdout_lines }}"
+                - "Warning!! You do not have the set_user extention installed and this is a finding. This is a manual task."
+                - "Please review and install the set_user extention then configure as needed"
+        when: "'0 rows' in pgs12cis_4_6_set_user_status.stdout"
 
-      - name: "4.6 | AUDIT | Ensure Row Level Security (RLS) is configured correctly | Present"
+      - name: "4.6 | AUDIT | Ensure the set_user extension is installed | Warning on available"
+        ansible.builtin.debug:
+            msg: "Good News! You have the module available for use. Please make sure it is configured correctly. This is a manual task."
+        when: "'0 rows' not in pgs12cis_4_6_set_user_status.stdout"
+
+      - name: "4.6 | AUDIT | Ensure the set_user extension is installed | Present"
         ansible.builtin.import_tasks: warning_facts.yml
   vars:
       warn_control_id: '4.6'

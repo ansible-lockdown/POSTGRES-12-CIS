@@ -1,6 +1,6 @@
 ---
 
-- name: "6.8 | PATCH | Ensure SSL is enabled and configured correctly"
+- name: "6.8 | PATCH | Ensure TLS is enabled and configured correctly"
   ansible.builtin.lineinfile:
       path: "{{ pgs12cis_config_file }}"
       regexp: "{{ item.regexp }}"
@@ -13,6 +13,7 @@
       - { regexp: '^ssl_cert_file =|^#ssl_cert_file =', line: "ssl_cert_file = '{{ pgs12cis_ssl_cert_file }}'", insertafter: 'ssl = on' }
       - { regexp: '^ssl_key_file =|ssl_key_file =', line: "ssl_key_file = '{{ pgs12cis_ssl_key_file }}'", insertafter: 'ssl = on' }
       - { regexp: '^password_encryption =|^#password_encryption =', line: 'password_encryption = {{ pgs12cis_password_encryption }}', insertafter: 'ssl = on' }
+      - { regexp: '^ssl_min_protocol_version =|^#ssl_min_protocol_version =', line: 'ssl_min_protocol_version = {{ pgs12cis_ssl_min_protocol_version }}', insertafter: 'ssl = on' }
   when:
       - pgs12cis_rule_6_8
   tags:

@@ -1,6 +1,6 @@
 ---
 
-- name: "SECTION | 6.1 | Ensure 'Attack Vectors' Runtime Parameters are Configured"
+- name: "SECTION | 6.1 | Understanding attack vectors and runtime parameters"
   ansible.builtin.import_tasks: cis_6.1.yml
 
 - name: "SECTION | 6.2 | Ensure 'backend' runtime parameters are configured correctly"
@@ -21,7 +21,7 @@
 - name: "SECTION | 6.7 | Ensure FIPS 140-2 OpenSSL Cryptography Is Used"
   ansible.builtin.import_tasks: cis_6.7.yml
 
-- name: "SECTION | 6.8 | Ensure SSL is enabled and configured correctly"
+- name: "SECTION | 6.8 | Ensure TLS is enabled and configured correctly"
   ansible.builtin.import_tasks: cis_6.8.yml
 
 - name: "SECTION | 6.9 | Ensure the pgcrypto extension is installed and configured correctly"

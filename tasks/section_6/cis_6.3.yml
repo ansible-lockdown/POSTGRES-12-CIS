@@ -10,7 +10,7 @@
         register: pgs12cis_6_3_postmaster_runtime_param
 
       - name: "6.3 | AUDIT | Ensure 'Postmaster' Runtime Parameters are Configured | Get process output"
-        ansible.builtin.shell: ps aux | grep -E 'postgres' | grep -- '-[D]'
+        ansible.builtin.shell: ps -few | grep -E -- '[p]ost.*-[D]'
         changed_when: false
         failed_when: false
         register: pgs12cis_6_3_process_output

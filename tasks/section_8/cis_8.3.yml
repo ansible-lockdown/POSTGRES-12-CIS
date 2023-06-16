@@ -1,33 +1,29 @@
 ---
 
-- name: "8.3 | AUDIT | Ensure the backup and restore tool, 'pgBackRest', is installed and configured"
+- name: "8.3 | AUDIT | Ensure miscellaneous configuration settings are correct"
   block:
-      - name: "8.3 | AUDIT | Ensure the backup and restore tool, 'pgBackRest', is installed and configured | Check for pgBackRest"
-        ansible.builtin.shell: which pgbackrest
+      - name: "8.3 | AUDIT | Ensure miscellaneous configuration settings are correct | Get settings"
+        ansible.builtin.shell: psql -c "select name, setting from pg_settings where name in ('external_pid_file', 'unix_socket_directories','shared_preload_libraries','dynamic_library_path',' local_preload_libraries','session_preload_libraries');"
         changed_when: false
         failed_when: false
-        register: pgs12cis_pgbackrest_status
+        become_user: "{{ pgs12cis_pgs12_usr }}"
+        register: pgs12cis_8_3_settings
 
-      - name: "8.3 | AUDIT | Ensure the backup and restore tool, 'pgBackRest', is installed and configured | Missing pgBackRest"
+      - name: "8.3 | AUDIT | Ensure miscellaneous configuration settings are correct | Display settings"
         ansible.builtin.debug:
             msg:
-                - "Warning!! You do not have pgBackRest installed. Please install and configure pgBackRest. This is a manual task."
-        when: "'no pgbackrest' in pgs12cis_pgbackrest_status.stdout"
+                - "Warning!! Please review the settings to confirm permissions are based on organization's policies. This is a manual task."
+                - "{{ pgs12cis_8_3_settings.stdout_lines }}"
 
-      - name: "8.3 | AUDIT | Ensure the backup and restore tool, 'pgBackRest', is installed and configured | pgBackRest installed"
-        ansible.builtin.debug:
-            msg:
-                - "Good News! You have pgBackRest installed. Make sure it is configured appropriatly for things like"
-                - "stanza name, backup location, retention policy, logging, etc. This is a manual task."
-        when: "'no pgbackrest' not in pgs12cis_pgbackrest_status.stdout"
-
-      - name: "8.3 | AUDIT | Ensure the backup and restore tool, 'pgBackRest', is installed and configured | Present"
+      - name: "8.3 | AUDIT | Ensure miscellaneous configuration settings are correct | Present"
         ansible.builtin.import_tasks: warning_facts.yml
   vars:
       warn_control_id: '8.3'
   when:
       - pgs12cis_rule_8_3
   tags:
+      - level1-postgresql
       - level1-postgresqlonlinux
       - audit
+      - rhel
       - rule_8.3

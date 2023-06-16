@@ -2,7 +2,7 @@
 
 ## Configure a PostgresSQL 12 machine to be [CIS](https://www.cisecurity.org/cis-benchmarks/) compliant
 
-### Based on [CIS PostgreSQL 12 Benchmark v1.0.0 - 11-19-2019](https://www.cisecurity.org/cis-benchmarks/)
+### Based on [CIS PostgreSQL 12 Benchmark v1.1.0 - 04-28-2023](https://www.cisecurity.org/cis-benchmarks/)
 
 ---
 

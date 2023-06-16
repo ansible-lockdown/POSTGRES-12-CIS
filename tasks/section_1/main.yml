@@ -3,14 +3,8 @@
 - name: "SECTION | 1.1 | Ensure packages are obtained from authorized repositories"
   ansible.builtin.import_tasks: cis_1.1.yml
 
-- name: "SECTION | 1.2 | Ensure Installation of Binary Packages"
+- name: "SECTION | 1.2 | Ensure systemd Service Files Are Enabled"
   ansible.builtin.import_tasks: cis_1.2.yml
 
-- name: "SECTION | 1.3 | Ensure Installation of Community Packages"
+- name: "SECTION | 1.3 | Ensure Data Cluster Initialized Successfully"
   ansible.builtin.import_tasks: cis_1.3.yml
-
-- name: "SECTION | 1.4 | Ensure systemd Service Files Are Enabled"
-  ansible.builtin.import_tasks: cis_1.4.yml
-
-- name: "SECTION | 1.5 | Ensure Data Cluster Initialized Successfully"
-  ansible.builtin.import_tasks: cis_1.5.yml

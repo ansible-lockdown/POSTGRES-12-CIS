@@ -6,7 +6,7 @@
         ansible.builtin.lineinfile:
             path: "{{ pgs12cis_config_file }}"
             regexp: '^listen_addresses =|^#listen_addresses ='
-            line: "listen_addresses = '*'"
+            line: "listen_addresses = '{{ pgs12cis_listen_addresses }}'"
         notify: restart postgresql
 
       - name: "5.2 | PATCH | Ensure login via 'host' TCP/IP Socket is configured correctly | Set allow encrypted and deny unencrypted"

@@ -2,14 +2,14 @@
 
 # Section 6
 # PostgreSQL Settings
-- name: "6.1 | AUDIT | Ensure 'Attack Vectors' Runtime Parameters are Configured"
+- name: "6.1 | AUDIT | Understanding attack vectors and runtime parameters"
   ansible.builtin.debug:
       msg:
           - "Warning!! Review all configuration settings. Configure PostgreSQL"
           - "logging to record all modifications and changes to the RDBMS."
           - "This is a manual task."
 
-- name: "6.1 | AUDIT | Ensure 'Attack Vectors' Runtime Parameters are Configured | Present"
+- name: "6.1 | AUDIT | Understanding attack vectors and runtime parameters | Present"
   ansible.builtin.import_tasks: warning_facts.yml
   vars:
       warn_control_id: '6.1'

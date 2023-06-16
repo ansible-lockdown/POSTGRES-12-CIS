@@ -1,28 +1,23 @@
 ---
 
-- name: "4.7 | AUDIT | Ensure the set_user extension is installed"
+- name: "4.7 | AUDIT | Make use of default roles"
   block:
-      - name: "4.7 | AUDIT | Ensure the set_user extension is installed | Get set_user status"
-        ansible.builtin.shell: psql -c "select * from pg_available_extensions where name = 'set_user';" | grep rows | tr -d '()'
+      - name: "4.7 | AUDIT | Make use of default roles | Get superusers"
+        ansible.builtin.shell: psql -c 'select rolname from pg_roles where rolsuper is true;'
         changed_when: false
         failed_when: false
         become_user: "{{ pgs12cis_pgs12_usr }}"
-        register: pgs12cis_4_7_set_user_status
+        register: pgs12cis_4_7_superusers
 
-      - name: "4.7 | AUDIT | Ensure the set_user extension is installed | Warning on not available"
+      - name: "4.7 | AUDIT | Make use of default roles | Message out"
         ansible.builtin.debug:
             msg:
-                - "Warning!! You do not have the set_user extention installed and this is a finding. This is a manual task."
-                - "Please review and install the set_user extention then configure as needed"
-        when: "'0 rows' in pgs12cis_4_7_set_user_status.stdout"
+                - "Warning!! Below are the superusers, please review and add any needed users to the superusers."
+                - "Or remove any users that should not have superuser status. This is a manual task."
+                - "{{ pgs12cis_4_7_superusers.stdout_lines }}"
 
-      - name: "4.7 | AUDIT | Ensure the set_user extension is installed | Warning on available"
-        ansible.builtin.debug:
-            msg: "Good News! You have the module available for use. Please make sure it is configured correctly. This is a manual task."
-        when: "'0 rows' not in pgs12cis_4_7_set_user_status.stdout"
-
-      - name: "4.7 | AUDIT | Ensure the set_user extension is installed | Present"
-        ansible.builtin.import_tasks: warning_facts.yml
+- name: "4.7 | AUDIT | Make use of default roles | Present"
+  ansible.builtin.import_tasks: warning_facts.yml
   vars:
       warn_control_id: '4.7'
   when:

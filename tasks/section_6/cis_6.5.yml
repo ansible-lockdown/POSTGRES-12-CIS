@@ -10,7 +10,7 @@
         register: pgs12cis_6_5_superuser_settings
 
       - name: "6.5 | AUDIT | Ensure 'Superuser' Runtime Parameters are Configured | Get process output"
-        ansible.builtin.shell: ps aux | grep -E 'postgres' | grep -- '-[D]'
+        ansible.builtin.shell: ps aux | grep -E -- '[p]ost.*-[D]'
         changed_when: false
         failed_when: false
         register: pgs12cis_6_5_process_output

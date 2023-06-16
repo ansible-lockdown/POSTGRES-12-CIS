@@ -1,27 +1,12 @@
 ---
 
-- name: "1.2 | AUDIT | Ensure Installation of Binary Packages"
-  block:
-      - name: "1.2 | AUDIT | Ensure Installation of Binary Packages | Get installed packages and repo RHEL8"
-        ansible.builtin.shell: "{{ get_postgres_binary_list }}"
-        changed_when: false
-        failed_when: false
-        register: pgs12cis_1_2_postgres_binary_list
-
-      - name: "1.2 | AUDIT | Ensure Installation of Binary Packages | Show installed packages and repo RHEL8"
-        ansible.builtin.debug:
-            msg:
-                - "Warning!! Below are the installed postgres packages and where they came from. This is a manual task."
-                - "Please review and if the expected binary packages are not installed or did not come from an appropriate repo, this is a fail."
-                - "{{ pgs12cis_1_2_postgres_binary_list.stdout_lines }}"
-
-      - name: "1.2 | AUDIT | Ensure Installation of Binary Packages | Present"
-        ansible.builtin.import_tasks: warning_facts.yml
-  vars:
-      warn_control_id: '1.2'
+- name: "1.2 | PATCH | Ensure systemd Service Files Are Enabled"
+  ansible.builtin.service:
+      name: "{{ pgs12cis_postgresql_service }}"
+      enabled: true
   when:
       - pgs12cis_rule_1_2
   tags:
       - level1-postgresqlonlinux
-      - audit
+      - patch
       - rule_1.2

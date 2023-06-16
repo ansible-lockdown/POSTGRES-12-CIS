@@ -10,7 +10,7 @@
         register: pgs12cis_6_2_backend_runtime_param
 
       - name: "6.2 | AUDIT | Ensure 'backend' runtime parameters are configured correctly | Get process output"
-        ansible.builtin.shell: ps aux | grep -E '[p]ost' | grep -- '-[D]'
+        ansible.builtin.shell: ps -few | grep -E -- '[p]ost.*-[D]'
         changed_when: false
         failed_when: false
         register: pgs12cis_6_2_process_output

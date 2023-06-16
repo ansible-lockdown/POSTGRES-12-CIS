@@ -1,18 +1,17 @@
 ---
 
-- name: "7.4 | AUDIT | Ensure streaming replication parameters are configured correctly"
-  ansible.builtin.debug:
-      msg:
-          - "Warning!! Please ensure streaming replication parameters are configured. This is a manual task."
-
-- name: "7.4 | AUDIT | Ensure streaming replication parameters are configured correctly | Present"
-  ansible.builtin.import_tasks: warning_facts.yml
-  vars:
-      warn_control_id: '7.4'
+- name: "7.4 | PATCH | Ensure WAL archiving is configured and functional"
+  ansible.builtin.lineinfile:
+      path: "{{ pgs12cis_config_file }}"
+      regexp: "{{ item.regexp }}"
+      line: "{{ item.line }}"
+  notify: restart postgresql
+  with_items:
+      - { regexp: '^archive_mode =|^#archive_mode =', line: 'archive_mode = on' }
+      - { regexp: '^archive_command =|^#archive_command =', line: "archive_command = '{{ pgs12cis_archive_command }}'" }
   when:
       - pgs12cis_rule_7_4
   tags:
-      - level1-postgresql
       - level1-postgresqlonlinux
-      - audit
+      - patch
       - rule_7.4
