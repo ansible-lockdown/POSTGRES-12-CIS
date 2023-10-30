@@ -18,10 +18,10 @@
 ![Release Tag](https://img.shields.io/github/v/release/ansible-lockdown/POSTGRES-12-CIS)
 ![Release Date](https://img.shields.io/github/release-date/ansible-lockdown/POSTGRES-12-CIS)
 
-[![Main Pipeline Status](https://github.com/ansible-lockdown/POSTGRES-12-CIS/actions/workflows/vagrantup.yml/badge.svg?)](https://github.com/ansible-lockdown/POSTGRES-12-CIS/actions/workflows/vagrantup.yml)
+[![Main Pipeline Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/POSTGRES-12-CIS/vagrantup.yml?label=Build%20Status)
 ![Main Release Date](https://img.shields.io/github/release-date/ansible-lockdown/POSTGRES-12-CIS?label=Release%20Date)
 
-[![Devel Pipeline Status](https://github.com/ansible-lockdown/POSTGRES-12-CIS/actions/workflows/vagrantup.yml/badge.svg?)](https://github.com/ansible-lockdown/POSTGRES-12-CIS/actions/workflows/vagrantup.yml)
+[![Devel Pipeline Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/POSTGRES-12-CIS/vagrantup.yml?label=Devel%20Build%20Status)
 ![Devel Commits](https://img.shields.io/github/commit-activity/m/ansible-lockdown/POSTGRES-12-CIS/devel?color=dark%20green&label=Devel%20Branch%20Commits)
 
 ![Open Issues](https://img.shields.io/github/issues-raw/ansible-lockdown/POSTGRES-12-CIS?label=Open%20Issues)
