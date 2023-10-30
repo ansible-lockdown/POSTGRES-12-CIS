@@ -1,55 +1,111 @@
+---
+
 name: vagrant-up
 
+
+
 # Controls when the action will run.
+
 # Triggers the workflow on push or pull request
+
 # events but only for the devel branch
+
 on: # yamllint disable-line rule:truthy
+
     pull_request_target:
+
         types: [opened, reopened, synchronize]
+
         branches:
+
             - devel
+
             - main
+
         paths:
+
             - '**.yml'
+
             - '**.sh'
+
             - '**.j2'
+
             - '**.ps1'
+
             - '**.cfg'
 
+
+
 jobs:
+
   vagrant-up:
+
     runs-on: macos-latest
 
+
+
     steps:
-      - uses: actions/checkout@v3
+
+      - uses: actions/checkout@v4
+
+
 
       - name: Set up Python 3.
+
         uses: actions/setup-python@v4
+
         with:
+
           python-version: '3.x'
 
+
+
       - name: Install test dependencies.
+
         run: pip3 install ansible yamllint ansible-lint jmespath
 
+
+
       - name: Download Virtualbox
+
         run: brew install virtualbox
 
+
+
       - name: Install vagrant
+
         run: brew install vagrant
 
+
+
       - name: Install vagrant-manager
+
         run: brew install vagrant-manager
 
+
+
       - name: Show Vagrant version
+
         run: vagrant --version
 
+
+
       - name: Run vagrant up
+
         run: vagrant up
 
+
+
       - name: Cache Vagrant boxes
+
         uses: actions/cache@v3
+
         with:
+
           path: ~/.vagrant.d/boxes
+
           key: ${{ runner.os }}-vagrant-${{ hashFiles('Vagrantfile') }}
+
           restore-keys: |
+
             ${{ runner.os }}-vagrant-
