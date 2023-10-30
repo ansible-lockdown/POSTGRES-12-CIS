@@ -17,7 +17,8 @@
                 - "{{ pgs12cis_1_1_enabled_repos.stdout_lines }}"
 
       - name: "1.1 | AUDIT | Ensure packages are obtained from authorized repositories | Present"
-        ansible.builtin.import_tasks: warning_facts.yml
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
   vars:
       warn_control_id: '1.1'
   when:

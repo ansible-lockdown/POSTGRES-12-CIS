@@ -1,4 +1,5 @@
 ---
 
 - name: "SECTION | 2.1 | Ensure the file permissions mask is correct"
-  ansible.builtin.import_tasks: cis_2.1.yml
+  ansible.builtin.import_tasks:
+      file: cis_2.1.yml

@@ -1,7 +1,9 @@
 ---
 
 - name: "SECTION | 5.1 | Ensure login via 'local' UNIX Domain Socket is configured correctly"
-  ansible.builtin.import_tasks: cis_5.1.yml
+  ansible.builtin.import_tasks:
+      file: cis_5.1.yml
 
 - name: "SECTION | 5.2 | Ensure login via 'host' TCP/IP Socket is configured correctly"
-  ansible.builtin.import_tasks: cis_5.2.yml
+  ansible.builtin.import_tasks:
+      file: cis_5.2.yml

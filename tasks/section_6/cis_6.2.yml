@@ -26,7 +26,8 @@
                 - "{{ pgs12cis_6_2_process_output.stdout_lines }}"
 
       - name: "6.2 | AUDIT | Ensure 'backend' runtime parameters are configured correctly | Present"
-        ansible.builtin.import_tasks: warning_facts.yml
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
   vars:
       warn_control_id: '6.2'
   when:

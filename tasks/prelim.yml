@@ -1,7 +1,8 @@
 ---
 
 - name: "PRELIM | Install and Start PostgreSQL"
-  include_tasks: postgresql12_install.yml
+  include_tasks:
+      file: postgresql12_install.yml
   when: pgs12cis_install_postgresql
 
 - name: "PRELIM | Install ACL when needed"

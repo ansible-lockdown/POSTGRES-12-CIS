@@ -22,7 +22,8 @@
         when: "'0 rows' not in pgs12cis_4_6_set_user_status.stdout"
 
       - name: "4.6 | AUDIT | Ensure the set_user extension is installed | Present"
-        ansible.builtin.import_tasks: warning_facts.yml
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
   vars:
       warn_control_id: '4.6'
   when:

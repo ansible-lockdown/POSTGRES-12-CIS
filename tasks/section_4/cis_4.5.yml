@@ -17,7 +17,8 @@
                 - "{{ pgs12cis_4_5_rls_databases.stdout_lines }}"
 
       - name: "4.5 | AUDIT | Ensure Row Level Security (RLS) is configured correctly | Present"
-        ansible.builtin.import_tasks: warning_facts.yml
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
   vars:
       warn_control_id: '4.5'
   when:

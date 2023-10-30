@@ -10,7 +10,8 @@
           - "This is a manual task."
 
 - name: "6.1 | AUDIT | Understanding attack vectors and runtime parameters | Present"
-  ansible.builtin.import_tasks: warning_facts.yml
+  ansible.builtin.import_tasks:
+      file: warning_facts.yml
   vars:
       warn_control_id: '6.1'
   when:

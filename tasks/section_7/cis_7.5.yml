@@ -6,7 +6,8 @@
           - "Warning!! Please ensure streaming replication parameters are configured. This is a manual task."
 
 - name: "7.5 | AUDIT | Ensure streaming replication parameters are configured correctly | Present"
-  ansible.builtin.import_tasks: warning_facts.yml
+  ansible.builtin.import_tasks:
+      file: warning_facts.yml
   vars:
       warn_control_id: '7.5'
   when:
