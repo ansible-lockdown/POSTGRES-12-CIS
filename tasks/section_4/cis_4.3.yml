@@ -17,7 +17,8 @@
                 - "{{ pgs12cis_4_3_security_definer.stdout_lines }}"
 
       - name: "4.3 | AUDIT | Ensure excessive function privileges are revoked | Present"
-        ansible.builtin.import_tasks: warning_facts.yml
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
   vars:
       warn_control_id: '4.3'
   when:

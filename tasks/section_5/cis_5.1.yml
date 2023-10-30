@@ -8,7 +8,8 @@
           - "Warning!! Please ensure logins via 'local' Unix Domain Socket is configured correctly. This is a manual task."
 
 - name: "5.1 | PATCH | Ensure login via 'local' UNIX Domain Socket is configured correctly | Present"
-  ansible.builtin.import_tasks: warning_facts.yml
+  ansible.builtin.import_tasks:
+      file: warning_facts.yml
   vars:
       warn_control_id: '5.1'
   when:

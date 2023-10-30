@@ -18,7 +18,8 @@
                 - "{{ pgs12cis_8_1_directory_settings.stdout_lines }}"
 
       - name: "8.1 | AUDIT | Ensure PostgreSQL subdirectory locations are outside the data cluster | Present"
-        ansible.builtin.import_tasks: warning_facts.yml
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
   vars:
       warn_control_id: '8.1'
   when:

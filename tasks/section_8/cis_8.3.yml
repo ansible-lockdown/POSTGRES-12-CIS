@@ -16,7 +16,8 @@
                 - "{{ pgs12cis_8_3_settings.stdout_lines }}"
 
       - name: "8.3 | AUDIT | Ensure miscellaneous configuration settings are correct | Present"
-        ansible.builtin.import_tasks: warning_facts.yml
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
   vars:
       warn_control_id: '8.3'
   when:

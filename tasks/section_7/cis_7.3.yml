@@ -6,7 +6,8 @@
           - "Warning!! To conform to CIS standards make sure to use base backups. This is a manual task."
 
 - name: "7.3 | AUDIT | Ensure base backups are configured and functional | Present"
-  ansible.builtin.import_tasks: warning_facts.yml
+  ansible.builtin.import_tasks:
+      file: warning_facts.yml
   vars:
       warn_control_id: '7.3'
   when:

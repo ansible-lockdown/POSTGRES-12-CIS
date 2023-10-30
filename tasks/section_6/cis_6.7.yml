@@ -29,7 +29,8 @@
         when: "'fips' not in pgs12cis_6_7_fips_capability.stdout|lower"
 
       - name: "6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Present"
-        ansible.builtin.import_tasks: warning_facts.yml
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
         vars:
             warn_control_id: '6.7'
   when:
@@ -67,7 +68,8 @@
         when: "'1' in pgs12cis_ubuntu_fips_enabled.stdout"
 
       - name: "6.7 | AUDIT | Ensure FIPS 140-2 OpenSSL Cryptography Is Used | Present"
-        ansible.builtin.import_tasks: warning_facts.yml
+        ansible.builtin.import_tasks:
+            file: warning_facts.yml
   vars:
       warn_control_id: '6.7'
   when:
