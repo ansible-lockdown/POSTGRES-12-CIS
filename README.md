@@ -18,7 +18,7 @@
 ![Release Tag](https://img.shields.io/github/v/release/ansible-lockdown/POSTGRES-12-CIS)
 ![Release Date](https://img.shields.io/github/release-date/ansible-lockdown/POSTGRES-12-CIS)
 
-![Main Pipeline Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/POSTGRES-12-CIS/vagrantup.yml?label=Build%20Status)
+![Main Pipeline Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/POSTGRES-12-CIS/vagrantup.yml?label=Main%20Build%20Status)
 ![Main Release Date](https://img.shields.io/github/release-date/ansible-lockdown/POSTGRES-12-CIS?label=Release%20Date)
 
 ![Devel Pipeline Status](https://img.shields.io/github/actions/workflow/status/ansible-lockdown/POSTGRES-12-CIS/vagrantup.yml?label=Devel%20Build%20Status)
